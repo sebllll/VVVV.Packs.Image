@@ -41,7 +41,7 @@
     </Reference>
     <Reference Include="FeralTic, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\packs\DX11\core\FeralTic.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\dx11-vvvv\Deploy\Debug\x86\lib\core\FeralTic.dll</HintPath>
     </Reference>
     <Reference Include="SlimDX">
       <HintPath>..\..\..\..\..\..\..\common\src\thirdparty\$(Platform)\SlimDX.dll</HintPath>
@@ -59,11 +59,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="VVVV.DX11.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\packs\DX11\core\VVVV.DX11.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\dx11-vvvv\Deploy\Debug\x86\lib\core\VVVV.DX11.Core.dll</HintPath>
     </Reference>
     <Reference Include="VVVV.DX11.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\packs\DX11\core\VVVV.DX11.Lib.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\dx11-vvvv\Deploy\Debug\x86\lib\core\VVVV.DX11.Lib.dll</HintPath>
     </Reference>
     <Reference Include="ZedGraph">
       <HintPath>Dependencies\EmguCV\ZedGraph.dll</HintPath>

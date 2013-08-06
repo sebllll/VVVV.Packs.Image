@@ -17,7 +17,7 @@
   <ItemGroup>
     <Reference Include="OpenNI.Net, Version=1.5.4.0, Culture=neutral, PublicKeyToken=6b43d0c6cf74ee7f, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\..\Program Files (x86)\OpenNI\Bin\OpenNI.Net.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\_dev\OpenNI\Platform\Win32\Build\Wrappers\OpenNI.net\obj\x86\Release\OpenNI.Net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition.Codeplex">

@@ -97,7 +97,9 @@ namespace VVVV.Nodes.OpenCV.CLEye
 		}
 
 		CLEyeCameraDevice FCamera = null;
-		override protected bool Open()
+
+		//override protected bool Open()
+        override public bool Open()
 		{
 			try
 			{
@@ -156,7 +158,8 @@ namespace VVVV.Nodes.OpenCV.CLEye
 			}
 		}
 
-		override protected void Close()
+		//override protected void Close()
+        override public void Close()
 		{
 			if (FCamera != null)
 			{
