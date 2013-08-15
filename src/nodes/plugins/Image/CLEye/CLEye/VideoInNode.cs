@@ -143,10 +143,10 @@ namespace VVVV.Nodes.OpenCV.CLEye
 					return TColorFormat.L8;
 
 				case CLEyeCameraColorMode.CLEYE_COLOR_PROCESSED:
-					return TColorFormat.RGBA8;
+                    return TColorFormat.RGBA8;
 
 				case CLEyeCameraColorMode.CLEYE_COLOR_RAW:
-					return TColorFormat.RGBA8;
+                    return TColorFormat.RGBA8;
 
 				case CLEyeCameraColorMode.CLEYE_MONO_PROCESSED:
 					return TColorFormat.L8;

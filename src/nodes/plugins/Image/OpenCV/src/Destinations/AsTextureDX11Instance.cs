@@ -156,7 +156,7 @@ namespace VVVV.Nodes.OpenCV
             }
         }
 
-	    private void ConvertData()
+	    private void ConvertData()      // this isn't ever needed - but should be in order to fix the rgb > bgr conversion?
 	    {
 			var brgb = (byte*)FImageData.ToPointer();
 			var brgba = (byte*)FRgbaImageData.ToPointer();

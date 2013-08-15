@@ -38,6 +38,7 @@ namespace VVVV.Nodes.OpenCV
 			if (!FPinInImage.PluginIO.IsConnected || FProcessor.SliceCount == 0)
 				return;
 
+            // why deal like this with textures smaller than 640x480 ?
 			if (FPinInImage[0].ImageAttributes.Width < 640 && FPinInImage[0].ImageAttributes.Height < 480)
 				return;
 
