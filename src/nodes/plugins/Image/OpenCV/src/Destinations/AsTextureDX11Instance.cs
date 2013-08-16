@@ -47,6 +47,11 @@ namespace VVVV.Nodes.OpenCV
                 FBufferConverted = new CVImageDoubleBuffer();
                 FBufferConverted.Initialise(new CVImageAttributes(FInput.ImageAttributes.Size, FConvertedFormat));
             }
+            else
+            {
+                FBufferConverted = new CVImageDoubleBuffer();
+                FBufferConverted.Initialise(new CVImageAttributes(FInput.ImageAttributes.Size, FInput.ImageAttributes.ColourFormat));
+            }
 
             FNeedsTexture = true;
 
@@ -118,7 +123,7 @@ namespace VVVV.Nodes.OpenCV
                 case TColorFormat.RGB8:
                     return SlimDX.DXGI.Format.R8G8B8A8_UNorm;
                 case TColorFormat.RGBA8:
-                    return SlimDX.DXGI.Format.R8G8B8A8_UNorm;
+                    return SlimDX.DXGI.Format.B8G8R8A8_UNorm;
                 case TColorFormat.RGB32F:
                     return SlimDX.DXGI.Format.R32G32B32A32_Float;
                 case TColorFormat.RGBA32F:
@@ -150,8 +155,27 @@ namespace VVVV.Nodes.OpenCV
                         //output = new DX11DynamicTexture2D(context, attr.Width, attr.Height, format);
 
                         // this is how it works manually (only for grayscale texture from CLeye):
-                        SlimDX.DXGI.Format format = SlimDX.DXGI.Format.R8_UNorm;
-                        output = new DX11DynamicTexture2D(context, 640, 480, format);
+                        //SlimDX.DXGI.Format format = SlimDX.DXGI.Format.R8_UNorm;
+                        //output = new DX11DynamicTexture2D(context, 640, 480, format);
+
+                        SlimDX.DXGI.Format format = GetFormat(FInput.ImageAttributes.ColourFormat);
+
+                        int w = FInput.ImageAttributes.Width;
+                        int h = FInput.ImageAttributes.Height;
+
+                        output = new DX11DynamicTexture2D(context, w, h, format);
+
+                        /*try
+                        {
+                            output = new DX11DynamicTexture2D(context, w, h, format);
+                        }
+                        catch (Exception e)
+                        {
+                            // just need this to avoid error when using more than one AsTexture Nodes
+                            // to fix this, AsTextureDX11Node should made able to deal with spreads
+                            ImageUtils.Log(e);
+                            output = new DX11DynamicTexture2D(context, w, h, format);
+                        }*/
                     }
 
                     FNeedsRefresh.Add(output, true);
