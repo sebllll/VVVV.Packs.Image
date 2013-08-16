@@ -109,6 +109,8 @@ namespace VVVV.Nodes.OpenCV
         {
             switch (format)
             {
+                case TColorFormat.L8:
+                    return SlimDX.DXGI.Format.R8_UNorm;
                 case TColorFormat.L16 :
                     return SlimDX.DXGI.Format.R16_UNorm;
                 case TColorFormat.L32F:
@@ -142,10 +144,14 @@ namespace VVVV.Nodes.OpenCV
                     }                     
                     else
                     {
-                        CVImageAttributes attr = FBufferConverted.ImageAttributes as CVImageAttributes;
-                        SlimDX.DXGI.Format format = GetFormat(attr.ColourFormat);
-                        output = new DX11DynamicTexture2D(context, attr.Width, attr.Height, format);
+                        // it was like this (the same like on top??):
+                        //CVImageAttributes attr = FBufferConverted.ImageAttributes.Clone() as CVImageAttributes; // that line throws an exception
+                        //SlimDX.DXGI.Format format = GetFormat(attr.ColourFormat);
+                        //output = new DX11DynamicTexture2D(context, attr.Width, attr.Height, format);
 
+                        // this is how it works manually (only for grayscale texture from CLeye):
+                        SlimDX.DXGI.Format format = SlimDX.DXGI.Format.R8_UNorm;
+                        output = new DX11DynamicTexture2D(context, 640, 480, format);
                     }
 
                     FNeedsRefresh.Add(output, true);
@@ -212,6 +218,20 @@ namespace VVVV.Nodes.OpenCV
                                 throw (new Exception());
 
 							texture.WriteData(FBufferConverted.FrontImage.Data, FBufferConverted.ImageAttributes.BytesPerFrame);
+                            /*
+                            // vux' idea: ( is that the right place?)
+                            int channels = 3;
+
+                            if (FBufferConverted.ImageAttributes.Width * FBufferConverted.ImageAttributes.Height * channels == texture.GetRowPitch())
+                            {
+                                //texture.WriteData(FBufferConverted.FrontImage.Data, FBufferConverted.ImageAttributes.BytesPerFrame);
+                                texture.WriteData(FBufferConverted.FrontImage.Data, FBufferConverted.ImageAttributes.Width * FBufferConverted.ImageAttributes.Height * channels);
+                            }
+                            else
+                            {
+                                texture.WriteDataPitch(FBufferConverted.FrontImage.Data, FBufferConverted.ImageAttributes.Width * FBufferConverted.ImageAttributes.Height * channels);
+                            }*/
+                            
                             FNeedsRefresh[texture] = false;
                         }
                         catch (Exception e)
