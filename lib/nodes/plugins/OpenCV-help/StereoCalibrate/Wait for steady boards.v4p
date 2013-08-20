@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
-   <PATCH nodename="C:\vvvv\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\OpenCV-help\StereoCalibrate\Wait for steady boards.v4p" systemname="Wait for steady boards" filename="C:\vvvv\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\OpenCV-help\StereoCalibrate\Wait for steady boards.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.2.dtd" >
+   <PATCH nodename="C:\vvvv\vvvv-sdk\vvvv45\VVVV.Packs.Image\lib\nodes\plugins\OpenCV-help\StereoCalibrate\Wait for steady boards.v4p" systemname="Wait for steady boards" filename="C:\vvvv\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\OpenCV-help\StereoCalibrate\Wait for steady boards.v4p">
    <BOUNDS type="Window" left="9060" top="2445" width="10665" height="13065">
    </BOUNDS>
    <NODE systemname="GetSlice (Spreads)" nodename="GetSlice (Spreads)" componentmode="Hidden" id="29">
@@ -90,20 +90,10 @@
    <PIN pinname="Velocity" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Length (Vector)" filename="%VVVV%\addonpack\lib\nodes\modules\Vector\Length (Vector).v4p" nodename="Length (Vector)" componentmode="Hidden" id="21">
-   <BOUNDS type="Node" left="1470" top="5145" width="840" height="270">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Bin Size" slicecount="1" values="2">
-   </PIN>
-   </NODE>
    <NODE systemname="Mean (Spectral)" nodename="Mean (Spectral)" componentmode="Hidden" id="20">
    <BOUNDS type="Node" left="1470" top="5550" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="19">
@@ -140,10 +130,6 @@
    <LINKPOINT x="1470" y="4568">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="22" srcpinname="Velocity" dstnodeid="21" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="20" dstpinname="Input">
-   </LINK>
    <NODE systemname="FrameVelocity (Animation)" nodename="FrameVelocity (Animation)" componentmode="Hidden" id="17">
    <BOUNDS type="Node" left="4935" top="4695" width="100" height="100">
    </BOUNDS>
@@ -152,20 +138,10 @@
    <PIN pinname="Velocity" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Length (Vector)" filename="%VVVV%\addonpack\lib\nodes\modules\Vector\Length (Vector).v4p" nodename="Length (Vector)" componentmode="Hidden" id="16">
-   <BOUNDS type="Node" left="4935" top="5145" width="840" height="270">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Bin Size" slicecount="1" values="2">
-   </PIN>
-   </NODE>
    <NODE systemname="Mean (Spectral)" nodename="Mean (Spectral)" componentmode="Hidden" id="15">
    <BOUNDS type="Node" left="4935" top="5550" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14" systemname="IOBox (Value Advanced)">
@@ -181,10 +157,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="15" srcpinname="Output" dstnodeid="14" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="17" srcpinname="Velocity" dstnodeid="16" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="15" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="23" srcpinname="Output" dstnodeid="17" dstpinname="Position" linkstyle="VHV">
    <LINKPOINT x="4350" y="4568">
@@ -286,18 +258,6 @@
    </NODE>
    <LINK srcnodeid="26" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Input 2">
    </LINK>
-   <NODE systemname="HoldToBang (Animation)" filename="%VVVV%\addonpack\lib\nodes\modules\Animation\HoldToBang (Animation).v4p" nodename="HoldToBang (Animation)" componentmode="Hidden" id="7">
-   <BOUNDS type="Node" left="1440" top="9945" width="7845" height="270">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Duration">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="7" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="9225" top="4755" width="0" height="0">
    </BOUNDS>
@@ -312,22 +272,14 @@
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Still motion duration|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Duration">
-   </LINK>
    <NODE systemname="MessageBeep (Windows)" nodename="MessageBeep (Windows)" componentmode="Hidden" id="4">
    <BOUNDS type="Node" left="1440" top="10995" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="DoBeep" visible="1">
+   <PIN pinname="DoBeep" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Sound" slicecount="1" values="OK">
    </PIN>
    </NODE>
-   <LINK srcnodeid="7" srcpinname="Output" dstnodeid="4" dstpinname="DoBeep" linkstyle="VHV">
-   <LINKPOINT x="1275" y="10503">
-   </LINKPOINT>
-   <LINKPOINT x="1665" y="10678">
-   </LINKPOINT>
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="30" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="9405" top="11535" width="0" height="0">
    </BOUNDS>
@@ -344,12 +296,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Add">
    </PIN>
    </NODE>
-   <LINK srcnodeid="7" srcpinname="Output" dstnodeid="30" dstpinname="Y Input Value" linkstyle="VHV" hiddenwhenlocked="1">
-   <LINKPOINT x="1500" y="10860">
-   </LINKPOINT>
-   <LINKPOINT x="9405" y="10860">
-   </LINKPOINT>
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="3015" top="150" width="0" height="0">
    </BOUNDS>
@@ -483,5 +429,61 @@
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="39" srcpinname="Output" dstnodeid="23" dstpinname="Bin Size">
+   </LINK>
+   <NODE systemname="HoldToBang (Animation)" filename="..\..\..\modules\HoldToBang (Animation).v4p" nodename="HoldToBang (Animation)" componentmode="Hidden" id="7">
+   <BOUNDS type="Node" left="1440" top="9945" width="7845" height="270">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Duration">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="8565" top="8295" width="9000" height="6000">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="7" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Duration">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Output" dstnodeid="4" dstpinname="DoBeep" linkstyle="VHV">
+   <LINKPOINT x="1275" y="10503">
+   </LINKPOINT>
+   <LINKPOINT x="1665" y="10678">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Output" dstnodeid="30" dstpinname="Y Input Value" linkstyle="VHV" hiddenwhenlocked="1">
+   <LINKPOINT x="1500" y="10860">
+   </LINKPOINT>
+   <LINKPOINT x="9405" y="10860">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Length (Vector)" filename="..\..\..\modules\Length (Vector).v4p" nodename="Length (Vector)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="1470" top="5145" width="840" height="270">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Velocity" dstnodeid="21" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="20" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Length (Vector)" filename="..\..\..\modules\Length (Vector).v4p" nodename="Length (Vector)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="4935" top="5145" width="840" height="270">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Velocity" dstnodeid="16" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="15" dstpinname="Input">
    </LINK>
    </PATCH>

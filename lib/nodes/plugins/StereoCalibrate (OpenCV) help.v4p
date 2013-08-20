@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
-   <PATCH nodename="C:\vvvv\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\StereoCalibrate (OpenCV) help.v4p" systemname="StereoCalibrate (OpenCV) help" filename="C:\vvvv\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\StereoCalibrate (OpenCV) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta30.2.dtd" >
+   <PATCH nodename="C:\vvvv\vvvv-sdk\vvvv45\VVVV.Packs.Image\lib\nodes\plugins\StereoCalibrate (OpenCV) help.v4p" systemname="StereoCalibrate (OpenCV) help" filename="C:\vvvv\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\StereoCalibrate (OpenCV) help.v4p">
    <BOUNDS type="Window" left="1035" top="780" width="15270" height="14370">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="2">
@@ -178,7 +178,7 @@
    </LINK>
    <LINK srcnodeid="133" srcpinname="Layer" dstnodeid="2" dstpinname="Layers">
    </LINK>
-   <NODE systemname="Wait for steady boards" filename=".\OpenCV-help\StereoCalibrate\Wait for steady boards.v4p" componentmode="Hidden" id="134" nodename=".\OpenCV-help\StereoCalibrate\Wait for steady boards.v4p">
+   <NODE systemname="Wait for steady boards" filename=".\OpenCV-help\StereoCalibrate\Wait for steady boards.v4p" componentmode="InAWindow" id="134" nodename=".\OpenCV-help\StereoCalibrate\Wait for steady boards.v4p">
    <BOUNDS type="Node" left="1080" top="8160" width="5865" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="1080" top="8160" width="4800" height="3600">
@@ -199,7 +199,7 @@
    </PIN>
    <PIN pinname="Points per board" visible="1">
    </PIN>
-   <PIN pinname="Add" visible="1">
+   <PIN pinname="Add" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="ImagePoints 2" visible="1">
    </PIN>
@@ -392,7 +392,7 @@
    </LINK>
    <LINK srcnodeid="139" srcpinname="Projection 1" dstnodeid="101" dstpinname="Input 1">
    </LINK>
-   <NODE systemname="3D view" filename=".\OpenCV-help\StereoCalibrate\3D view.v4p" nodename=".\OpenCV-help\StereoCalibrate\3D view.v4p" componentmode="Hidden" id="143">
+   <NODE systemname="3D view" filename=".\OpenCV-help\StereoCalibrate\3D view.v4p" nodename=".\OpenCV-help\StereoCalibrate\3D view.v4p" componentmode="InAWindow" id="143">
    <BOUNDS type="Node" left="1095" top="12945" width="13470" height="270">
    </BOUNDS>
    <PIN pinname="Board WHP" visible="1">

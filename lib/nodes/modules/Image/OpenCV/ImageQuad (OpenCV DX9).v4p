@@ -299,9 +299,9 @@
    <LINK dstnodeid="6" dstpinname="Mesh" srcnodeid="23" srcpinname="Mesh">
    </LINK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="27" systemname="IOBox (Node)">
-   <BOUNDS type="Node" left="2655" top="8700" width="0" height="0">
+   <BOUNDS type="Node" left="2595" top="8730" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="2655" top="8700" width="795" height="240">
+   <BOUNDS type="Box" left="2595" top="8730" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Transform Out|">
    </PIN>
@@ -341,9 +341,9 @@
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="29" srcpinname="Output Node" dstnodeid="27" dstpinname="Input Node" linkstyle="VHV">
-   <LINKPOINT x="765" y="7740">
+   <LINKPOINT x="745" y="7750">
    </LINKPOINT>
-   <LINKPOINT x="2685" y="7740">
+   <LINKPOINT x="2645" y="7760">
    </LINKPOINT>
    </LINK>
    <NODE systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" id="30">

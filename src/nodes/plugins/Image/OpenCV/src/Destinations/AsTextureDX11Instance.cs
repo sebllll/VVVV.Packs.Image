@@ -242,19 +242,6 @@ namespace VVVV.Nodes.OpenCV
                                 throw (new Exception());
 
 							texture.WriteData(FBufferConverted.FrontImage.Data, FBufferConverted.ImageAttributes.BytesPerFrame);
-                            /*
-                            // vux' idea: ( is that the right place?)
-                            int channels = 3;
-
-                            if (FBufferConverted.ImageAttributes.Width * FBufferConverted.ImageAttributes.Height * channels == texture.GetRowPitch())
-                            {
-                                //texture.WriteData(FBufferConverted.FrontImage.Data, FBufferConverted.ImageAttributes.BytesPerFrame);
-                                texture.WriteData(FBufferConverted.FrontImage.Data, FBufferConverted.ImageAttributes.Width * FBufferConverted.ImageAttributes.Height * channels);
-                            }
-                            else
-                            {
-                                texture.WriteDataPitch(FBufferConverted.FrontImage.Data, FBufferConverted.ImageAttributes.Width * FBufferConverted.ImageAttributes.Height * channels);
-                            }*/
                             
                             FNeedsRefresh[texture] = false;
                         }
