@@ -76,6 +76,8 @@ namespace VVVV.Nodes.OpenCV
                     return SlimDX.DXGI.Format.R16_UNorm;
                 case TColorFormat.L32F:
                     return SlimDX.DXGI.Format.R32_Float;
+                //case TColorFormat.RGB8:
+                //    return SlimDX.DXGI.Format.B8G8R8X8_UNorm;
                 case TColorFormat.RGBA8:
                     return SlimDX.DXGI.Format.B8G8R8A8_UNorm;
 				case TColorFormat.RGB32F:
