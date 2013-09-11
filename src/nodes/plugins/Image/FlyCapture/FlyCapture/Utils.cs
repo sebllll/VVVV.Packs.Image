@@ -24,6 +24,10 @@ namespace VVVV.Nodes.FlyCapture
 				case PixelFormat.PixelFormatMono16:
 				case PixelFormat.PixelFormatRaw16:
                     return TColorFormat.L16;
+
+                case PixelFormat.PixelFormat422Yuv8:
+                case PixelFormat.PixelFormat422Yuv8Jpeg:
+                    return TColorFormat.RGB8;
 			}
 			throw (new Exception("Unsupported PixelFormat"));
 		}

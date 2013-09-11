@@ -98,6 +98,9 @@ namespace VVVV.Nodes.OpenCV
 					return new Image<Rgba, byte>(width, height);
 				case TColorFormat.RGBA32F:
 					return new Image<Rgba, float>(width, height);
+
+                //case TColorFormat.YUV422:
+                //    return new Image<Rgb, ushort>(width, height);
 			}
 
 			throw (new NotImplementedException("We have not implemented the automatic creation of this image type"));
@@ -168,6 +171,9 @@ namespace VVVV.Nodes.OpenCV
 				case TColorFormat.RGBA32F:
 					return 4 * sizeof(float);
 
+                //case TColorFormat.YUV422:
+                //    return 8;
+
 				default:
 					throw(new NotImplementedException("We haven't implemented BytesPerPixel for this type"));
 			}
@@ -193,6 +199,9 @@ namespace VVVV.Nodes.OpenCV
 
 				case TColorFormat.RGBA32F:
 					return 4;
+
+                //case TColorFormat.YUV422:
+                //    return 3;
 
 				default:
 					return 0;
@@ -227,6 +236,7 @@ namespace VVVV.Nodes.OpenCV
 				case TColorFormat.L8:
 				case TColorFormat.RGB8:
 				case TColorFormat.RGBA8:
+                //case TColorFormat.YUV422:
 					return TChannelFormat.Byte;
 
 				case TColorFormat.L16:
@@ -285,6 +295,9 @@ namespace VVVV.Nodes.OpenCV
 				case TColorFormat.RGBA32F:
 					return "RGBA32F";
 
+                //case TColorFormat.YUV422:
+                //    return "YUV422";
+
 				default:
 					throw (new NotImplementedException("We haven't implemented AsString for this type"));
 			}
@@ -292,7 +305,7 @@ namespace VVVV.Nodes.OpenCV
 
 		public static Texture CreateTexture(CVImageAttributes attributes, Device device)
 		{ 
-			TColorFormat format = attributes.ColourFormat;
+			TColorFormat format = attributes.ColorFormat;
 			TColorFormat newFormat;
 			bool useConverted = NeedsConversion(format, out newFormat);
 
@@ -455,7 +468,7 @@ namespace VVVV.Nodes.OpenCV
 
 		public static unsafe Spread<double> GetPixelAsDoubles(CVImage source, uint column, uint row)
 		{
-			TColorFormat format = source.ImageAttributes.ColourFormat;
+			TColorFormat format = source.ImageAttributes.ColorFormat;
 			uint channelCount = (uint)ChannelCount(format);
 
 			if (channelCount == 0)

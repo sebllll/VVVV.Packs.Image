@@ -77,7 +77,7 @@ namespace VVVV.Nodes.OpenCV
 					//--
 					//check attributes and reinitialise the image if we haven't got the right image ready
 					//
-					if (imageAttributes == null || FOffscreenBuffer == null || !imageAttributes.Initialised || FOffscreenBuffer.Description.Format != t.Description.Format || imageAttributes.Width != t.Width || imageAttributes.Height != t.Height || imageAttributes.ColourFormat != desiredImageFormat)
+					if (imageAttributes == null || FOffscreenBuffer == null || !imageAttributes.Initialised || FOffscreenBuffer.Description.Format != t.Description.Format || imageAttributes.Width != t.Width || imageAttributes.Height != t.Height || imageAttributes.ColorFormat != desiredImageFormat)
 					{
 						if (FOffscreenBuffer != null)
 							FOffscreenBuffer.Dispose();

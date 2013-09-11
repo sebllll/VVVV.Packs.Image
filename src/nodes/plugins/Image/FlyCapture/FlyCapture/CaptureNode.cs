@@ -15,6 +15,7 @@ using FlyCapture2;
 using FlyCapture2Managed;
 
 using VVVV.Nodes.OpenCV;
+using VVVV.Nodes.DeckLink;
 
 #endregion usings
 
@@ -22,6 +23,10 @@ namespace VVVV.Nodes.FlyCapture
 {
 	public class CaptureInstance : IGeneratorInstance
 	{
+
+        [Import()]
+        public ILogger FLogger;
+
 		bool FRunning = false;
 		ManagedCamera FCamera = new ManagedCamera();
 		ManagedImage FImage = new ManagedImage();
@@ -52,6 +57,14 @@ namespace VVVV.Nodes.FlyCapture
 				return FMode;
 			}
 		}
+        string FTest;
+        public string Test
+        {
+            get
+            {
+                return FTest;
+            }
+        }
 
         public override bool Open()
 		{
@@ -70,7 +83,9 @@ namespace VVVV.Nodes.FlyCapture
 				FFramerate = Utils.GetFramerate(rate);
 
 				FRunning = true;
+
 				FCamera.StartCapture(CaptureCallback);
+
 
                 ReAllocate();
 
@@ -111,10 +126,33 @@ namespace VVVV.Nodes.FlyCapture
 		public unsafe void CaptureCallback(ManagedImage image)
 		{
             if (!FOutput.Image.Allocated)
-                FOutput.Image.Initialise(new Size((int)image.cols, (int)image.rows), Utils.GetFormat(image.pixelFormat));            
+            {
+                //try
+                //{
+                    //FOutput.Image.Initialise(new Size((int)image.cols, (int)image.rows), Utils.GetFormat(image.pixelFormat));
+                    FOutput.Image.Initialise(new Size((int)image.cols, (int)image.rows), TColorFormat.RGB8);
+                //}
+                //catch (Exception e)
+                //{
+                //    //FTest = e.Message;
+                //}
+            }
 
-			FOutput.Image.SetPixels((IntPtr)image.data);
-			FOutput.Send();
+
+            try
+            {
+                ManagedImage convertedImage = new ManagedImage();
+                image.Convert(PixelFormat.PixelFormatBgr, convertedImage);
+
+                //ImageUtils.RawYUV2RGBA((IntPtr)image.data, (IntPtr)convertedImage.data, image.receivedDataSize);
+
+                FOutput.Image.SetPixels((IntPtr)convertedImage.data);
+                FOutput.Send();
+            }
+            catch (Exception e)
+            {
+                FTest = e.Message;
+            }
 		}
 
 		public override bool NeedsThread()
@@ -136,6 +174,9 @@ namespace VVVV.Nodes.FlyCapture
 		[Output("Mode")]
 		ISpread<string> FPinOutMode;
 
+        [Output("test")]
+        ISpread<string> FPinTest;
+
 		[Output("Framerate")]
 		ISpread<float> FPinOutFramerate;
 		
@@ -156,11 +197,13 @@ namespace VVVV.Nodes.FlyCapture
 
 			FPinOutMode.SliceCount = InstanceCount;
 			FPinOutFramerate.SliceCount = InstanceCount;
+            FPinTest.SliceCount = InstanceCount;
 
 			for (int i = 0; i < InstanceCount; i++)
 			{
 				FPinOutMode[i] = FProcessor[i].Mode;
 				FPinOutFramerate[i] = FProcessor[i].Framerate;
+                FPinTest[i] = FProcessor[i].Test;
 			}
 		}
 	}
