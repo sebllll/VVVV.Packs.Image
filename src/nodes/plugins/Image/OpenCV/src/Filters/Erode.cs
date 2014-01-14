@@ -11,15 +11,17 @@ using VVVV.Utils.VMath;
 using System;
 using VVVV.Utils.VColor;
 using System.Linq;
+using VVVV.CV.Core;
 
 #endregion
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
+	[FilterInstance("Erode", Help = "Deflate features in image, i.e. kill small features", Author = "elliotwoods", Tags = "denoise")]
 	public class ErodeInstance : IFilterInstance
 	{
-
 		private int FIterations = 1;
+		[Input("Iterations", MinValue = 0, MaxValue = 64, DefaultValue = 1)]
 		public int Iterations
 		{
 			set
@@ -47,23 +49,6 @@ namespace VVVV.Nodes.OpenCV
 
 			FOutput.Send();
 
-		}
-
-	}
-
-	#region PluginInfo
-	[PluginInfo(Name = "Erode", Category = "OpenCV", Version = "", Help = "Reduce features in image, i.e. remove noise", Author = "elliotwoods", Credits = "", Tags = "")]
-	#endregion PluginInfo
-	public class ErodeNode : IFilterNode<ErodeInstance>
-	{
-		[Input("Iterations", MinValue=0, MaxValue=64, DefaultValue=1)]
-		IDiffSpread<int> FIterations;
-
-		protected override void Update(int InstanceCount, bool SpreadChanged)
-		{
-			if (FIterations.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].Iterations = FIterations[i];
 		}
 	}
 }

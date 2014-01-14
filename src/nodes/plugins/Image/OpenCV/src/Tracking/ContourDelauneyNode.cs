@@ -17,11 +17,11 @@ using System.Collections.Generic;
 
 #endregion usings
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 
 	#region PluginInfo
-	[PluginInfo(Name = "ContourDelauney", Category = "OpenCV", Version="", Help = "Convert contour perimeter to triangles", Tags = "")]
+	[PluginInfo(Name = "Delauney", Category = "CV.Contour", Help = "Convert contour perimeter to triangles", Tags = "")]
 	#endregion PluginInfo
 	public class ContourDelauneyNode : IPluginEvaluate, IDisposable
 	{

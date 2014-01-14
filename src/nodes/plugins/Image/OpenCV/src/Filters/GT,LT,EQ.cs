@@ -9,15 +9,18 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 using System;
 using VVVV.Utils.VColor;
+using VVVV.CV.Core;
 
 #endregion
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
-	#region Interfaces
+	#region Interface
 	public abstract class CMPInstance : IFilterInstance
 	{
+		[Input("Input 2")]
 		public double Threshold = 0.5;
+
 		protected CVImage Buffer = new CVImage();
 
 		private bool FPassOriginal = false;
@@ -70,29 +73,10 @@ namespace VVVV.Nodes.OpenCV
 
 		protected abstract void Compare(IntPtr CvMat);
 	}
-
-	public abstract class CMPNode<T> : IFilterNode<T> where T : CMPInstance, new()
-	{
-		[Input("Input 2", DefaultValue = 0.5)]
-		IDiffSpread<double> FThreshold;
-
-		[Input("Pass original", DefaultValue = 0)]
-		IDiffSpread<bool> FPassOriginal;
-
-		protected override void Update(int InstanceCount, bool SpreadChanged)
-		{
-			if (FThreshold.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].Threshold = FThreshold[i];
-
-			if (FPassOriginal.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].PassOriginal = FPassOriginal[i];
-		}
-	}
-#endregion Interfaces
+	#endregion
 
 	#region Instances
+	[FilterInstance("GT", Help = "Greater than")]
 	public class GTInstance : CMPInstance
 	{
 		protected override void Compare(IntPtr CvMat)
@@ -101,6 +85,7 @@ namespace VVVV.Nodes.OpenCV
 		}
 	}
 
+	[FilterInstance("LT", Help = "Less than")]
 	public class LTInstance : CMPInstance
 	{
 		protected override void Compare(IntPtr CvMat)
@@ -109,6 +94,7 @@ namespace VVVV.Nodes.OpenCV
 		}
 	}
 
+	[FilterInstance("EQ", Help = "Equal to")]
 	public class EQInstance : CMPInstance
 	{
 		protected override void Compare(IntPtr CvMat)
@@ -117,26 +103,4 @@ namespace VVVV.Nodes.OpenCV
 		}
 	}
 	#endregion
-
-	#region Nodes
-
-	#region PluginInfo
-	[PluginInfo(Name = ">", Help = "Greater than", Category = "OpenCV", Version = "Filter, Scalar")]
-	#endregion PluginInfo
-	public class GTNode : CMPNode<GTInstance>
-	{	}
-
-	#region PluginInfo
-	[PluginInfo(Name = "<", Help = "Less than", Category = "OpenCV", Version = "Filter, Scalar")]
-	#endregion PluginInfo
-	public class LTNode : CMPNode<LTInstance>
-	{	}
-
-	#region PluginInfo
-	[PluginInfo(Name = "=", Help = "Equal to", Category = "OpenCV", Version = "Filter, Scalar")]
-	#endregion PluginInfo
-	public class EQNode : CMPNode<EQInstance>
-	{	}
-
-	#endregion nodes
 }

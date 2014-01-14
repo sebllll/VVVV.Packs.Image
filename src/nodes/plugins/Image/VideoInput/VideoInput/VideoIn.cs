@@ -11,9 +11,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 
-using VVVV.Nodes.OpenCV;
+using VVVV.CV.Core;
 using VideoInputSharp;
 using System.Runtime.InteropServices;
+using VVVV.CV.Core;
 
 namespace VVVV.Nodes.OpenCV.VideoInput
 {
@@ -149,7 +150,7 @@ namespace VVVV.Nodes.OpenCV.VideoInput
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "VideoIn", Category = "OpenCV", Version = "DirectShow", Help = "Captures video from DirectShow devices", Author = "Elliot Woods", Tags = "", AutoEvaluate = true)]
+	[PluginInfo(Name = "VideoIn", Category = "CV.Image", Version = "DirectShow", Help = "Captures video from DirectShow devices", Author = "elliotwoods", Tags = "", AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class VideoInNode : IGeneratorNode<VideoInInstance>
 	{

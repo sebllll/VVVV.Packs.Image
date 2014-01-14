@@ -17,11 +17,11 @@ using System.Collections.Generic;
 
 #endregion usings
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 
 	#region PluginInfo
-	[PluginInfo(Name = "ProjectPoints", Category = "OpenCV", Version = "Split", Help = "Split intrinsics out", Tags = "")]
+	[PluginInfo(Name = "ProjectPoints", Category = "CV.Transform", Help = "Apply extrinsics and intrinsics to a set of 3d points to get projected 2d points", Tags = "camera, calibration")]
 	#endregion PluginInfo
 	public class ProjectPointsNode : IPluginEvaluate, IDisposable
 	{

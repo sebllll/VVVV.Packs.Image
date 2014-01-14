@@ -5,17 +5,20 @@ using Emgu.CV.CvEnum;
 using VVVV.PluginInterfaces.V2;
 using System;
 using Emgu.CV.Structure;
+using VVVV.CV.Core;
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
+	[FilterInstance("AdaptiveThreshold", Help = "Perform an adaptive threshold over the image", Author = "elliotwoods")]
 	public class AdaptiveThresholdInstance : IFilterInstance
 	{
-		double FMaximum;
+		double FMaximum = 255.0;
 		ADAPTIVE_THRESHOLD_TYPE FMethod;
 		THRESH FType;
 		uint FBlockSize;
 		double FConstant;
 
+		[Input("Maximum", DefaultValue = 255.0)]
 		public double Maximum
 		{
 			set
@@ -24,6 +27,7 @@ namespace VVVV.Nodes.OpenCV
 			}
 		}
 
+		[Input("Method")]
 		public ADAPTIVE_THRESHOLD_TYPE Method
 		{
 			set
@@ -32,6 +36,7 @@ namespace VVVV.Nodes.OpenCV
 			}
 		}
 
+		[Input("Type")]
 		public THRESH Type
 		{
 			set
@@ -40,6 +45,7 @@ namespace VVVV.Nodes.OpenCV
 			}
 		}
 
+		[Input("Block Size", MinValue = 3, MaxValue = 99)]
 		public uint BlockSize
 		{
 			set
@@ -54,73 +60,39 @@ namespace VVVV.Nodes.OpenCV
 			}
 		}
 
+		[Input("Constant")]
 		public double Constant
 		{
 			set
 			{
-				this.Constant = value;
+				FConstant = value;
 			}
 		}
 
 		public override void Allocate()
 		{
-			FOutput.Image.Initialise(FInput.ImageAttributes);
+			FOutput.Image.Initialise(FInput.ImageAttributes.Size, TColorFormat.L8);
 		}
 
 		public override void Process()
 		{
 			if (!FInput.LockForReading())
 				return;
-			CvInvoke.cvAdaptiveThreshold(FInput.CvMat, FOutput.CvMat, FMaximum, FMethod, FType, (int) FBlockSize, FConstant);
-			FInput.ReleaseForReading();
+			try
+			{
+				FInput.GetImage(FOutput.Image);
+				CvInvoke.cvAdaptiveThreshold(FOutput.Image.CvMat, FOutput.Image.CvMat, FMaximum, FMethod, FType, (int)FBlockSize, FConstant);
+			}
+			catch
+			{
+				FOutput.Send();
+			}
+			finally
+			{
+				FInput.ReleaseForReading();
+			}
 
 			FOutput.Send();
-
-		}
-
-	}
-
-	#region PluginInfo
-	[PluginInfo(Name = "AdaptiveThreshold", Category = "OpenCV", Help = "Perform an adaptive threshold over the image", Author = "elliotwoods", Credits = "", Tags = "")]
-	#endregion PluginInfo
-	public class AdaptiveThresholdNode : IFilterNode<AdaptiveThresholdInstance>
-	{
-		[Input("Maximum", DefaultValue = 255.0)]
-		IDiffSpread<double> FPinInMaximum;
-
-		[Input("Adaptive Threshold Method")]
-		IDiffSpread<ADAPTIVE_THRESHOLD_TYPE> FPinInMethod;
-
-		[Input("Threshold Type")]
-		IDiffSpread<THRESH> FPinInType;
-
-		[Input("Block Size", MinValue = 3, MaxValue = 99)]
-		IDiffSpread<int> FPinInBlockSize;
-
-		[Input("Constant")]
-		IDiffSpread<double> FPinInConstant;
-
-		protected override void Update(int InstanceCount, bool SpreadChanged)
-		{
-			if (FPinInMaximum.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].Maximum = FPinInMaximum[i];
-
-			if (FPinInMethod.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].Method = FPinInMethod[i];
-
-			if (FPinInType.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].Type = FPinInType[i];
-
-			if (FPinInBlockSize.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].BlockSize = (uint)FPinInBlockSize[i];
-
-			if (FPinInConstant.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].Constant = (uint)FPinInConstant[i];
 		}
 	}
 }

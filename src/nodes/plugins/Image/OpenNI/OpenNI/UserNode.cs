@@ -15,14 +15,14 @@ using System.Collections.Generic;
 using OpenNI;
 using System.Runtime.InteropServices;
 
-using VVVV.Nodes.OpenCV;
+using VVVV.CV.Core;
 
 #endregion usings
 
 namespace VVVV.Nodes.OpenCV.OpenNI
 {
 	#region PluginInfo
-	[PluginInfo(Name = "Users", Category = "OpenCV", Version = "OpenNI", Help = "OpenNI User Generator", Tags = "")]
+	[PluginInfo(Name = "Users", Category = "CV.Image", Version = "OpenNI", Help = "OpenNI User Generator", Tags = "")]
 	#endregion PluginInfo
 	public class UserNode : IPluginEvaluate, IDisposable
 	{

@@ -24,12 +24,13 @@ using VertexType = VVVV.Utils.SlimDX.TexturedVertex;
 using System.Collections.Generic;
 using Emgu.CV.CvEnum;
 using System.Drawing;
+using VVVV.CV.Core;
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 	#region PluginInfo
 	[PluginInfo(Name = "AsTexture",
-				Category = "OpenCV",
+				Category = "CV.Image",
 				Version = "EX9.Texture",
 				Help = "Converts CVImage to Texture",
 				Tags = "")]

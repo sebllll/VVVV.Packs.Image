@@ -9,11 +9,13 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 using System;
 using VVVV.Utils.VColor;
+using VVVV.CV.Core;
 
 #endregion
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
+    [FilterInstance("FrameDelay", Author = "elliotwoods")]
 	public class FrameDelayInstance : IFilterInstance
 	{
 		CVImage FBuffer = new CVImage();
@@ -37,16 +39,5 @@ namespace VVVV.Nodes.OpenCV
 			}
 		}
 
-	}
-
-	#region PluginInfo
-	[PluginInfo(Name = "FrameDelay", Category = "OpenCV", Version = "", Help = "Delay output by 1 frame", Author = "elliotwoods", Credits = "", Tags = "")]
-	#endregion PluginInfo
-	public class FrameDelayNode : IFilterNode<FrameDelayInstance>
-	{
-
-		protected override void Update(int InstanceCount, bool SpreadChanged)
-		{
-		}
 	}
 }

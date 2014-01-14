@@ -12,18 +12,14 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using VVVV.CV.Core;
 
 #endregion usings
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
     public class VideoPlayerInstance : IGeneratorInstance
     {
-        public override bool NeedsAllocate()
-        {
-            return false;
-        }
-
         Capture FCapture;
 
         string FFilename;
@@ -132,10 +128,9 @@ namespace VVVV.Nodes.OpenCV
 
     #region PluginInfo
     [PluginInfo(Name = "VideoPlayer",
-              Category = "OpenCV",
-              Version = "",
+              Category = "CV.Image",
               Help = "Plays a video file to an Image stream",
-              Tags = "")]
+              Tags = "source")]
     #endregion PluginInfo
     public class VideoPlayerNode : IGeneratorNode<VideoPlayerInstance>
     {

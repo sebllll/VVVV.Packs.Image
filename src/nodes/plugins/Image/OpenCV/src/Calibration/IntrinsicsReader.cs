@@ -7,11 +7,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Nodes.OpenCV.Calibration
+namespace VVVV.CV.Nodes.Calibration
 {
 	#region PluginInfo
 	[PluginInfo(Name = "Reader",
-				Category = "OpenCV",
+				Category = "CV.Transform",
 				Version = "Intrinsics",
 				Help = "Read intrinsics from a file",
 				Tags = "",

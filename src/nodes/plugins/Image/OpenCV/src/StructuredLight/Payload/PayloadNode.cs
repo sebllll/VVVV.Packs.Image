@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Nodes.OpenCV.StructuredLight.Payload
+namespace VVVV.CV.Nodes.StructuredLight.Payload
 {
 	public enum PayloadMode { Graycode };
 
 	#region PluginInfo
-	[PluginInfo(Name = "Payload", Category = "Image.StructuredLight", Help = "Setup a payload", Author = "", Credits = "", Tags = "")]
+	[PluginInfo(Name = "Payload", Category = "CV.StructuredLight", Help = "Setup a payload", Author = "", Credits = "", Tags = "")]
 	#endregion PluginInfo
 	public class PayloadNode : IPluginEvaluate
 	{

@@ -1,8 +1,9 @@
 ﻿using System;
+using VVVV.CV.Core;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 	public class PipetInstance : IDestinationInstance
 	{
@@ -56,7 +57,7 @@ namespace VVVV.Nodes.OpenCV
 		}
 	}
 
-	[PluginInfo(Name = "Pipet", Category = "OpenCV", Version = "", Help = "Pipet in image", Tags = "")]
+	[PluginInfo(Name = "Pipet", Category = "CV.Image", Help = "Pipet in image using pixel coordinates", Tags = "")]
 	public class PipetNode : IDestinationNode<PipetInstance>
 	{
 		[Input("Position", DimensionNames=new string[1]{"px"})]

@@ -6,8 +6,9 @@ using System.Runtime.InteropServices;
 using FeralTic.DX11.Resources;
 using FeralTic.DX11;
 using VVVV.DX11;
+using VVVV.CV.Core;
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
     public unsafe class AsTextureDX11Instance : IDestinationInstance, IDisposable
     {
@@ -36,7 +37,6 @@ namespace VVVV.Nodes.OpenCV
 		Object FLockTexture = new Object();
 		Object FLockImageAllocation = new Object();
 
-
         public override void Allocate()
         {
 			//allocate w.r.t. incoming image
@@ -63,21 +63,20 @@ namespace VVVV.Nodes.OpenCV
         public override void Process()
         {
 			//called on upstream image update
-
-            lock (FLockTexture)
-            {
-                //ImageChanged so mark needs refresh on created textures
-                foreach (var texture in FTextures)
-                {
-					var resource = texture.Value;
-					resource.NeedsRefresh = true;
-                }
-            }
-
 			if (FNeedsConversion)
 			{
-				FInput.GetImage(FBuffer);
+				FInput.GetImage(FBuffer.BackImage);
 				FBuffer.Swap();
+			}
+
+			lock (FLockTexture)
+			{
+				//ImageChanged so mark needs refresh on created textures
+				foreach (var texture in FTextures)
+				{
+					var resource = texture.Value;
+					resource.NeedsRefresh = true;
+				}
 			}
         }
 

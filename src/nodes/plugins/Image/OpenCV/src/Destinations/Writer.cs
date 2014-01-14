@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VVVV.CV.Core;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes 
 {
 	public class WriterInstance : IDestinationInstance
 	{
@@ -64,7 +65,7 @@ namespace VVVV.Nodes.OpenCV
 
 
 	#region PluginInfo
-	[PluginInfo(Name = "Writer", Category = "OpenCV", Version = "Image", Help = "Save a still image file", Author = "elliotwoods", Credits = "", Tags = "")]
+	[PluginInfo(Name = "Writer", Category = "CV.Image", Help = "Save a still image file", Author = "elliotwoods", Credits = "", Tags = "")]
 	#endregion PluginInfo
 	public class WriterImageNode : IDestinationNode<WriterInstance>
 	{

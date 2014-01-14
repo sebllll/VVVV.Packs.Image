@@ -8,9 +8,10 @@ using Emgu.CV.Structure;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2;
 using System.Collections.Generic;
+using VVVV.CV.Core;
 #endregion
 
-namespace VVVV.Nodes.OpenCV.StructuredLight
+namespace VVVV.CV.Nodes.StructuredLight
 {
 	public class EncodeInstance : IStaticGeneratorInstance
 	{
@@ -109,7 +110,7 @@ namespace VVVV.Nodes.OpenCV.StructuredLight
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "Encode", Category = "Image.StructuredLight", Help = "Encode structured light patterns", Author = "", Credits = "", Tags = "")]
+	[PluginInfo(Name = "Encode", Category = "CV.StructuredLight", Help = "Encode structured light patterns", Author = "elliotwoods", Credits = "", Tags = "")]
 	#endregion PluginInfo
 	public class EncodeNode : IGeneratorNode<EncodeInstance>
 	{

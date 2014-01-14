@@ -9,10 +9,11 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 using System;
 using VVVV.Utils.VColor;
+using VVVV.CV.Core;
 
 #endregion
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 	public enum TDifferenceMode
 	{
@@ -21,12 +22,16 @@ namespace VVVV.Nodes.OpenCV
 		AbsoluteDifference
 	}
 
+	[FilterInstance("FrameDifference", Help = "Output difference between frames", Author = "elliotwoods")]
 	public class FrameDifferenceInstance : IFilterInstance
 	{
 		CVImage FLastFrame = new CVImage();
 
+		[Input("Threshold")]
 		public double Threshold = 0.1;
+
 		private bool FThresholdEnabled = false;
+		[Input("Threshold Enabled")]
 		public bool ThresholdEnabled
 		{
 			set
@@ -36,6 +41,7 @@ namespace VVVV.Nodes.OpenCV
 			}
 		}
 
+		[Input("Mode", DefaultEnumEntry="AbsoluteDifference")]
 		public TDifferenceMode DifferenceMode = TDifferenceMode.AbsoluteDifference;
 
 		public override void Allocate()
@@ -81,37 +87,6 @@ namespace VVVV.Nodes.OpenCV
 			FInput.GetImage(FLastFrame);
 
 			FOutput.Send();
-		}
-
-	}
-
-	#region PluginInfo
-	[PluginInfo(Name = "FrameDifference", Category = "OpenCV", Version = "", Help = "Output difference between frames", Author = "elliotwoods", Credits = "", Tags = "")]
-	#endregion PluginInfo
-	public class FrameDifferenceNode : IFilterNode<FrameDifferenceInstance>
-	{
-		[Input("Threshold")]
-		IDiffSpread<double> FThreshold;
-
-		[Input("Threshold Enabled")]
-		IDiffSpread<bool> FThresholdEnabled;
-
-		[Input("Difference Mode", DefaultEnumEntry = "AbsoluteDifference")]
-		IDiffSpread<TDifferenceMode> FDifferenceMode;
-
-		protected override void Update(int InstanceCount, bool SpreadChanged)
-		{
-			if (FThreshold.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].Threshold = FThreshold[i];
-
-			if (FThresholdEnabled.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].ThresholdEnabled = FThresholdEnabled[i];
-
-			if (FDifferenceMode.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].DifferenceMode = FDifferenceMode[i];
 		}
 	}
 }

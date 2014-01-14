@@ -15,8 +15,9 @@ using System.Collections.Generic;
 using OpenNI;
 using System.Runtime.InteropServices;
 
-using VVVV.Nodes.OpenCV;
+using VVVV.CV.Core;
 using System.Diagnostics;
+using VVVV.CV.Core;
 
 #endregion usings
 
@@ -25,7 +26,7 @@ namespace VVVV.Nodes.OpenCV.OpenNI
 	enum ImageNodeMode { RGB, IR };
 
 	#region PluginInfo
-	[PluginInfo(Name = "Images", Category = "OpenCV", Version = "OpenNI", Help = "OpenNI Image generator", Tags = "")]
+	[PluginInfo(Name = "Images", Category = "CV.Image", Version = "OpenNI", Help = "OpenNI Image generator", Tags = "")]
 	#endregion PluginInfo
 	public class ImageNode : IPluginEvaluate, IDisposable
 	{
@@ -35,6 +36,8 @@ namespace VVVV.Nodes.OpenCV.OpenNI
 
             public bool EnableWorld = true;
             public bool EnableImage = true;
+			const int Width = 640;
+			const int Height = 480;
 
 			Object FLock = new Object();
 
@@ -90,8 +93,8 @@ namespace VVVV.Nodes.OpenCV.OpenNI
 				}
 			}
 
-            Point3D[] FProjective = new Point3D[640 * 480];
-			Size FSize = new Size(640, 480);
+			Point3D[] FProjective = new Point3D[Width * Height];
+			Size FSize = new Size(Width, Height);
 
             private void Initialise()
             {
@@ -105,11 +108,11 @@ namespace VVVV.Nodes.OpenCV.OpenNI
 						World.Image.Initialise(FSize, TColorFormat.RGB32F);
 						messages += InitialiseImage();
 
-						for (int x = 0; x < 640; x++)
-							for (int y = 0; y < 480; y++)
+						for (int x = 0; x < Width; x++)
+							for (int y = 0; y < Height; y++)
 							{
-								FProjective[x + y * 640].X = x;
-								FProjective[x + y * 640].Y = y;
+								FProjective[x + y * Width].X = x;
+								FProjective[x + y * Width].Y = y;
 							}
 
 						Status = "OK";
@@ -181,7 +184,7 @@ namespace VVVV.Nodes.OpenCV.OpenNI
 							byte* rgbs = (byte*)FRGBGenerator.ImageMapPtr.ToPointer();
 							byte* rgbd = (byte*)Image.Image.Data.ToPointer();
 
-							for (int i = 0; i < 640 * 480; i++)
+							for (int i = 0; i < Width * Height; i++)
 							{
 								rgbd[2] = rgbs[0];
 								rgbd[1] = rgbs[1];
@@ -214,12 +217,12 @@ namespace VVVV.Nodes.OpenCV.OpenNI
                 float* xyz = (float*)World.Data.ToPointer();
                 ushort* d = (ushort*)Depth.Data.ToPointer();
 
-                for (int i = 0; i < 640 * 480; ++i)
+                for (int i = 0; i < Width * Height; ++i)
                     FProjective[i].Z = *d++;
 
                 Point3D[] xyzp = FState.DepthGenerator.ConvertProjectiveToRealWorld(FProjective);
 
-                for (int i = 0; i < 640 * 480; ++i, xyz += 3)
+                for (int i = 0; i < Width * Height; ++i, xyz += 3)
                 {
                     xyz[0] = xyzp[i].X / 1000.0f;
                     xyz[1] = xyzp[i].Y / 1000.0f;

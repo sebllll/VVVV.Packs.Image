@@ -14,14 +14,15 @@ using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
 using ThreadState = System.Threading.ThreadState;
 using System.Collections.Generic;
+using VVVV.CV.Core;
 
 #endregion usings
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 
 	#region PluginInfo
-	[PluginInfo(Name = "StereoCalibrate", Category = "OpenCV", Help = "Finds extrinsics between 2 cameras", Tags = "")]
+	[PluginInfo(Name = "StereoCalibrate", Category = "CV.Transform", Help = "Finds extrinsics between 2 cameras", Tags = "")]
 	#endregion PluginInfo
 	public class StereoCalibrateNode : IPluginEvaluate, IDisposable
 	{

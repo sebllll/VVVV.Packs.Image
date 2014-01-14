@@ -20,15 +20,15 @@ using Emgu.Util;
 using System.Collections.Generic;
 using Emgu.CV.CvEnum;
 using System.Drawing;
+using VVVV.CV.Core;
 
 #endregion usings
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 	#region PluginInfo
 	[PluginInfo(Name = "Info",
-				Category = "OpenCV",
-				Version = "",
+				Category = "CV.Image",
 				Help = "Outputs information about the Images in a spread",
 				Tags = "")]
 	#endregion PluginInfo

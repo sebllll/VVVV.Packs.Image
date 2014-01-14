@@ -9,22 +9,24 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 using System;
 using VVVV.Utils.VColor;
+using VVVV.CV.Core;
 
 #endregion
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
+	[FilterInstance("Canny", Help = "Find edges in image using Canny filter", Author = "elliotwoods", Credits = "", Tags = "edge detection")]
 	public class CannyInstance : IFilterInstance
 	{
-
+		[Input("Threshold Min")]
 		public double ThresholdMin = 20;
+
+		[Input("Threshold Max")]
 		public double ThresholdMax = 40;
 
-		private bool FNeedsConversion = false;
-		private CVImage FGrayscale = new CVImage();
-
-		private int FAperture = 5;
-		public int Aperture
+		private int FWindowSize = 3;
+		[Input("Window size", MinValue = 3, MaxValue = 7, DefaultValue = 3)]
+		public int WindowSize
 		{
 			set
 			{
@@ -36,9 +38,12 @@ namespace VVVV.Nodes.OpenCV
 
 				value += (value + 1) % 2;
 
-				FAperture = value;
+				FWindowSize = value;
 			}
 		}
+
+		private bool FNeedsConversion = false;
+		private CVImage FGrayscale = new CVImage();
 
 		public override void Allocate()
 		{
@@ -58,14 +63,14 @@ namespace VVVV.Nodes.OpenCV
 			if (FNeedsConversion)
 			{
 				FInput.GetImage(FGrayscale);
-				CvInvoke.cvCanny(FGrayscale.CvMat, FOutput.CvMat, ThresholdMin, ThresholdMax, FAperture);
+				CvInvoke.cvCanny(FGrayscale.CvMat, FOutput.CvMat, ThresholdMin, ThresholdMax, FWindowSize);
 			}
 			else
 			{
 				FInput.LockForReading();
 				try
 				{
-					CvInvoke.cvCanny(FInput.CvMat, FOutput.CvMat, ThresholdMin, ThresholdMax, FAperture);
+					CvInvoke.cvCanny(FInput.CvMat, FOutput.CvMat, ThresholdMin, ThresholdMax, FWindowSize);
 				}
 				finally
 				{
@@ -75,36 +80,5 @@ namespace VVVV.Nodes.OpenCV
 			FOutput.Send();
 		}
 
-	}
-
-	#region PluginInfo
-	[PluginInfo(Name = "Canny", Category = "OpenCV", Version = "", Help = "Find edges in image using Canny filter", Author = "elliotwoods", Credits = "", Tags = "")]
-	#endregion PluginInfo
-	public class CannyNode : IFilterNode<CannyInstance>
-	{
-		[Input("Threshold min", DefaultValue = 20)]
-		IDiffSpread<double> FThresholdMin;
-
-		[Input("Threshold max", DefaultValue = 40)]
-		IDiffSpread<double> FThresholdMax;
-
-		[Input("Window size", MinValue = 3, MaxValue = 7, DefaultValue = 3)]
-		IDiffSpread<int> FWindowSize;
-
-		protected override void Update(int InstanceCount, bool SpreadChanged)
-		{
-			if (FThresholdMin.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].ThresholdMin = FThresholdMin[i];
-
-			if (FThresholdMax.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].ThresholdMax = FThresholdMax[i];
-
-			if (FWindowSize.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].Aperture = FWindowSize[i];
-
-		}
 	}
 }

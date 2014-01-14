@@ -10,9 +10,10 @@ using VVVV.PluginInterfaces.V2;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using VVVV.CV.Core;
 #endregion
 
-namespace VVVV.Nodes.OpenCV.StructuredLight
+namespace VVVV.CV.Nodes.StructuredLight
 {
 	public class DecodeInstance : IDestinationInstance
 	{
@@ -186,7 +187,7 @@ namespace VVVV.Nodes.OpenCV.StructuredLight
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "Decode", Category = "Image.StructuredLight", Help = "Decode structured light patterns", Author = "", Credits = "", Tags = "")]
+	[PluginInfo(Name = "Decode", Category = "CV.StructuredLight", Help = "Decode structured light patterns", Author = "elliotwoods", Credits = "", Tags = "")]
 	#endregion PluginInfo
 	public class DecodeNode : IDestinationNode<DecodeInstance>
 	{

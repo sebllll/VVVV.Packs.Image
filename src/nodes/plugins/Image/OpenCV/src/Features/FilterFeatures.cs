@@ -5,10 +5,10 @@ using System.Text;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Nodes.OpenCV.Features.Criteria;
 
-namespace VVVV.Nodes.OpenCV.Features
+namespace VVVV.CV.Nodes.Features
 {
     #region PluginInfo
-    [PluginInfo(Name = "FilterFeatures", Category = "OpenCV", Help = "Find correspondeces between a pair of FeatureSet's.", Tags = "")]
+    [PluginInfo(Name = "FilterFeatures", Category = "CV.Features", Help = "Filter features given criteria.", Tags = "")]
     #endregion PluginInfo
     public class FilterFeatures : IPluginEvaluate
     {

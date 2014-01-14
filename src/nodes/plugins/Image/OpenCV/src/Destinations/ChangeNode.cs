@@ -10,10 +10,11 @@ using VVVV.Utils.VMath;
 using System;
 using VVVV.Utils.VColor;
 using System.Diagnostics;
+using VVVV.CV.Core;
 
 #endregion
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 	public class ChangeInstance : IDestinationInstance
 	{
@@ -40,7 +41,7 @@ namespace VVVV.Nodes.OpenCV
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "Change", Category = "OpenCV", Version = "", Help = "Report the number of image frames passed through this node between MainLoop frames", Author = "elliotwoods", Credits = "", Tags = "")]
+	[PluginInfo(Name = "Change", Category = "CV.Image", Help = "Report the number of image frames passed through this node between MainLoop frames", Author = "elliotwoods", Credits = "", Tags = "")]
 	#endregion PluginInfo
 	public class ChangeNode : IDestinationNode<ChangeInstance>
 	{

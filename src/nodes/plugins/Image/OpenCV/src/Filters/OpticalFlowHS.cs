@@ -5,9 +5,11 @@ using Emgu.CV.CvEnum;
 using VVVV.PluginInterfaces.V2;
 using System;
 using Emgu.CV.Structure;
+using VVVV.CV.Core;
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
+	[FilterInstance("OpticalFlow", Version = "Horn–Schunck", Help = "Perform HS optical flow on image", Author = "elliotwoods")]
 	public class OpticalFlowHSInstance : IFilterInstance
 	{
 		private Size FSize;
@@ -18,6 +20,7 @@ namespace VVVV.Nodes.OpenCV
 		private CVImage FVelocityY = new CVImage();
 
 		private double FLambda = 0.1;
+		[Input("Lambda", DefaultValue = 0.1, MinValue = 0, MaxValue = 1)]
 		public double Lambda
 		{	set
 			{
@@ -32,6 +35,7 @@ namespace VVVV.Nodes.OpenCV
 		}
 
 		private int FIterations = 100;
+		[Input("Maximum Iterations", DefaultValue = 100, MinValue = 1, MaxValue = 500)]
 		public int Iterations
 		{
 			set
@@ -45,6 +49,7 @@ namespace VVVV.Nodes.OpenCV
 			}
 		}
 
+		[Input("Use Previous Velocity")]
 		public bool UsePrevious = false;
 
 		public override void Allocate()
@@ -90,36 +95,6 @@ namespace VVVV.Nodes.OpenCV
 				*dest++ = *sourcey++;
 				*dest++ = 0.0f;
 			}
-		}
-	}
-
-	#region PluginInfo
-	[PluginInfo(Name = "OpticalFlowHS", Category = "OpenCV", Help = "Perform HS optical flow on image", Author = "elliotwoods", Credits = "", Tags = "")]
-	#endregion PluginInfo
-	public class OpticalFlowHSNode : IFilterNode<OpticalFlowHSInstance>
-	{
-		[Input("Lambda", DefaultValue = 0.1, MinValue = 0, MaxValue = 1)]
-		IDiffSpread<double> FPinInLambda;
-
-		[Input("Maximum Iterations", DefaultValue = 100, MinValue = 1, MaxValue = 500)]
-		IDiffSpread<int> FPinInIterations;
-
-		[Input("Use Previous Velocity")]
-		IDiffSpread<bool> FPinInUsePrevious;
-
-		protected override void Update(int SpreadMax, bool SpreadChanged)
-		{
-			if (FPinInLambda.IsChanged)
-				for (int i = 0; i < SpreadMax; i++)
-					FProcessor[i].Lambda = FPinInLambda[0];
-
-			if (FPinInIterations.IsChanged)
-				for (int i = 0; i < SpreadMax; i++)
-					FProcessor[i].Iterations = FPinInIterations[0];
-
-			if (FPinInUsePrevious.IsChanged)
-				for (int i = 0; i < SpreadMax; i++)
-					FProcessor[i].UsePrevious = FPinInUsePrevious[0];
 		}
 	}
 }

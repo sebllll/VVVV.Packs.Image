@@ -9,12 +9,14 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 using System;
 using VVVV.Utils.VColor;
+using VVVV.CV.Core;
 
 #endregion
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
-	public class NotInstance : IFilterInstance
+	[FilterInstance("NOT", Help = "Invert image")]
+	public class NOTInstance : IFilterInstance
 	{
 		public override void Allocate()
 		{
@@ -28,17 +30,6 @@ namespace VVVV.Nodes.OpenCV
 			CvInvoke.cvNot(FInput.CvMat, FOutput.CvMat);
 			FInput.ReleaseForReading(); //and  this after you've finished with FImage
 			FOutput.Send();
-		}
-
-	}
-
-	#region PluginInfo
-	[PluginInfo(Name = "Not", Category = "OpenCV", Version = "Filter", Help = "Invert image", Author = "", Credits = "", Tags = "")]
-	#endregion PluginInfo
-	public class NotNode : IFilterNode<NotInstance>
-	{
-		protected override void Update(int SpreadMax, bool SpreadChanged)
-		{
 		}
 	}
 }

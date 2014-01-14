@@ -14,15 +14,16 @@ using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
 using ThreadState = System.Threading.ThreadState;
 using System.Collections.Generic;
+using VVVV.CV.Core;
 
 #endregion usings
 
-namespace VVVV.Nodes.OpenCV.Calibration
+namespace VVVV.CV.Nodes.Calibration
 {
 	public enum TCoordinateSystem { VVVV, OpenCV };
 
 	#region PluginInfo
-	[PluginInfo(Name = "CalibrateCamera", Category = "OpenCV", Help = "Finds intrinsics for a single camera", Tags = "", AutoEvaluate=true)]
+	[PluginInfo(Name = "CalibrateCamera", Category = "CV.Transform", Help = "Finds intrinsics for a single camera", AutoEvaluate=true)]
 	#endregion PluginInfo
 	public class CalibrateCameraNode : IPluginEvaluate, IDisposable
 	{
@@ -121,7 +122,8 @@ namespace VVVV.Nodes.OpenCV.Calibration
 					}
 					else
 					{
-						intrinsicParam = FPinInIntrinsics[0].intrinsics;
+						intrinsicParam.DistortionCoeffs = FPinInIntrinsics[0].intrinsics.DistortionCoeffs.Clone();
+						intrinsicParam.IntrinsicMatrix = FPinInIntrinsics[0].intrinsics.IntrinsicMatrix.Clone();
 					}
 
 				}

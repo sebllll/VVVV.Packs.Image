@@ -17,11 +17,11 @@ using System.Collections.Generic;
 
 #endregion usings
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 
 	#region PluginInfo
-	[PluginInfo(Name = "ContourPerimeter", Category = "OpenCV", Version="Split", Help = "Split contour perimeter out", Tags = "")]
+	[PluginInfo(Name = "Perimeter", Category = "CV.Contour", Version="Split", Help = "Split contour perimeter out", Tags = "")]
 	#endregion PluginInfo
 	public class ContourPerimeterSplitNode : IPluginEvaluate, IDisposable
 	{

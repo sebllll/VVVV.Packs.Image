@@ -8,9 +8,10 @@ using Emgu.CV.Structure;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2;
 using System.Collections.Generic;
+using VVVV.CV.Core;
 #endregion
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 	public class NoiseInstance : IStaticGeneratorInstance
 	{
@@ -68,7 +69,7 @@ namespace VVVV.Nodes.OpenCV
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "Noise", Category = "OpenCV", Version = "Generator", Help = "Generator 32F noise", Author = "", Credits = "", Tags = "")]
+	[PluginInfo(Name = "Noise", Category = "CV.Image", Help = "Generator 32F noise", Author = "", Credits = "", Tags = "source")]
 	#endregion PluginInfo
 	public class NoiseNode : IGeneratorNode<NoiseInstance>
 	{

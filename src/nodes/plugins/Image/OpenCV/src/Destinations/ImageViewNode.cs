@@ -12,14 +12,15 @@ using VVVV.Utils.VMath;
 
 using VVVV.Core.Logging;
 using Emgu.CV.UI;
+using VVVV.CV.Core;
 #endregion usings
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "Renderer",
-	Category = "OpenCV",
-	Help = "Render an EmguCV Image",
+	[PluginInfo(Name = "Inspektor",
+	Category = "CV.Image",
+	Help = "Render a CVImage using Emgu. Note : likely to be depreciated",
 	Tags = "",
 	AutoEvaluate = true)]
 	#endregion PluginInfo

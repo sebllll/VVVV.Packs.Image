@@ -12,9 +12,10 @@ using VVVV.PluginInterfaces.V2;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using VVVV.CV.Core;
 #endregion
 
-namespace VVVV.Nodes.OpenCV.StructuredLight
+namespace VVVV.CV.Nodes.StructuredLight
 {
 	public enum TDataSet { ProjectorInCamera, CameraInProjector, LuminanceInCamera }
 
@@ -263,7 +264,7 @@ namespace VVVV.Nodes.OpenCV.StructuredLight
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "Space", Category = "Image.StructuredLight", Help = "Preview structured light data", Author = "", Credits = "", Tags = "")]
+	[PluginInfo(Name = "Space", Category = "CV.StructuredLight", Help = "Preview structured light data", Author = "elliotwoods", Credits = "", Tags = "")]
 	#endregion PluginInfo
 	public class SpaceNode : IGeneratorNode<SpaceInstance>
 	{

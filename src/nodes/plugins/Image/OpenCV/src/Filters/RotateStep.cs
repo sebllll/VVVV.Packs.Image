@@ -11,14 +11,17 @@ using VVVV.Utils.VMath;
 using System;
 using VVVV.Utils.VColor;
 using System.Linq;
+using VVVV.CV.Core;
 
 #endregion
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
+	[FilterInstance("Rotate", Help = "Rotate an image in 1/4 cycle increments.", Author = "elliotwoods")]
     public class RotateStepInstance : IFilterInstance
     {
-        public int Rotations;
+		[Input("Rotations")]
+		public int Rotations = 0;
 
         public override void Allocate()
         {
@@ -89,25 +92,7 @@ namespace VVVV.Nodes.OpenCV
                     }
                     break;
             }
-
             FOutput.Send();
-        }
-
-    }
-
-    #region PluginInfo
-    [PluginInfo(Name = "Rotate", Category = "OpenCV", Version = "Step", Help = "Rotate an image in 1/4 cycle increments.", Author = "elliotwoods", Credits = "", Tags = "")]
-    #endregion PluginInfo
-    public class RotateStepNode : IFilterNode<RotateStepInstance>
-    {
-        [Input("Rotations")]
-        IDiffSpread<int> FRotations;
-
-        protected override void Update(int InstanceCount, bool SpreadChanged)
-        {
-            if (FRotations.IsChanged || SpreadChanged)
-                for (int i = 0; i < InstanceCount; i++)
-                    FProcessor[i].Rotations = FRotations[i];
         }
     }
 }

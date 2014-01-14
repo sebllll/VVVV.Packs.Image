@@ -9,28 +9,41 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 using System;
 using VVVV.Utils.VColor;
+using VVVV.CV.Core;
 
 #endregion
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
+	[FilterInstance("BackgroundSubtract", Help = "Output difference between current frame and captured background", Author = "elliotwoods", Tags = "tracking")]
 	public class BackgroundSubtractInstance : IFilterInstance
 	{
-		CVImage FBackground = new CVImage();
-
-		public double Threshold = 0.1;
-		private bool FThresholdEnabled = false;
-		public bool ThresholdEnabled
-		{
+		[Input("Set", IsBang=true)]
+		public bool Set {
 			set
 			{
-				FThresholdEnabled = value;
+				if (value) {
+					this.FFlagForHold = true;
+				}
 			}
 		}
 
+		[Input("Threshold")]
+		public double Threshold = 0.2;
+
+		[Input("Threshold Enabled")]
+		public bool ThresholdEnabled = false;
+
+		CVImage FBackground = new CVImage();
+
+		[Input("Difference Mode", DefaultEnumEntry = "AbsoluteDifference")]
 		public TDifferenceMode DifferenceMode = TDifferenceMode.AbsoluteDifference;
 
-		public bool Hold = false;
+		bool FFlagForHold = false;
+		public void Hold()
+		{
+			FFlagForHold = true;
+		}
 
 		public override void Allocate()
 		{
@@ -42,55 +55,22 @@ namespace VVVV.Nodes.OpenCV
 
 		public override void Process()
 		{
-			if (Hold)
+			if (FFlagForHold)
+			{
 				FInput.Image.GetImage(FBackground);
+				FFlagForHold = false;
+			}
 
 			FInput.GetImage(FOutput.Image); // temporary
 
 			if (DifferenceMode == TDifferenceMode.AbsoluteDifference)
 				CvInvoke.cvAbsDiff(FOutput.CvMat, FBackground.CvMat, FOutput.CvMat);
 
-			if (FThresholdEnabled)
+			if (ThresholdEnabled)
 				CvInvoke.cvThreshold(FOutput.CvMat, FOutput.CvMat, 255.0d * Threshold, 255, THRESH.CV_THRESH_BINARY);
 
 			FOutput.Send();
 		}
 
-	}
-
-	#region PluginInfo
-	[PluginInfo(Name = "BackgroundSubtract", Category = "OpenCV", Version = "", Help = "Output difference between current frame and captured background", Author = "elliotwoods", Credits = "", Tags = "")]
-	#endregion PluginInfo
-	public class BackgroundSubtractNode : IFilterNode<BackgroundSubtractInstance>
-	{
-		[Input("Set")]
-		ISpread<bool> FHold;
-
-		[Input("Threshold")]
-		IDiffSpread<double> FThreshold;
-
-		[Input("Threshold Enabled")]
-		IDiffSpread<bool> FThresholdEnabled;
-
-		[Input("Difference Mode", DefaultEnumEntry = "AbsoluteDifference")]
-		IDiffSpread<TDifferenceMode> FDifferenceMode;
-
-		protected override void Update(int InstanceCount, bool SpreadChanged)
-		{
-			for (int i = 0; i < InstanceCount; i++)
-				FProcessor[i].Hold = FHold[i];
-
-				if (FThreshold.IsChanged)
-					for (int i = 0; i < InstanceCount; i++)
-						FProcessor[i].Threshold = FThreshold[i];
-
-			if (FThresholdEnabled.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].ThresholdEnabled = FThresholdEnabled[i];
-
-			if (FDifferenceMode.IsChanged)
-				for (int i = 0; i < InstanceCount; i++)
-					FProcessor[i].DifferenceMode = FDifferenceMode[i];
-		}
 	}
 }

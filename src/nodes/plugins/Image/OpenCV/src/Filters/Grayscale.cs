@@ -9,11 +9,13 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 using System;
 using VVVV.Utils.VColor;
+using VVVV.CV.Core;
 
 #endregion
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
+	[FilterInstance("Grayscale", Help = "Converts incoming images to respective grayscale versions", Author = "elliotwoods")]
 	public class GrayscaleInstance : IFilterInstance
 	{
 		TColorFormat FOutFormat;
@@ -32,18 +34,6 @@ namespace VVVV.Nodes.OpenCV
 		{
 			FInput.GetImage(FOutput.Image);
 			FOutput.Send();
-		}
-
-	}
-
-	#region PluginInfo
-	[PluginInfo(Name = "Grayscale", Category = "OpenCV", Version = "", Help = "Converts incoming images to respective grayscale versions", Author = "elliotwoods", Credits = "", Tags = "")]
-	#endregion PluginInfo
-	public class GrayscaleNode : IFilterNode<GrayscaleInstance>
-	{
-
-		protected override void Update(int InstanceCount, bool SpreadChanged)
-		{
 		}
 	}
 }

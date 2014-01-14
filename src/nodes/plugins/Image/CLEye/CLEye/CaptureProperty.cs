@@ -11,7 +11,7 @@ using VVVV.PluginInterfaces.V1;
 namespace VVVV.Nodes.OpenCV.CLEye
 {
 	#region PluginInfo
-	[PluginInfo(Name = "CaptureProperty", Category = "OpenCV", Version = "CLEye", Help = "Set properties for CLEye camera", Tags = "", Author = "Elliot Woods", AutoEvaluate = true)]
+	[PluginInfo(Name = "CaptureProperty", Category = "CV.Image", Version = "CLEye", Help = "Set properties for CLEye camera", Tags = "", Author = "elliotwoods", AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class CapturePropertyNode : IPluginEvaluate
 	{
@@ -44,7 +44,7 @@ namespace VVVV.Nodes.OpenCV.CLEye
 		{
 			if (FPinInProperty.IsChanged || FPinInValue.IsChanged)
 			{
-				FOutput.Clear();
+				FOutput = new Dictionary<CLEyeCameraParameter, int>();
 				for (int i = 0; i < SpreadMax; i++)
 				{
 					if (!FOutput.ContainsKey(FPinInProperty[i]))

@@ -14,13 +14,14 @@ using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
 using ThreadState = System.Threading.ThreadState;
 using System.Collections.Generic;
+using VVVV.CV.Core;
 
 #endregion usings
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "FindBoard", Category = "OpenCV", Help = "Finds chessboard corners XY", Tags = "")]
+	[PluginInfo(Name = "FindBoard", Category = "CV.Image", Help = "Finds chessboard corners XY", Tags = "camera, calibration")]
 	#endregion PluginInfo
 	public class FindBoardNode : IDestinationNode<FindBoardInstance>
 	{
@@ -50,13 +51,13 @@ namespace VVVV.Nodes.OpenCV
 
 		protected override void Update(int InstanceCount, bool SpreadChanged)
 		{
-			CheckParams(InstanceCount);
+			CheckParams(InstanceCount, SpreadChanged);
 			Output(InstanceCount);
 		}
 
-		void CheckParams(int InstanceCount)
+		void CheckParams(int InstanceCount, bool SpreadChanged)
 		{
-			if (FPinInBoardSizeX.IsChanged || FPinInBoardSizeY.IsChanged)
+			if (FPinInBoardSizeX.IsChanged || FPinInBoardSizeY.IsChanged || SpreadChanged)
 			{
 				for (int i=0; i<InstanceCount; i++)
 				{
@@ -64,15 +65,15 @@ namespace VVVV.Nodes.OpenCV
 				}
 			}
 
-			if (FPinInEnabled.IsChanged)
+			if (FPinInEnabled.IsChanged || SpreadChanged)
 			{
 				for (int i = 0; i < InstanceCount; i++)
 				{
 					FProcessor[i].Enabled = FPinInEnabled[0];
 				}
 			}
-			
-			if (FPinInTestLowResolution.IsChanged)
+
+			if (FPinInTestLowResolution.IsChanged || SpreadChanged)
 			{
 				for (int i = 0; i < InstanceCount; i++)
 				{

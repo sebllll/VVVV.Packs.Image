@@ -14,10 +14,11 @@ using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
 using ThreadState = System.Threading.ThreadState;
 using System.Collections.Generic;
+using VVVV.CV.Core;
 
 #endregion usings
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 	public enum ContourApproximation { None, Simple, TehChinL1, TehChinKCOS, LinkRuns, Poly };
 
@@ -231,7 +232,7 @@ namespace VVVV.Nodes.OpenCV
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "Contour", Category = "OpenCV", Help = "Finds contours in binary image", Tags = "")]
+	[PluginInfo(Name = "Contour", Category = "CV.Image", Version = "", Help = "Finds contours in binary image", Tags = "analysis")]
 	#endregion PluginInfo
 	public class ContourNode : IDestinationNode<ContourInstance>
 	{

@@ -10,10 +10,11 @@ using VVVV.Utils.VMath;
 using System;
 using VVVV.Utils.VColor;
 using System.Diagnostics;
+using VVVV.CV.Core;
 
 #endregion
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
 	public enum FramerateNodeMode { Filtered, Raw };
 
@@ -50,7 +51,7 @@ namespace VVVV.Nodes.OpenCV
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "Framerate", Category = "OpenCV", Version = "", Help = "Report the framerate that an image is being updated at", Author = "elliotwoods", Credits = "", Tags = "")]
+	[PluginInfo(Name = "Framerate", Category = "CV.Image", Help = "Report the framerate that an image is being updated at", Author = "elliotwoods", Credits = "", Tags = "")]
 	#endregion PluginInfo
 	public class FramerateNode : IDestinationNode<FramerateInstance>
 	{

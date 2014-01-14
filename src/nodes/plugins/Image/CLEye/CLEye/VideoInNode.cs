@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Nodes.OpenCV;
+using VVVV.CV.Core;
 using CLEyeMulticam;
 using System.Drawing;
+using VVVV.CV.Core;
 
 namespace VVVV.Nodes.OpenCV.CLEye
 {
@@ -73,12 +74,16 @@ namespace VVVV.Nodes.OpenCV.CLEye
 		}
 
 		private bool FParameterChange = false;
+		Object FParameterLock = new Object();
 		Dictionary<CLEyeCameraParameter, int> FParameters;
 		public Dictionary<CLEyeCameraParameter, int> Parameters
 		{
 			set
 			{
-				FParameters = value;
+				lock (FParameterLock)
+				{
+					FParameters = value;
+				}
 				FParameterChange = true;
 			}
 		}
@@ -88,9 +93,12 @@ namespace VVVV.Nodes.OpenCV.CLEye
 			if (FCamera == null || FParameters == null)
 				return;
 
-			foreach (var param in FParameters)
+			lock (FParameterLock)
 			{
-				FCamera.SetParameter(param.Key, param.Value);
+				foreach (var param in FParameters)
+				{
+					FCamera.SetParameter(param.Key, param.Value);
+				}
 			}
 
 			FParameterChange = false;
@@ -98,8 +106,7 @@ namespace VVVV.Nodes.OpenCV.CLEye
 
 		CLEyeCameraDevice FCamera = null;
 
-		//override protected bool Open()
-        override public bool Open()
+		public override bool Open()
 		{
 			try
 			{
@@ -119,6 +126,15 @@ namespace VVVV.Nodes.OpenCV.CLEye
 			{
 				Status = e.Message;
 				return false;
+			}
+		}
+
+		public override void Close()
+		{
+			if (FCamera != null)
+			{
+				FCamera.Stop();
+				FCamera = null;
 			}
 		}
 
@@ -143,10 +159,10 @@ namespace VVVV.Nodes.OpenCV.CLEye
 					return TColorFormat.L8;
 
 				case CLEyeCameraColorMode.CLEYE_COLOR_PROCESSED:
-                    return TColorFormat.RGBA8;
+					return TColorFormat.RGBA8;
 
 				case CLEyeCameraColorMode.CLEYE_COLOR_RAW:
-                    return TColorFormat.RGBA8;
+					return TColorFormat.RGBA8;
 
 				case CLEyeCameraColorMode.CLEYE_MONO_PROCESSED:
 					return TColorFormat.L8;
@@ -155,16 +171,6 @@ namespace VVVV.Nodes.OpenCV.CLEye
 					return TColorFormat.L8;
 				default:
 					throw (new Exception("Color mode unsupported"));
-			}
-		}
-
-		//override protected void Close()
-        override public void Close()
-		{
-			if (FCamera != null)
-			{
-				FCamera.Stop();
-				FCamera = null;
 			}
 		}
 

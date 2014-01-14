@@ -7,10 +7,10 @@ using VVVV.Utils.VMath;
 using System.Drawing;
 using Emgu.CV;
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
     #region PluginInfo
-    [PluginInfo(Name = "Homography", Category = "OpenCV", Version = "Transform", Help = "Solve homography (allows for fitting > 4 points).", Tags = "")]
+    [PluginInfo(Name = "Homography", Category = "2d", Help = "Solve homography (allows for fitting > 4 points).", Tags = "opencv")]
     #endregion PluginInfo
     public class Homography : IPluginEvaluate
     {

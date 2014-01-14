@@ -9,15 +9,19 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 using System;
 using VVVV.Utils.VColor;
+using VVVV.CV.Core;
 
 #endregion
 
-namespace VVVV.Nodes.OpenCV
+namespace VVVV.CV.Nodes
 {
+	[FilterInstance("Template", Help = "Use the source of this filter as a reference on how to write your own filters")]
 	public class TemplateInstance : IFilterInstance
 	{
 		//example of a property
 		private byte [] FColorAdd = new byte[3];
+		
+		[Input("Add")]
 		public RGBAColor ColorAdd
 		{
 			//we don't expose the raw value, in case
@@ -89,22 +93,6 @@ namespace VVVV.Nodes.OpenCV
 				*rgb++ += FColorAdd[1];
 				*rgb++ += FColorAdd[2];
 			}
-		}
-	}
-
-	#region PluginInfo
-	[PluginInfo(Name = "Template", Category = "OpenCV", Version = "Filter", Help = "Template node for a threaded filter", Author = "", Credits = "", Tags = "")]
-	#endregion PluginInfo
-	public class TemplateNode : IFilterNode<TemplateInstance>
-	{
-		[Input("Add")]
-		IDiffSpread<RGBAColor> FColorAdd;
-
-		protected override void Update(int SpreadMax, bool SpreadChanged)
-		{
-			if (FColorAdd.IsChanged)
-				for (int i = 0; i < SpreadMax; i++)
-					FProcessor[i].ColorAdd = FColorAdd[i];
 		}
 	}
 }

@@ -15,10 +15,11 @@ using Emgu.CV.CvEnum;
 using ThreadState = System.Threading.ThreadState;
 using System.Collections.Generic;
 using Emgu.CV.Features2D;
+using VVVV.CV.Core;
 
 #endregion usings
 
-namespace VVVV.Nodes.OpenCV.Features
+namespace VVVV.CV.Nodes.Features
 {
     public class DetectFeaturesInstance : IDestinationInstance
     {
@@ -59,7 +60,7 @@ namespace VVVV.Nodes.OpenCV.Features
     }
 
     #region PluginInfo
-    [PluginInfo(Name = "DetectFeatures", Category = "OpenCV", Version = "SURF", Help = "Find feature points in 2D image", Tags = "")]
+    [PluginInfo(Name = "DetectFeatures", Category = "CV.Image", Help = "Find feature points in 2D image", Tags = "SURF")]
     #endregion PluginInfo
     public class DetectFeaturesNode : IDestinationNode<DetectFeaturesInstance>
     {

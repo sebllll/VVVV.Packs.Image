@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 
-using VVVV.Nodes.OpenCV;
+using VVVV.CV.Core;
 using System.Runtime.InteropServices;
 using DeckLinkAPI;
 using Emgu.CV;
@@ -193,7 +193,7 @@ namespace VVVV.Nodes.DeckLink
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "VideoIn", Category = "DeckLink", Version = "Image", Help = "Captures video from BlackMagic DeckLink devices", Author = "Elliot Woods", Tags = "", AutoEvaluate = true)]
+	[PluginInfo(Name = "VideoIn", Category = "DeckLink", Version = "Image", Help = "Captures video from BlackMagic DeckLink devices", Author = "elliotwoods", Tags = "", AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class VideoInNode : IGeneratorNode<VideoInInstance>
 	{
