@@ -52,7 +52,7 @@
     </Reference>
     <Reference Include="FeralTic, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\..\dx11-vvvv\Deploy\Debug\x86\packs uint_pointer\DX11\core\FeralTic.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\vvvv_45beta31.2_x86\packs\DX11\core\FeralTic.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -73,16 +73,16 @@
     </Reference>
     <Reference Include="VVVV.DX11.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\..\dx11-vvvv\Deploy\Debug\x86\packs uint_pointer\DX11\core\VVVV.DX11.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\vvvv_45beta31.2_x86\packs\DX11\core\VVVV.DX11.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VVVV.DX11.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\..\dx11-vvvv\Deploy\Debug\x86\packs uint_pointer\DX11\core\VVVV.DX11.Lib.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\vvvv_45beta31.2_x86\packs\DX11\core\VVVV.DX11.Lib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VVVV.Nodes">
-      <HintPath>..\..\..\..\..\..\..\lib\nodes\plugins\VVVV.Nodes.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\vvvv_45beta31.2_x86\lib\nodes\plugins\VVVV.Nodes.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VVVV.Utils, Version=31.0.0.0, Culture=neutral, processorArchitecture=MSIL">
