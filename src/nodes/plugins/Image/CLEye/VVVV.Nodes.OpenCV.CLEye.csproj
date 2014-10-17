@@ -16,7 +16,7 @@
     <AssemblyName>VVVV.Nodes.OpenCV.CLEye</AssemblyName>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>fff794d3</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>b6e00083</NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -31,12 +31,16 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="VVVV.Core">
+      <HintPath>..\..\..\..\packages\VVVV.Core.33.4.0-develop-494\lib\net40\VVVV.Core.dll</HintPath>
       <Private>False</Private>
-      <HintPath>..\..\..\..\packages\VVVV.Core.32.1.0\lib\net40\VVVV.Core.dll</HintPath>
     </Reference>
     <Reference Include="VVVV.Utils">
+      <HintPath>..\..\..\..\packages\VVVV.Utils.33.4.0-develop-494\lib\net40\VVVV.Utils.dll</HintPath>
       <Private>False</Private>
-      <HintPath>..\..\..\..\packages\VVVV.Utils.32.1.0\lib\net40\VVVV.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.UtilsIL">
+      <HintPath>..\..\..\..\packages\VVVV.UtilsIL.33.4.0-develop-494\lib\net40\VVVV.UtilsIL.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -66,11 +70,19 @@
     <Error Condition="!Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.props'))" />
     <Error Condition="!Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets'))" />
     <Error Condition="!Exists('..\..\..\..\packages\VVVV.CLEyeMulticam.1.2.0.1\build\net40\VVVV.CLEyeMulticam.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.CLEyeMulticam.1.2.0.1\build\net40\VVVV.CLEyeMulticam.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\VVVV.Utils3rdParty.33.4.0-develop-494\build\net40\VVVV.Utils3rdParty.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.Utils3rdParty.33.4.0-develop-494\build\net40\VVVV.Utils3rdParty.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\VVVV.PluginInterfaces.33.4.0-develop-494\build\net40\VVVV.PluginInterfaces.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.PluginInterfaces.33.4.0-develop-494\build\net40\VVVV.PluginInterfaces.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\VVVV.Nodes.Generic.33.4.0-develop-494\build\net40\VVVV.Nodes.Generic.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.Nodes.Generic.33.4.0-develop-494\build\net40\VVVV.Nodes.Generic.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\VVVV.Hosting.33.4.0-develop-494\build\net40\VVVV.Hosting.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.Hosting.33.4.0-develop-494\build\net40\VVVV.Hosting.targets'))" />
   </Target>
   <Import Project="..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets" Condition="Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets')" />
   <Import Project="..\..\..\..\packages\VVVV.CLEyeMulticam.1.2.0.1\build\net40\VVVV.CLEyeMulticam.targets" Condition="Exists('..\..\..\..\packages\VVVV.CLEyeMulticam.1.2.0.1\build\net40\VVVV.CLEyeMulticam.targets')" />
   <Import Project="..\..\..\..\packages\VVVV.PluginInterfaces.32.1.0\build\net40\VVVV.PluginInterfaces.targets" Condition="Exists('..\..\..\..\packages\VVVV.PluginInterfaces.32.1.0\build\net40\VVVV.PluginInterfaces.targets')" />
   <Import Project="..\..\..\..\packages\VVVV.Utils3rdParty.32.1.0\build\net40\VVVV.Utils3rdParty.targets" Condition="Exists('..\..\..\..\packages\VVVV.Utils3rdParty.32.1.0\build\net40\VVVV.Utils3rdParty.targets')" />
+  <Import Project="..\..\..\..\packages\VVVV.Utils3rdParty.33.4.0-develop-494\build\net40\VVVV.Utils3rdParty.targets" Condition="Exists('..\..\..\..\packages\VVVV.Utils3rdParty.33.4.0-develop-494\build\net40\VVVV.Utils3rdParty.targets')" />
+  <Import Project="..\..\..\..\packages\VVVV.PluginInterfaces.33.4.0-develop-494\build\net40\VVVV.PluginInterfaces.targets" Condition="Exists('..\..\..\..\packages\VVVV.PluginInterfaces.33.4.0-develop-494\build\net40\VVVV.PluginInterfaces.targets')" />
+  <Import Project="..\..\..\..\packages\VVVV.Nodes.Generic.33.4.0-develop-494\build\net40\VVVV.Nodes.Generic.targets" Condition="Exists('..\..\..\..\packages\VVVV.Nodes.Generic.33.4.0-develop-494\build\net40\VVVV.Nodes.Generic.targets')" />
+  <Import Project="..\..\..\..\packages\VVVV.Hosting.33.4.0-develop-494\build\net40\VVVV.Hosting.targets" Condition="Exists('..\..\..\..\packages\VVVV.Hosting.33.4.0-develop-494\build\net40\VVVV.Hosting.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
