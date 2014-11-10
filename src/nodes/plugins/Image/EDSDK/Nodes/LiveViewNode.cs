@@ -160,10 +160,10 @@ namespace VVVV.Nodes.EDSDK
         /*
 		public void Evaluate(int SpreadMax)
 		{
-			if (FFirstRun)
+			if (isInit)
 			{
 				FOutImage[0] = new CVImageLink();
-				FFirstRun = false;
+				isInit = false;
 			}
 
 			if (FInDevices[0] != FCamera || FInEnabled.IsChanged)

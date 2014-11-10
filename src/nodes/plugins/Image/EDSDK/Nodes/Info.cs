@@ -8,8 +8,8 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
-using Canon.Eos.Framework;
 using System.Collections.Generic;
+using EDSDKLib;
 
 #endregion usings
 
@@ -22,10 +22,10 @@ namespace VVVV.Nodes.EDSDK
 	{
 		#region fields & pins
 		[Input("Device")]
-		IDiffSpread<EosCamera> FInDevices;
+		IDiffSpread<Camera> FInDevices;
 
 		[Output("Product Name")]
-		ISpread<string> FOutProductName;
+		ISpread<string> FOutDeviceDescription;
 
 		[Output("Serial Number")]
 		ISpread<string> FOutSerialNumber;
@@ -53,7 +53,7 @@ namespace VVVV.Nodes.EDSDK
 		{
 			if (FInDevices.IsChanged)
 			{
-				FOutProductName.SliceCount = 0;
+				FOutDeviceDescription.SliceCount = 0;
 				FOutSerialNumber.SliceCount = 0;
 				FOutPortName.SliceCount = 0;
 				FOutOwnerName.SliceCount = 0;
@@ -64,11 +64,8 @@ namespace VVVV.Nodes.EDSDK
 					if (camera == null)
 						continue;
 
-					FOutSerialNumber.Add(camera.SerialNumber);
-					FOutProductName.Add(camera.ProductName);
-					FOutPortName.Add(camera.PortName);
-					FOutOwnerName.Add(camera.OwnerName);
-					FOutFirmware.Add(camera.FirmwareVersion);
+					FOutDeviceDescription.Add(camera.Info.szDeviceDescription);
+                    FOutPortName.Add(camera.Info.szPortName);
 				}
 			}
 		}
