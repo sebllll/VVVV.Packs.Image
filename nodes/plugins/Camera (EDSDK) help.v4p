@@ -73,7 +73,7 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="34" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="885" top="4695" width="795" height="240">
+   <BOUNDS type="Box" left="885" top="4695" width="2055" height="330">
    </BOUNDS>
    <BOUNDS type="Node" left="885" top="4695" width="0" height="0">
    </BOUNDS>
@@ -145,6 +145,8 @@
    </PIN>
    <PIN pinname="Shoot" visible="1">
    </PIN>
+   <PIN pinname="Progress" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Refresh">
    </LINK>
@@ -163,7 +165,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="6585" top="1920" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -175,6 +177,8 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Save On Computer|">
    </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="45" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Save On Computer">
    </LINK>
@@ -183,7 +187,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="8460" top="1695" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="..\..\..\..\..\vvvv_45beta33.3_x86">
+   <PIN pinname="Input String" slicecount="1" visible="1" values="C:\Users\Sebastian\Pictures\RemotePhoto">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="||">
    </PIN>

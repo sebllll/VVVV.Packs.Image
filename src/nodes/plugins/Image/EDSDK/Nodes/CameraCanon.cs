@@ -2,6 +2,10 @@
 using System;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Threading;
+//using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -16,7 +20,7 @@ namespace VVVV.Nodes.EDSDKNodes
 	#region PluginInfo
 	[PluginInfo(Name = "Camera", Category = "EDSDK", Help = "List connected Canon cameras using EDSDK", Tags = "Canon", Author = "elliotwoods/sebl", Credits = "", AutoEvaluate = false)]
 	#endregion PluginInfo
-	public class CameraCanon : IPluginEvaluate, IDisposable
+    public class CameraCanon :  IPluginEvaluate, IDisposable
 	{
 		#region fields & pins
 		[Input("Refresh", IsBang = true, IsSingle = true)]
@@ -25,8 +29,8 @@ namespace VVVV.Nodes.EDSDKNodes
         [Input("Camera ID", IsSingle = true)]
         IDiffSpread<int> FInID;
 
-        //[Input("Save On Camera")]
-        //IDiffSpread<bool> FInSaveOnCamera;
+        [Input("Save On Camera")]
+        IDiffSpread<bool> FInSaveOnCamera;
 
         [Input("Save On Computer")]
         IDiffSpread<bool> FInSaveOnComputer;
@@ -59,6 +63,10 @@ namespace VVVV.Nodes.EDSDKNodes
         private List<int> TvList;
         private List<int> ISOList;
         private int WhiteBalance;
+        ImageSource EvfImage;
+        JpegBitmapDecoder dec;
+        ThreadStart SetImageAction;
+        ImageBrush bgbrush = new ImageBrush();
         private bool isInit = false;
         
 		#endregion fields & pins
@@ -73,10 +81,14 @@ namespace VVVV.Nodes.EDSDKNodes
 
 		public void Evaluate(int SpreadMax)
 		{
+
 			if (!isInit || FInRefresh[0])
 			{
                 if (CameraHandler != null) Dispose();
 				init();
+
+                activeCam = CamList[FInID[0] % CamList.Count];
+                OpenSession(activeCam);
 			}
 
             if (isInit)
@@ -101,18 +113,16 @@ namespace VVVV.Nodes.EDSDKNodes
                     {
                         try
                         {
-                            if (FInSaveOnComputer[0]) CameraHandler.ImageSaveDirectory = FInSaveLocation[0];
+                            if (FInSaveOnComputer[0]) CameraHandler.ImageSaveDirectory = @FInSaveLocation[0];
+
+                            SetSaveLocation();
+                            SetAperture();
+                            SetTime();
+                            SetIso();
+                            SetWhitebalance();
+
                             CameraHandler.TakePhoto();
   
-                            //if (FInSaveOnCamera[i] && FInSaveOnComputer[i])
-                            //    camera.SavePicturesToHostAndCamera(FInSaveLocation[i]);
-                            //else if (FInSaveOnCamera[i])
-                            //    camera.SavePicturesToCamera();
-                            //else if (FInSaveOnComputer[i])
-                            //    camera.SavePicturesToHost(FInSaveLocation[i]);
-                            //else if (FInSaveOnCamera.IsChanged || FInSaveOnComputer.IsChanged && FFirstRun)
-                            //    throw(new Exception("Canon.Eos.Framework requires to you turn on Save To Camera or Save To Computer. But you can actually turn it off again afterwards and ReceivePhoto will continue to work."));
-
                             FOutStatus[0] = "OK";
                         }
                         catch (Exception e)
@@ -131,6 +141,7 @@ namespace VVVV.Nodes.EDSDKNodes
             try
             {
                 if (CameraHandler != null) CloseSession();
+
                 CameraHandler = new SDKHandler();
             }
             catch (Exception e)
@@ -138,17 +149,47 @@ namespace VVVV.Nodes.EDSDKNodes
                 FOutStatus[0] = "init : " + e.Message;
                 return;
             }
-
+            
             RefreshCamera();
 
             isInit = true;
         }
 
-
+        #region Events
         private void SDK_CameraAdded()
         {
             RefreshCamera();
         }
+
+        private void SDK_CameraHasShutdown(object sender, EventArgs e)
+        {
+            RefreshCamera();
+        }
+
+        private void SDK_ProgressChanged(int Progress)
+        {
+            FLogger.Log(LogType.Debug, "SDK_ProgressChanged" + Progress);
+            FOutProgress[0] = Progress / 100; 
+            if (Progress == 100) Progress = 0;
+            FOutProgress[0] = Progress / 100; 
+        }
+
+        private void SDK_LiveViewUpdated(Stream img)
+        {
+            FLogger.Log(LogType.Debug, "SDK_LiveViewUpdated");
+            if (CameraHandler.IsLiveViewOn)
+            {
+                img.Position = 0;
+                dec = new JpegBitmapDecoder(img, BitmapCreateOptions.None, BitmapCacheOption.None);
+                EvfImage = dec.Frames[0];
+                //Application.Current.Dispatcher.Invoke(SetImageAction);
+
+            }
+        }
+
+        #endregion Events
+
+
 
         private void RefreshCamera()
         {
@@ -174,21 +215,37 @@ namespace VVVV.Nodes.EDSDKNodes
             }
         } //RefreshCamera()
 
-        private void SDK_CameraHasShutdown(object sender, EventArgs e)
-        {
-            RefreshCamera();
-        }
+        
 
         #region Settings
+
+        private void SetSaveLocation()
+        {
+            if (FInSaveOnCamera[0] && FInSaveOnComputer[0])
+            {
+                CameraHandler.SetSetting(EDSDKLib.EDSDK.PropID_SaveTo, ( uint )EDSDKLib.EDSDK.EdsSaveTo.Both);
+                CameraHandler.SetCapacity();
+            }
+            else if (FInSaveOnCamera[0])
+            {
+                CameraHandler.SetSetting(EDSDKLib.EDSDK.PropID_SaveTo, ( uint )EDSDKLib.EDSDK.EdsSaveTo.Camera);
+            }
+            else if (FInSaveOnComputer[0])
+            {
+                CameraHandler.SetSetting(EDSDKLib.EDSDK.PropID_SaveTo, ( uint )EDSDKLib.EDSDK.EdsSaveTo.Host);
+                CameraHandler.SetCapacity();
+            }
+        }
+
         private void SetAperture()
         {
-            string sv = CameraValues.AV(( uint )AvList[0]);
+            string sv = CameraValues.AV(( uint )AvList[8]);
             CameraHandler.SetSetting(EDSDKLib.EDSDK.PropID_Av, CameraValues.AV(sv));
         }
 
         private void SetTime()
         {
-            string tv = CameraValues.TV(( uint )TvList[0]);
+            string tv = CameraValues.TV(( uint )TvList[8]);
             CameraHandler.SetSetting(EDSDKLib.EDSDK.PropID_Tv, CameraValues.TV(tv));
             
             //if (( string )EDSDKLib.TvCoBox.SelectedItem == "Bulb")
@@ -205,7 +262,7 @@ namespace VVVV.Nodes.EDSDKNodes
 
         private void SetIso()
         {
-            string iso = CameraValues.ISO(( uint )ISOList[0]);
+            string iso = CameraValues.ISO(( uint )ISOList[5]);
             CameraHandler.SetSetting(EDSDKLib.EDSDK.PropID_ISOSpeed, CameraValues.ISO(( string )iso));
 
         }
@@ -233,13 +290,14 @@ namespace VVVV.Nodes.EDSDKNodes
             CameraHandler.OpenSession(cam);
 
             CameraHandler.CameraAdded += new SDKHandler.CameraAddedHandler(SDK_CameraAdded);
+            CameraHandler.LiveViewUpdated += new SDKHandler.StreamUpdate(SDK_LiveViewUpdated);
             CameraHandler.ProgressChanged += new SDKHandler.ProgressHandler(SDK_ProgressChanged);
             CameraHandler.CameraHasShutdown += SDK_CameraHasShutdown;
 
-            /*
-             * unfortunately, there seems to be no event (in the canon dll) that monitors camera removal :(
-             * SDK_CameraHasShutdown only triggers, if the session is already opened
-             */
+            if (SetImageAction == null)
+            {
+                SetImageAction = new ThreadStart(delegate { bgbrush.ImageSource = EvfImage; });
+            }
 
 
             if (CameraHandler.GetSetting(EDSDKLib.EDSDK.PropID_AEMode) != EDSDKLib.EDSDK.AEMode_Manual)
@@ -249,23 +307,6 @@ namespace VVVV.Nodes.EDSDKNodes
             AvList = CameraHandler.GetSettingsList(( uint )EDSDKLib.EDSDK.PropID_Av);
             TvList = CameraHandler.GetSettingsList(( uint )EDSDKLib.EDSDK.PropID_Tv);
             ISOList = CameraHandler.GetSettingsList(( uint )EDSDKLib.EDSDK.PropID_ISOSpeed);
-
-
-            //foreach (int Av in AvList) AvCoBox.Items.Add(CameraValues.AV(( uint )Av));
-            //foreach (int Tv in TvList) TvCoBox.Items.Add(CameraValues.TV(( uint )Tv));
-            //foreach (int ISO in ISOList) ISOCoBox.Items.Add(CameraValues.ISO(( uint )ISO));
-            
-
-
-            //select current enum
-
-            /*
-            original code from sample was:
-            
-            AvCoBox.SelectedIndex = AvCoBox.Items.IndexOf(CameraValues.AV(( uint )CameraHandler.GetSetting(( uint )EDSDKLib.EDSDK.PropID_Av)));
-            TvCoBox.SelectedIndex = TvCoBox.Items.IndexOf(CameraValues.TV(( uint )CameraHandler.GetSetting(( uint )EDSDKLib.EDSDK.PropID_Tv)));
-            ISOCoBox.SelectedIndex = ISOCoBox.Items.IndexOf(CameraValues.ISO(( uint )CameraHandler.GetSetting(( uint )EDSDKLib.EDSDK.PropID_ISOSpeed)));
-            */
 
             int wbidx = ( int )CameraHandler.GetSetting(( uint )EDSDKLib.EDSDK.PropID_WhiteBalance);
             switch (wbidx)
@@ -292,19 +333,13 @@ namespace VVVV.Nodes.EDSDKNodes
                 FLogger.Log(LogType.Debug, "closing already opened session");
                 CameraHandler.CloseSession();
             }
-
             FOutDescription.SliceCount = 0;
 
             isInit = false;
         }
         #endregion Session
 
-        private void SDK_ProgressChanged(int Progress)
-        {
-            if (Progress == 100) Progress = 0;
-            FOutProgress[0] = Progress / 100;  // can that ever be spreadable? how to know which eventhandler fired? need a list of handlers?
-        }
-
+        
         public void Dispose()
         {
             FLogger.Log(LogType.Debug, "Dispose()");
