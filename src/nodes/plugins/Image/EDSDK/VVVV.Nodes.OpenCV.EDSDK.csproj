@@ -45,6 +45,7 @@
     <Compile Include="ManageDependencies.cs" />
     <Compile Include="Nodes\BatteryNode.cs" />
     <Compile Include="Nodes\Info.cs" />
+    <Compile Include="Nodes\CameraCanon.cs" />
     <Compile Include="Nodes\ListDevices.cs" />
     <Compile Include="Nodes\LiveViewNode.cs" />
     <Compile Include="Nodes\ReceivePhoto.cs" />

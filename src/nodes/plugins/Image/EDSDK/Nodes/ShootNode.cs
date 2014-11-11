@@ -50,13 +50,17 @@ namespace VVVV.Nodes.EDSDK.Nodes
 
             if (FInCamera.IsChanged)
             {
-                foreach (SDKHandler hdl in CameraHandlers)
+                if (CameraHandlers != null)
                 {
-                    CloseSession(hdl);
-                    hdl.Dispose();
+                    foreach (SDKHandler hdl in CameraHandlers)
+                    {
+                        CloseSession(hdl);
+                        hdl.Dispose();
+                    }
+                    CameraHandlers.Clear();
                 }
 
-                CameraHandlers.Clear();
+                
 
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -78,7 +82,7 @@ namespace VVVV.Nodes.EDSDK.Nodes
                     }
                 }
 
-                if (FInSaveOnCamera.IsChanged || FInSaveOnComputer.IsChanged || FInSaveLocation.IsChanged)
+                if (FInSaveOnCamera.IsChanged || FInSaveOnComputer.IsChanged || FInSaveLocation.IsChanged || FInShoot.IsChanged)
                 {
 
                     for (int i = 0; i < SpreadMax; i++)
