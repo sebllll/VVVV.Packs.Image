@@ -64,18 +64,18 @@ namespace VVVV.CV.Nodes
 
 			Size SizeNow = BoardSize;
 
-			PointF[] points = null;
+			//PointF[] points = null;
+            Matrix<float> points = new Matrix<float>(1, 2);
 
-			if (TestAtLowResolution)
+            if (TestAtLowResolution)
 			{
 				if (!FLowResolution.Allocated) {
 					FLowResolution.Initialise(new Size(1024, 1024), TColorFormat.L8);
 				}
 
                 CvInvoke.Resize(FGrayscale.GetImage(), FLowResolution.GetImage(), SizeNow, 0, 0,  Inter.Linear);
-
-                Matrix<float> corners = new Matrix<float>(1, 2);
-                CvInvoke.FindChessboardCorners(FLowResolution.GetImage(), SizeNow, corners, CalibCbType.AdaptiveThresh);
+                
+                CvInvoke.FindChessboardCorners(FLowResolution.GetImage(), SizeNow, points, CalibCbType.AdaptiveThresh);
                     
                     
                     
@@ -140,9 +140,12 @@ namespace VVVV.CV.Nodes
 					CvInvoke.cvCopy(FGrayscale.CvMat, FCropped.CvMat, IntPtr.Zero);
 					CvInvoke.cvResetImageROI(FGrayscale.CvMat);
 
-					points = CameraCalibration.FindChessboardCorners(FCropped.GetImage() as Image<Gray, byte>, SizeNow, CALIB_CB_TYPE.ADAPTIVE_THRESH);
+                    //points = CameraCalibration.FindChessboardCorners(FCropped.GetImage() as Image<Gray, byte>, SizeNow, CalibCbType.AdaptiveThresh);
+                    
+                    CvInvoke.FindChessboardCorners(FCropped.GetImage() as Image<Gray, byte>, SizeNow, points, CalibCbType.AdaptiveThresh);
 
-					if (points != null)
+
+                    if (points != null)
 					{
 						for (int iPoint = 0; iPoint < points.Length; iPoint++)
 						{
@@ -152,7 +155,7 @@ namespace VVVV.CV.Nodes
 					}
 				}
 			} else {
-				points = CameraCalibration.FindChessboardCorners(FGrayscale.GetImage() as Image<Gray, byte>, SizeNow, CALIB_CB_TYPE.ADAPTIVE_THRESH);
+				points = CameraCalibration.FindChessboardCorners(FGrayscale.GetImage() as Image<Gray, byte>, SizeNow, CalibCbType.AdaptiveThresh);
 			}
 			
 			lock (FFoundPointsLock)

@@ -6,6 +6,7 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 using System.Drawing;
 using Emgu.CV;
+using Emgu.CV.Util;
 
 namespace VVVV.CV.Nodes
 {
@@ -61,12 +62,16 @@ namespace VVVV.CV.Nodes
                             targetPoints[i].X = (float)target[i].x;
                             targetPoints[i].Y = (float)target[i].y;
                         }
+                        Mat ou = new Mat();
 
-                        var matrix = CameraCalibration.FindHomography(sourcePoints, targetPoints, Emgu.CV.CvEnum.HOMOGRAPHY_METHOD.LMEDS, 0.0);
+                        Matrix<float> matrix = new Matrix<float>(3,3,1);
+                        CvInvoke.FindHomography(sourcePoints, targetPoints, matrix, Emgu.CV.CvEnum.HomographyMethod.LMEDS);
+                        //var matrix = CameraCalibration.FindHomography(sourcePoints, targetPoints, Emgu.CV.CvEnum.HOMOGRAPHY_METHOD.LMEDS, 0.0);
 
+                        
                         FTransformOut[slice] = new Matrix4x4(matrix[0, 0], matrix[1, 0], 0.0, matrix[2, 0],
                                                              matrix[0, 1], matrix[1, 1], 0.0, matrix[2, 1],
-                                                             0.0, 0.0, 1.0, 0.0,
+                                                             0.0,          0.0,          1.0, 0.0,
                                                              matrix[0, 2], matrix[1, 2], 0.0, matrix[2, 2]);
 
                         FStatus[slice] = "OK";
