@@ -80,10 +80,18 @@ namespace VVVV.CV.Core
 			}
 		}
 
-		/// <summary>
-		/// Returns a pointer to the raw pixel data
-		/// </summary>
-		public IntPtr Data
+        public IInputArray InputArray
+        {
+            get
+            {
+                return (IInputArray)this.GetImage().GetInputArray();
+            }
+        }
+
+        /// <summary>
+        /// Returns a pointer to the raw pixel data
+        /// </summary>
+        public IntPtr Data
 		{
 			get
 			{

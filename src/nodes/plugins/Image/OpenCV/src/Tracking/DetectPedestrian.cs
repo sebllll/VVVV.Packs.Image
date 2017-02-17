@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.Composition;
 using System.Drawing;
-using Emgu.CV.GPU;
+using Emgu.CV.Cuda;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using Emgu.CV.Util;
 using System.Collections.Generic;
 using System;
 using VVVV.CV.Core;
@@ -27,7 +28,7 @@ namespace VVVV.CV.Nodes.Tracking
         //private HOGDescriptor hog = new HOGDescriptor();
         private HOGDescriptor hog;
         //private GpuHOGDescriptor gpuhog = new GpuHOGDescriptor();
-        private GpuHOGDescriptor gpuhog;
+        private CudaHOG gpuhog;
 
         private readonly CVImage FBgrImage = new CVImage();
         private readonly List<TrackingPedestrian> FTrackingPedestrians = new List<TrackingPedestrian>();
@@ -81,13 +82,14 @@ namespace VVVV.CV.Nodes.Tracking
 
         public void CreateHog()
         {
-            if (GpuInvoke.HasCuda && AllowGpu)
+            CudaDeviceInfo ci = new CudaDeviceInfo();
+            if (ci.IsCompatible && AllowGpu)
             {
                 try
                 {
                     //gpuhog = new GpuHOGDescriptor();
-                    gpuhog = new GpuHOGDescriptor(this.winSize, this.blockSize, this.blockStride, this.cellSize, this.nbins, this.winSigma, this.L2HysThreshold, this.gammaCorrection, this.nLevels);
-                    gpuhog.SetSVMDetector(GpuHOGDescriptor.GetDefaultPeopleDetector());
+                    gpuhog = new CudaHOG(this.winSize, this.blockSize, this.blockStride, this.cellSize, this.nbins); //, this.winSigma, this.L2HysThreshold, this.gammaCorrection, this.nLevels);
+                    gpuhog.SetSVMDetector(gpuhog.GetDefaultPeopleDetector());
                     //gpuhog.SetSVMDetector(GpuHOGDescriptor.GetPeopleDetector64x128()); // there are 3 different detectors built-in. maybe others work better?
                 }
                 catch (Exception e)
@@ -132,10 +134,11 @@ namespace VVVV.CV.Nodes.Tracking
 
             var image = FBgrImage.GetImage();
 
-            
+
 
             // invoke detection
-            if (GpuInvoke.HasCuda && AllowGpu)
+            CudaDeviceInfo ci = new CudaDeviceInfo();
+            if (ci.IsCompatible && AllowGpu)
             {
                 var bgra = tempImage.Convert<Bgra, byte>();
                 rectangles = GPUDetectPedestrian(bgra);
@@ -177,7 +180,12 @@ namespace VVVV.CV.Nodes.Tracking
 
             var result =  hog.DetectMultiScale(bgrImage, hitThreshold, winStride, padding, scale, finalThreshold, useMeanShiftGrouping);
 
-            return result;
+            Rectangle[] rects = new Rectangle[result.Length];
+
+            for (int i = 0; i < result.Length; i++)
+                rects[i] = result[i].Rect;
+
+            return rects;
 
         }
 
@@ -192,7 +200,7 @@ namespace VVVV.CV.Nodes.Tracking
 
             try
             {
-                using (var gpuImage = new GpuImage<Bgra, byte>(bgraImage))
+                using (var gpuImage = new CudaImage<Bgra, byte>(bgraImage))
                 {
 
                     var t = gpuhog.ToString();
@@ -202,12 +210,15 @@ namespace VVVV.CV.Nodes.Tracking
                         winStride = blockStride;
                     }
 
-                    var settings =  gpuhog.DetectMultiScale(gpuImage, hitThreshold, winStride, new Size(0,0), scale, finalThreshold);
+                    VectorOfRect vr = new VectorOfRect();
 
-                    var simple = gpuhog.DetectMultiScale(gpuImage);
+                    gpuhog.DetectMultiScale(gpuImage, vr);
+                    //var settings =  gpuhog.DetectMultiScale(gpuImage, hitThreshold, winStride, new Size(0,0), scale, finalThreshold);
 
+                    //var simple = gpuhog.DetectMultiScale(gpuImage);
 
-                    return simple;
+                    vr.ToArray();
+                    return vr.ToArray();
                 }
             }
             catch (Exception e)
@@ -237,9 +248,11 @@ namespace VVVV.CV.Nodes.Tracking
 
             try
             {
-                using (var gpuImage = new GpuImage<Bgra, byte>(bgraImage))
+                using (var gpuImage = new CudaImage<Bgra, byte>(bgraImage))
                 {
-                    return gpuhog.DetectMultiScale(gpuImage);
+                    VectorOfRect vr = new VectorOfRect();
+                    gpuhog.DetectMultiScale(gpuImage, vr);
+                    return vr.ToArray();
                 }
             }
             catch (Exception e)

@@ -12,8 +12,10 @@ using System.Drawing;
 
 namespace VVVV.CV.Core
 {
-	public class CVImage : ImageBase, IDisposable
-	{
+    public class CVImage : ImageBase, IDisposable
+    {
+        //IInputArray FInputArray { get; set;}
+
 		IImage FImage;
 		/// <summary>
 		/// Timestamp of this image frame in ticks

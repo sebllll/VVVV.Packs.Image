@@ -20,8 +20,8 @@ namespace VVVV.CV.Core
 		{
 			System.Diagnostics.Debug.Print(e.Message);
 		}
-
-		public static COLOR_CONVERSION ConvertRoute(TColorFormat src, TColorFormat dst)
+        
+		public static ColorConversion ConvertRoute(TColorFormat src, TColorFormat dst)
 		{
 			switch (src)
 			{
@@ -29,25 +29,25 @@ namespace VVVV.CV.Core
 					switch (dst)
 					{
 						case TColorFormat.RGBA8:
-							return COLOR_CONVERSION.CV_GRAY2RGBA;
-					}
+                            return ColorConversion.Gray2Rgba;
+                    }
 					break;
 
 				case TColorFormat.RGB8:
 					switch (dst)
 					{
 						case TColorFormat.L8:
-							return COLOR_CONVERSION.CV_RGB2GRAY;
+							return ColorConversion.Rgb2Gray;
 
 						case TColorFormat.RGBA8:
-							return COLOR_CONVERSION.CV_RGB2RGBA;
+							return ColorConversion.Rgb2Rgba;
 					}
 					break;
 				case TColorFormat.RGBA8:
 					switch (dst)
 					{
 						case TColorFormat.L8:
-							return COLOR_CONVERSION.CV_RGBA2GRAY;
+							return ColorConversion.Rgba2Gray;
 					}
 					break;
 
@@ -55,10 +55,10 @@ namespace VVVV.CV.Core
 					switch (dst)
 					{
 						case TColorFormat.L32F:
-							return COLOR_CONVERSION.CV_RGBA2GRAY;
+							return ColorConversion.Rgba2Gray;
 
 						case TColorFormat.RGBA32F:
-							return COLOR_CONVERSION.CV_RGB2RGBA;
+							return ColorConversion.Rgb2Rgba;
 					}
 					break;
 
@@ -66,7 +66,7 @@ namespace VVVV.CV.Core
 					switch (dst)
 					{
 						case TColorFormat.RGB8:
-							return COLOR_CONVERSION.CV_HSV2RGB;
+							return ColorConversion.Hsv2Rgb;
 					}
 					break;
 
@@ -74,13 +74,13 @@ namespace VVVV.CV.Core
 					switch (dst)
 					{
 						case TColorFormat.RGB32F:
-							return COLOR_CONVERSION.CV_HSV2RGB;
+							return ColorConversion.Hsv2Rgb;
 					}
 					break;
 			}
-
-			return COLOR_CONVERSION.CV_COLORCVT_MAX;
-		}
+            
+            return ColorConversion.ColorcvtMax;
+        }
 
 		public static IImage CreateImage(int width, int height, TColorFormat format)
 		{
@@ -418,18 +418,20 @@ namespace VVVV.CV.Core
 				target.Initialise(source.Size, target.NativeFormat);
 			}
 
-			COLOR_CONVERSION route = ConvertRoute(source.NativeFormat, target.NativeFormat);
+			ColorConversion route = ConvertRoute(source.NativeFormat, target.NativeFormat);
 
-			if (route == COLOR_CONVERSION.CV_COLORCVT_MAX)
+			if (route == ColorConversion.ColorcvtMax)
 			{
-				CvInvoke.cvConvert(source.CvMat, target.CvMat);
+                CvInvoke.cvConvertScale(source.CvMat, target.CvMat,1 ,0);
+                //CvInvoke.cvConvert(source.CvMat, target.CvMat);
 			}
 			else
 			{
 				try
 				{
-					CvInvoke.cvCvtColor(source.CvMat, target.CvMat, route);
-				}
+                    //CvInvoke.cvCvtColor(source.CvMat, target.CvMat, route);
+                    CvInvoke.CvtColor(source.GetImage(), target.GetImage(), route);
+                }
 				catch
 				{
 					//CV likes to throw here sometimes, but the next frame it's fine
@@ -445,7 +447,8 @@ namespace VVVV.CV.Core
 
 		public static void FlipImageVertical(CVImage source, CVImage target)
 		{
-			CvInvoke.cvFlip(source.CvMat, target.CvMat, FLIP.VERTICAL);
+            CvInvoke.Flip(source.GetImage(), target.GetImage(), FlipType.Vertical);
+            //CvInvoke.cvFlip(source.CvMat, target.CvMat, FLIP.VERTICAL);
 		}
 
 		public static void FlipImageHorizontal(CVImage image)
@@ -455,7 +458,8 @@ namespace VVVV.CV.Core
 
 		public static void FlipImageHorizontal(CVImage source, CVImage target)
 		{
-			CvInvoke.cvFlip(source.CvMat, target.CvMat, FLIP.HORIZONTAL);
+            CvInvoke.Flip(source.GetImage(), target.GetImage(), FlipType.Horizontal);
+            //CvInvoke.cvFlip(source.CvMat, target.CvMat, FLIP.HORIZONTAL);
 		}
 
 		public static bool IsIntialised(IImage image)

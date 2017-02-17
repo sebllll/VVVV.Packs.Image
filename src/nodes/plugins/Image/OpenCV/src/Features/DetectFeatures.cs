@@ -14,7 +14,7 @@ using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
 using ThreadState = System.Threading.ThreadState;
 using System.Collections.Generic;
-using Emgu.CV.Features2D;
+using Emgu.CV.XFeatures2D;
 using VVVV.CV.Core;
 
 #endregion usings
@@ -24,7 +24,7 @@ namespace VVVV.CV.Nodes.Features
     public class DetectFeaturesInstance : IDestinationInstance
     {
         public FeatureSet FeaturesSet {get; private set;}
-        public SURFDetector Detector = new SURFDetector(500, false);
+        public SURF Detector = new SURF(500, 4, 2, false, false);
         CVImage FGrayScale = new CVImage();
 
         public DetectFeaturesInstance()
@@ -36,7 +36,7 @@ namespace VVVV.CV.Nodes.Features
         {
             set
             {
-                this.Detector = new SURFDetector(value, false);
+                this.Detector = new SURF(value, 4, 2, false, false);
             }
         }
 
@@ -51,8 +51,10 @@ namespace VVVV.CV.Nodes.Features
             {
                 FInput.GetImage(FGrayScale);
                 var gray = FGrayScale.GetImage() as Image<Gray, Byte>;
-                this.FeaturesSet.KeyPoints = this.Detector.DetectKeyPointsRaw(gray, null);
-                this.FeaturesSet.Descriptors = this.Detector.ComputeDescriptorsRaw(gray, null, this.FeaturesSet.KeyPoints);
+                //this.FeaturesSet.KeyPoints = this.Detector.DetectKeyPointsRaw(gray, null);
+                this.Detector.DetectRaw(gray, this.FeaturesSet.KeyPoints, null);
+                //this.FeaturesSet.Descriptors = this.Detector.ComputeDescriptorsRaw(gray, null, this.FeaturesSet.KeyPoints); // image, mask, keypoints
+                this.Detector.Compute(gray, this.FeaturesSet.KeyPoints, this.FeaturesSet.Descriptors);
                 this.FeaturesSet.Allocated = true;
                 this.FeaturesSet.OnUpdate();
             }

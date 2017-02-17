@@ -13,8 +13,8 @@ namespace VVVV.CV.Nodes
 	public class AdaptiveThresholdInstance : IFilterInstance
 	{
 		double FMaximum = 255.0;
-		ADAPTIVE_THRESHOLD_TYPE FMethod;
-		THRESH FType;
+		AdaptiveThresholdType FMethod;
+		ThresholdType FType;
 		uint FBlockSize;
 		double FConstant;
 
@@ -28,7 +28,7 @@ namespace VVVV.CV.Nodes
 		}
 
 		[Input("Method")]
-		public ADAPTIVE_THRESHOLD_TYPE Method
+		public AdaptiveThresholdType Method
 		{
 			set
 			{
@@ -37,7 +37,7 @@ namespace VVVV.CV.Nodes
 		}
 
 		[Input("Type")]
-		public THRESH Type
+		public ThresholdType Type
 		{
 			set
 			{
@@ -81,9 +81,10 @@ namespace VVVV.CV.Nodes
 			try
 			{
 				FInput.GetImage(FOutput.Image);
-				CvInvoke.cvAdaptiveThreshold(FOutput.Image.CvMat, FOutput.Image.CvMat, FMaximum, FMethod, FType, (int)FBlockSize, FConstant);
-			}
-			catch
+                //CvInvoke.cvAdaptiveThreshold(FOutput.Image.CvMat, FOutput.Image.CvMat, FMaximum, FMethod, FType, (int)FBlockSize, FConstant);
+                CvInvoke.AdaptiveThreshold(FOutput.Image.GetImage(), FOutput.Image.GetImage(), FMaximum, FMethod, FType, (int)FBlockSize, FConstant);
+            }
+            catch
 			{
 				FOutput.Send();
 			}

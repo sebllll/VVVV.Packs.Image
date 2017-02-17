@@ -71,8 +71,15 @@ namespace VVVV.CV.Nodes
 				if (!FLowResolution.Allocated) {
 					FLowResolution.Initialise(new Size(1024, 1024), TColorFormat.L8);
 				}
-				CvInvoke.cvResize(FGrayscale.CvMat, FLowResolution.CvMat, INTER.CV_INTER_LINEAR);
-				var lowResPoints = CameraCalibration.FindChessboardCorners(FLowResolution.GetImage() as Image<Gray, byte>, SizeNow, CALIB_CB_TYPE.ADAPTIVE_THRESH);
+
+                CvInvoke.Resize(FGrayscale.GetImage(), FLowResolution.GetImage(), SizeNow, 0, 0,  Inter.Linear);
+
+                Matrix<float> corners = new Matrix<float>(1, 2);
+                CvInvoke.FindChessboardCorners(FLowResolution.GetImage(), SizeNow, corners, CalibCbType.AdaptiveThresh);
+                    
+                    
+                    
+                var lowResPoints = CameraCalibration.FindChessboardCorners(FLowResolution.GetImage() as Image<Gray, byte>, SizeNow, CALIB_CB_TYPE.ADAPTIVE_THRESH);
 
 				if (lowResPoints != null) {
 					int minX = FGrayscale.Width;

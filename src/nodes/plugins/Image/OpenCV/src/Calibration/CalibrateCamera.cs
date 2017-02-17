@@ -38,7 +38,7 @@ namespace VVVV.CV.Nodes.Calibration
 		ISpread<Vector2D> FPinInSensorSize;
 
 		[Input("Flags")]
-		ISpread<CALIB_TYPE> FPinInFlags;
+		ISpread<CalibType> FPinInFlags;
 
 		[Input("Intrinsic Guess", IsSingle=true)]
 		ISpread<Intrinsics> FPinInIntrinsics;
@@ -104,14 +104,16 @@ namespace VVVV.CV.Nodes.Calibration
 				MCvPoint3D32f[][] objectPoints = new MCvPoint3D32f[nImages][];
 				PointF[][] imagePoints = new PointF[nImages][];
 				Size imageSize = new Size( (int) FPinInSensorSize[0].x, (int) FPinInSensorSize[0].y);
-				CALIB_TYPE flags = new CALIB_TYPE();
+				CalibType flags = new CalibType();
 				IntrinsicCameraParameters intrinsicParam = new IntrinsicCameraParameters();
 				ExtrinsicCameraParameters[] extrinsicsPerView;
-				GetFlags(out flags);
+                MCvTermCriteria termCriteria = new MCvTermCriteria();
 
-				if (flags.HasFlag(CALIB_TYPE.CV_CALIB_USE_INTRINSIC_GUESS))
-				{
-					if (FPinInIntrinsics[0] == null)
+                GetFlags(out flags);
+
+                if (flags.HasFlag(CalibType.UserIntrinsicGuess))
+                {
+                    if (FPinInIntrinsics[0] == null)
 					{
 						Matrix<double> mat = intrinsicParam.IntrinsicMatrix;
 						mat[0, 0] = FPinInSensorSize[0].x / 2.0d;
@@ -137,9 +139,17 @@ namespace VVVV.CV.Nodes.Calibration
 
 				try
 				{
-					FPinOutError[0] = CameraCalibration.CalibrateCamera(objectPoints, imagePoints, imageSize, intrinsicParam, flags, out extrinsicsPerView);
+                    // should be updated to smth. like this:
+                    //Mat cameraMatrix = new Mat(3, 3, DepthType.Cv64F, 1);
+                    //Mat distCoeffs = new Mat(8, 1, DepthType.Cv64F, 1);
 
-					Intrinsics intrinsics = new Intrinsics(intrinsicParam, imageSize);
+                    //Mat[] _rvecs, _tvecs;
+                    //double reprojectionerror = CvInvoke.CalibrateCamera(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs, CalibType.RationalModel, new MCvTermCriteria(30, 0.1), out _rvecs, out _tvecs);
+
+
+                    FPinOutError[0] = CameraCalibration.CalibrateCamera(objectPoints, imagePoints, imageSize, intrinsicParam, flags, termCriteria,  out extrinsicsPerView);
+
+                    Intrinsics intrinsics = new Intrinsics(intrinsicParam, imageSize);
 					FPinOutIntrinsics[0] = intrinsics;
 					if (useVVVVCoords)
 						FPinOutProjection[0] = intrinsics.Matrix;
@@ -170,7 +180,7 @@ namespace VVVV.CV.Nodes.Calibration
 
 		}
 
-		private void GetFlags(out CALIB_TYPE flags)
+		private void GetFlags(out CalibType flags)
 		{
 			flags = 0;
 			foreach (var flag in FPinInFlags)

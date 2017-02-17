@@ -10,7 +10,7 @@ using uEye;
 using uEye.Defines;
 using uEye.Types;
 using System.Drawing;
-using Emgu.CV;
+//using Emgu.CV;
 using System.ComponentModel.Composition;
 
 namespace VVVV.Nodes.OpenCV.IDS

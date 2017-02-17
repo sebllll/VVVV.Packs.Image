@@ -11,6 +11,7 @@ using VVVV.Core.Logging;
 
 using Emgu.CV;
 using Emgu.CV.Structure;
+using Emgu.CV.Util;
 using Emgu.CV.CvEnum;
 using ThreadState = System.Threading.ThreadState;
 using System.Collections.Generic;
@@ -31,19 +32,21 @@ namespace VVVV.CV.Nodes
 			this.Length = other.Length;
 			this.Size = other.Size;
 		}
+        
+        //public ContourPerimeter(Contour<Point> contour, int imageWidth, int imageHeight)
+        public ContourPerimeter(MCvContour contour, int imageWidth, int imageHeight)
+        {
+            Points = new PointF[contour.total];
 
-		public ContourPerimeter(Contour<Point> contour, int imageWidth, int imageHeight)
-		{
-			Points = new PointF[contour.Total];
-
-			for (int i = 0; i < contour.Total; i++)
+            for (int i = 0; i < contour.total; i++)
 			{
 				this.Points[i].X = contour[i].X / (float)imageWidth * 2.0f - 1.0f;
 				this.Points[i].Y = 1.0f - contour[i].Y / (float)imageHeight * 2.0f;
 			}
 
-			this.Length = contour.Perimeter;
-			this.Size.Width = imageWidth;
+            //this.Length = contour.Perimeter;
+            this.Length = contour.total;
+            this.Size.Width = imageWidth;
 			this.Size.Height = imageHeight;
 		}
 
@@ -134,10 +137,12 @@ namespace VVVV.CV.Nodes
 		{
 			public Rectangle Bounds;
 			public double Area;
-			public ContourPerimeter Perimeter; 
-		}
+            //public ContourPerimeter Perimeter;
+            //public VectorOfPoint Perimeter;
+            public VectorOfVectorOfPoint Perimeter;
+        }
 
-		override public void Process()
+        override public void Process()
 		{
 			if (!Enabled)
 				return;
@@ -154,50 +159,98 @@ namespace VVVV.CV.Nodes
 
 				try
 				{
-					CHAIN_APPROX_METHOD cam;
+                    ChainApproxMethod cam;
 
 					switch (Approximation) {
 						case ContourApproximation.None:
-							cam = CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_NONE;
+							cam = ChainApproxMethod.ChainApproxNone;
 							break;
 						
 						case ContourApproximation.TehChinKCOS:
-							cam = CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_TC89_KCOS;
+							cam = ChainApproxMethod.ChainApproxTc89Kcos;
 							break;
 
 						case ContourApproximation.TehChinL1:
-							cam = CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_TC89_L1;
+							cam = ChainApproxMethod.ChainApproxTc89L1;
 							break;
 
 						case ContourApproximation.LinkRuns:
-							cam = CHAIN_APPROX_METHOD.CV_LINK_RUNS;
+							cam = ChainApproxMethod.LinkRuns;
 							break;
 
 						case ContourApproximation.Simple:
 						case ContourApproximation.Poly:
 						default:
-							cam = CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE;
+							cam = ChainApproxMethod.ChainApproxSimple;
 							break;
 					}
 
-					Contour<Point> contour = img.FindContours(cam, RETR_TYPE.CV_RETR_LIST);
+                    //Contour<Point> contour = img.FindContours(cam, RETR_TYPE.CV_RETR_LIST);
+                    VectorOfVectorOfPoint contour = new VectorOfVectorOfPoint();
+                    //MCvContour contour = new MCvContour();
+                    Mat hierarchy = new Mat();
 
-					for (; contour != null; contour = contour.HNext)
-					{
-						c = new ContourTempData();
-						c.Area = contour.Area;
-						c.Bounds = contour.BoundingRectangle;
+                    CvInvoke.FindContours(img, contour, hierarchy, RetrType.List, cam);
 
-						if (Approximation == ContourApproximation.Poly)
-							c.Perimeter = new ContourPerimeter(contour.ApproxPoly(FPolyAccuracy), img.Width, img.Height);
-						else
-							c.Perimeter = new ContourPerimeter(contour, img.Width, img.Height);
+                    List<Rectangle> segmentRectangles = new List<Rectangle>();
+                    int contCount = contour.Size;
+                    for (int i = 0; i < contCount; i++)
+                    {
+                        using (VectorOfPoint con = contour[i])
+                        {
+                            segmentRectangles.Add(CvInvoke.BoundingRectangle(con));
+                        }
+                    }
+
+                    // need to iterate through all contours in a foreach or similar
+                    for(int i = 0; i < contour.Size; i++)
+                    {
+                        c = new ContourTempData();
+                        c.Area = CvInvoke.ContourArea(contour[i]);
+                        c.Bounds = CvInvoke.BoundingRectangle(contour[i]);
+
+
+                        if (Approximation == ContourApproximation.Poly)
+                        {
+                            VectorOfPoint poly = new VectorOfPoint();
+                            //c.Perimeter = new ContourPerimeter(contour.ApproxPoly(FPolyAccuracy), img.Width, img.Height);
+                            CvInvoke.ApproxPolyDP(contour, poly, FPolyAccuracy, true);
+
+                            c.Perimeter.Push(poly);
+                                
+                        }
+                        else
+                        {
+                            c.Perimeter.Push(contour[i]);
+                        }
+
+                    }
+
+                    /*
+                    for (; contour != null; contour = contour.HNext)
+                        {
+                            c = new ContourTempData();
+                        //c.Area = contour.Area;
+                        //c.Area = contour.GetOutputArray();     // needs to be calculated by hand?
+                        //c.Bounds = contour.BoundingRectangle;
+                        c.Bounds = segmentRectangles[0];
+
+                        if (Approximation == ContourApproximation.Poly)
+                        {
+                            VectorOfVectorOfPoint poly = new VectorOfVectorOfPoint();
+                            //c.Perimeter = new ContourPerimeter(contour.ApproxPoly(FPolyAccuracy), img.Width, img.Height);
+                            CvInvoke.ApproxPolyDP(contour, poly, FPolyAccuracy, true);
+                        }
+                        else
+                            c.Perimeter = new ContourPerimeter(contour, img.Width, img.Height);
 
 						results.Add(c);
 					}
+                    */
+                    
 
 
-					lock (FLockResults)
+                    lock (FLockResults)
 						FStatus = "OK";
 				}
 				catch (Exception e)

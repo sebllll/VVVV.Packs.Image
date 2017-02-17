@@ -1,6 +1,6 @@
 using System.ComponentModel.Composition;
 using System.Drawing;
-using Emgu.CV.GPU;
+using Emgu.CV.Cuda;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
@@ -25,7 +25,8 @@ namespace VVVV.CV.Nodes.Tracking
 		private readonly Vector2D FMaximumDestXY = new Vector2D(0.5, -0.5);
 
 		private CascadeClassifier FCascadeClassifier;
-		private GpuCascadeClassifier FGpuCascadeClassifier;
+		private CudaCascadeClassifier FGpuCascadeClassifier;
+        
 
 		private readonly CVImage FGrayScale = new CVImage();
 		private readonly List<TrackingObject> FTrackingObjects = new List<TrackingObject>();
@@ -55,7 +56,7 @@ namespace VVVV.CV.Nodes.Tracking
 		public void LoadHaarCascade(string path)
 		{
 			FCascadeClassifier = new CascadeClassifier(path);
-			FGpuCascadeClassifier = new GpuCascadeClassifier(path);
+			FGpuCascadeClassifier = new CudaCascadeClassifier(path);
 		}
 
 		public override void Allocate()
@@ -68,9 +69,11 @@ namespace VVVV.CV.Nodes.Tracking
 			Rectangle[] rectangles;
 			FInput.Image.GetImage(TColorFormat.L8, FGrayScale);
 			var grayImage = FGrayScale.GetImage() as Image<Gray, byte>;
-			if (GpuInvoke.HasCuda && AllowGpu)
-			{
-				rectangles = ProcessOnGpu(grayImage);
+            //if (GpuInvoke.HasCuda && AllowGpu)
+            CudaDeviceInfo ci = new CudaDeviceInfo();
+            if (ci.IsCompatible && AllowGpu)
+                {
+                    rectangles = ProcessOnGpu(grayImage);
 			}
 			else
 			{
@@ -102,9 +105,12 @@ namespace VVVV.CV.Nodes.Tracking
 				return new Rectangle[0];
 			}
 
-			using (var gpuImage = new GpuImage<Gray, byte>(grayImage))
+			using (var gpuImage = new CudaImage<Gray, byte>(grayImage))
 			{
-				return FGpuCascadeClassifier.DetectMultiScale(gpuImage, ScaleFactor, MinNeighbors, MinSize);
+                GpuMat detectedObjects = new GpuMat();
+                FGpuCascadeClassifier.DetectMultiScale(gpuImage, detectedObjects);
+
+                return FGpuCascadeClassifier.Convert(detectedObjects); //.DetectMultiScale(gpuImage, ScaleFactor, MinNeighbors, MinSize);
 			}
 		}
 
@@ -125,7 +131,6 @@ namespace VVVV.CV.Nodes.Tracking
 			}
 
 			grayImage._EqualizeHist();
-
 			return FCascadeClassifier.DetectMultiScale(grayImage, ScaleFactor, MinNeighbors, MinSize, MaxSize);
 
 			

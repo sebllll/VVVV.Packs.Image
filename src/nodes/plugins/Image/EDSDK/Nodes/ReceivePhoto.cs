@@ -86,7 +86,7 @@ namespace VVVV.Nodes.EDSDK
 					{
 						FPictureTaken.Add(key);
 						var bitmap = e.GetBitmap();
-						FOutImage[key].Send(bitmap);
+                        FOutImage[key].Send(bitmap);
 						bitmap.Dispose();
 					}
 				}

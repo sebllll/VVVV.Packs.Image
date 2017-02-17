@@ -49,9 +49,9 @@ namespace VVVV.CV.Core
 
 			for (int i = 0; i < input.SliceCount; i++)
 			{
-				objectPoints[i].x = (float)input[i].x;
-				objectPoints[i].y = toVVVV ? - (float)input[i].y : (float) input[i].y;
-				objectPoints[i].z = toVVVV ? - (float)input[i].z : (float) input[i].z;
+                objectPoints[i].X = (float)input[i].x;
+                objectPoints[i].Y = toVVVV ? - (float)input[i].y : (float) input[i].y;
+				objectPoints[i].Z = toVVVV ? - (float)input[i].z : (float) input[i].z;
 			}
 
 			return objectPoints;
