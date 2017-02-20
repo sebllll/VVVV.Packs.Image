@@ -92,8 +92,8 @@ namespace VVVV.CV.Nodes
 						if (FPinInIntrinsics[i].intrinsics == null)
 							throw new Exception("Waiting for camera calibration intrinsics");
 
-						ExtrinsicCameraParameters extrinsics = CameraCalibration.FindExtrinsicCameraParams2(MatrixUtils.ObjectPoints(FPinInObject[i], useVVVVCoords), MatrixUtils.ImagePoints(FPinInImage[i]), FPinInIntrinsics[i].intrinsics);
-						FPinOutExtrinsics[i] = new Extrinsics(extrinsics);
+                        ExtrinsicCameraParameters extrinsics = CameraCalibration.SolvePnP(MatrixUtils.ObjectPoints(FPinInObject[i], useVVVVCoords), MatrixUtils.ImagePoints(FPinInImage[i]), FPinInIntrinsics[i].intrinsics);
+                        FPinOutExtrinsics[i] = new Extrinsics(extrinsics);
 
 						if (useVVVVCoords)
 							FPinOutView[i] = MatrixUtils.ConvertToVVVV(FPinOutExtrinsics[i].Matrix);

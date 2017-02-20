@@ -52,9 +52,9 @@ namespace VVVV.CV.Nodes
                 }
 
                 FCapture = new Capture(FFilename);
-                FCapture.GetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_COUNT);
-                this.FrameRate = FCapture.GetCaptureProperty(CAP_PROP.CV_CAP_PROP_FPS);
-                this.FrameCount = (int) FCapture.GetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_COUNT);
+                FCapture.GetCaptureProperty(CapProp.FrameCount);
+                this.FrameRate = FCapture.GetCaptureProperty(CapProp.Fps);
+                this.FrameCount = (int) FCapture.GetCaptureProperty(CapProp.FrameCount);
                 this.Length = (double)this.FrameCount / this.FrameRate;
                 this.Position = 0.0;
                 this.FrameDecodedIndex = 0;
@@ -112,14 +112,14 @@ namespace VVVV.CV.Nodes
 
             if (newFrame)
             {
-                this.Position = FCapture.GetCaptureProperty(CAP_PROP.CV_CAP_PROP_POS_MSEC) / 1000.0;
+                this.Position = FCapture.GetCaptureProperty(CapProp.PosMsec) / 1000.0;
                 FOutput.Send();
             }
 
             if (isEnd)
             {
                 //rewind
-                FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_POS_FRAMES, 0.0);
+                FCapture.SetCaptureProperty(CapProp.PosFrames, 0.0);
                 this.FrameDecodedIndex = 0;
                 this.FStarted = DateTime.Now;
             }

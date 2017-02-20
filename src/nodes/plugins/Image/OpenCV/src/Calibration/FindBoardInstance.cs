@@ -64,8 +64,8 @@ namespace VVVV.CV.Nodes
 
 			Size SizeNow = BoardSize;
 
-			//PointF[] points = null;
-            Matrix<float> points = new Matrix<float>(1, 2);
+			PointF[] points = null;
+            //Matrix<float> points = new Matrix<float>(1, 2);
 
             if (TestAtLowResolution)
 			{
@@ -77,7 +77,8 @@ namespace VVVV.CV.Nodes
 
 
                 //var lowResPoints = CameraCalibration.FindChessboardCorners(FLowResolution.GetImage() as Image<Gray, byte>, SizeNow, CALIB_CB_TYPE.ADAPTIVE_THRESH);
-                CvInvoke.FindChessboardCorners(FLowResolution.GetImage(), SizeNow, points, CalibCbType.AdaptiveThresh);
+                Matrix<float> lowResPoints = new Matrix<float>(1, 2);
+                CvInvoke.FindChessboardCorners(FLowResolution.GetImage(), SizeNow, lowResPoints, CalibCbType.AdaptiveThresh);
 
                 if (lowResPoints != null) {
 					int minX = FGrayscale.Width;

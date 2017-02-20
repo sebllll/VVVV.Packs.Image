@@ -89,8 +89,8 @@ namespace VVVV.CV.Nodes
 				}
 				int nImages = Math.Max(FPinInImage1.SliceCount, FPinInImage2.SliceCount) / nPointsPerImage;
 
-				CALIB_TYPE flags = CALIB_TYPE.DEFAULT;
-				MCvTermCriteria termCrit = new MCvTermCriteria(100, 0.001);
+                CalibType flags = CalibType.Default;
+                MCvTermCriteria termCrit = new MCvTermCriteria(100, 0.001);
 				MCvPoint3D32f[][] objectPoints = new MCvPoint3D32f[nImages][];
 				PointF[][] imagePoints1 = new PointF[nImages][];
 				PointF[][] imagePoints2 = new PointF[nImages][];

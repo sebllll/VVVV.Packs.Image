@@ -88,11 +88,11 @@ namespace VVVV.CV.Nodes
 			try
 			{
 				FCapture = new Capture(FDeviceID);
-				FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, FWidth);
-				FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, FHeight);
-				FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FPS, FFramerate);
+				FCapture.SetCaptureProperty(CapProp.FrameWidth, FWidth);
+				FCapture.SetCaptureProperty(CapProp.FrameHeight, FHeight);
+				FCapture.SetCaptureProperty(CapProp.Fps, FFramerate);
 
-				Status = "OK";
+                Status = "OK";
 				return true;
 			}
 			catch (Exception e)

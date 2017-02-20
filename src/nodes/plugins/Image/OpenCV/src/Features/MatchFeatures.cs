@@ -5,6 +5,8 @@ using System.Text;
 using VVVV.PluginInterfaces.V2;
 using Emgu.CV.Features2D;
 using Emgu.CV;
+using Emgu.CV.Util;
+using Emgu.CV.Structure;
 using VVVV.Utils.VMath;
 using System.Diagnostics;
 
@@ -56,21 +58,35 @@ namespace VVVV.CV.Nodes.Features
                     continue;
 
                 Matrix<byte> mask;
-                var matcher = new BruteForceMatcher<float>(DistanceType.L2);
+                //var matcher = new BruteForceMatcher<float>(DistanceType.L2);
+                var matcher = new BFMatcher(DistanceType.L2);
                 matcher.Add(input2.Descriptors);
 
-                var indices = new Matrix<int>(input1.Descriptors.Rows, 2);
+                Matrix<int> indices = new Matrix<int>(input1.Descriptors.Rows, 2);
                 using (Matrix<float> distance = new Matrix<float>(input1.Descriptors.Rows, 2))
                 {
-                    matcher.KnnMatch(input1.Descriptors, indices, distance, 2, null);
+                    //matcher.KnnMatch(input1.Descriptors, indices, distance, 2, null);
+                    VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch();
+                    matcher.KnnMatch(input1.Descriptors.GetInputArray() as IInputArray, matches, 2, null);
+
                     mask = new Matrix<byte>(distance.Rows, 1);
                     mask.SetValue(255);
-                    Features2DToolbox.VoteForUniqueness(distance, FUniqueness[i], mask);
+
+                    //Features2DToolbox.VoteForUniqueness(distance, FUniqueness[i], mask);
+                    Mat m = new Mat(distance.Rows, 1, Emgu.CV.CvEnum.DepthType.Cv8S, 1);
+                    m.SetTo(new MCvScalar(1.0));
+                    Features2DToolbox.VoteForUniqueness(matches, FUniqueness[i], m);
                 }
 
-                int nonZeroCount = CvInvoke.cvCountNonZero(mask);
-                nonZeroCount = Features2DToolbox.VoteForSizeAndOrientation(input2.KeyPoints, input1.KeyPoints, indices, mask, 1.5, 20);
+                //int nonZeroCount = CvInvoke.cvCountNonZero(mask);
+                int nonZeroCount = CvInvoke.CountNonZero(mask);
 
+                //nonZeroCount = Features2DToolbox.VoteForSizeAndOrientation(input2.KeyPoints, input1.KeyPoints, indices, mask, 1.5, 20);
+                /* - No idea here :(
+                CvArray<int> arr = new CvArray<int>();
+                VectorOfVectorOfDMatch indis = new VectorOfVectorOfDMatch(indices.Det);
+                nonZeroCount = Features2DToolbox.VoteForSizeAndOrientation(input2.KeyPoints, input1.KeyPoints, indices, mask, 1.5, 20);
+                */
                 var positions1 = FOutPositions1[i];
                 var positions2 = FOutPositions2[i];
 

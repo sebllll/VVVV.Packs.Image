@@ -19,7 +19,9 @@ namespace VVVV.CV.Nodes
 		private CVImage FVelocityX = new CVImage();
 		private CVImage FVelocityY = new CVImage();
 
-		private double FLambda = 0.1;
+        private CVImage FFlow = new CVImage();
+
+        private double FLambda = 0.1;
 		[Input("Lambda", DefaultValue = 0.1, MinValue = 0, MaxValue = 1)]
 		public double Lambda
 		{	set
@@ -61,7 +63,8 @@ namespace VVVV.CV.Nodes
 			FPrevious.Initialise(FSize, TColorFormat.L8);
 			FVelocityX.Initialise(FSize, TColorFormat.L32F);
 			FVelocityY.Initialise(FSize, TColorFormat.L32F);
-		}
+            FFlow.Initialise(FSize, TColorFormat.RGB32F); // must be CV_32FC2, but we have our own colorformat tye here ...
+        }
 
 		public override void Process()
 		{
@@ -76,9 +79,13 @@ namespace VVVV.CV.Nodes
 			Image<Gray, float> vx = FVelocityX.GetImage() as Image<Gray, float>;
 			Image<Gray, float> vy = FVelocityY.GetImage() as Image<Gray, float>;
 
-			OpticalFlow.HS(p, c, UsePrevious, vx, vy, FLambda, new MCvTermCriteria(FIterations));
+            
+			//OpticalFlow.HS(p, c, UsePrevious, vx, vy, FLambda, new MCvTermCriteria(FIterations));                       
+            DualTVL1OpticalFlow of = new DualTVL1OpticalFlow();
+            of.Calc(c, p, FFlow.GetImage());
 
-			CopyToRgb();
+            FOutput.Image.SetImage(FFlow);
+            //CopyToRgb();
 			FOutput.Send();
 
 		}

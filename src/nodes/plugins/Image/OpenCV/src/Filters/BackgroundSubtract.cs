@@ -64,12 +64,12 @@ namespace VVVV.CV.Nodes
 			FInput.GetImage(FOutput.Image); // temporary
 
 			if (DifferenceMode == TDifferenceMode.AbsoluteDifference)
-				CvInvoke.cvAbsDiff(FOutput.CvMat, FBackground.CvMat, FOutput.CvMat);
+                CvInvoke.AbsDiff(FOutput.Image.GetImage(), FBackground.GetImage(), FOutput.Image.GetImage());
 
-			if (ThresholdEnabled)
-				CvInvoke.cvThreshold(FOutput.CvMat, FOutput.CvMat, 255.0d * Threshold, 255, THRESH.CV_THRESH_BINARY);
+            if (ThresholdEnabled)
+                CvInvoke.Threshold(FOutput.Image.GetImage(), FOutput.Image.GetImage(), 255.0d * Threshold, 255, ThresholdType.Binary);
 
-			FOutput.Send();
+            FOutput.Send();
 		}
 
 	}

@@ -35,10 +35,8 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FeralTic, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\DX11\core\FeralTic.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="FeralTic">
+      <HintPath>..\..\..\..\..\..\dx11-vvvv\Deploy\Release\x64\packs\dx11\core\FeralTic.dll</HintPath>
     </Reference>
     <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <HintPath>..\..\..\..\packages\VVVV.SlimDX.1.0.3\lib\net40\x86\SlimDX.dll</HintPath>
@@ -79,15 +77,11 @@
       <HintPath>..\..\..\..\packages\VVVV.Core.35.0.0\lib\net46\VVVV.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="VVVV.DX11.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\DX11\core\VVVV.DX11.Core.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="VVVV.DX11.Core">
+      <HintPath>..\..\..\..\..\..\dx11-vvvv\Deploy\Release\x64\packs\dx11\core\VVVV.DX11.Core.dll</HintPath>
     </Reference>
-    <Reference Include="VVVV.DX11.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\DX11\core\VVVV.DX11.Lib.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="VVVV.DX11.Lib">
+      <HintPath>..\..\..\..\..\..\dx11-vvvv\Deploy\Release\x64\packs\dx11\core\VVVV.DX11.Lib.dll</HintPath>
     </Reference>
     <Reference Include="VVVV.Utils, Version=35.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\VVVV.Utils.35.0.0\lib\net46\VVVV.Utils.dll</HintPath>
