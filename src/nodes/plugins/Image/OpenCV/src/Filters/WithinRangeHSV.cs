@@ -43,7 +43,8 @@ namespace VVVV.CV.Nodes
             
             FInput.ReleaseForReading();
 
-            CvInvoke.cvInRangeS(FHsvImage.CvMat, new MCvScalar(Minimum.x * FMult, Minimum.y * FMult, Minimum.z * FMult),
+            //CvInvoke.cvInRangeS(FHsvImage.CvMat, new MCvScalar(Minimum.x * FMult, Minimum.y * FMult, Minimum.z * FMult),
+            CvInvoke.InRange(FHsvImage.GetImage(), new MCvScalar(Minimum.x * FMult, Minimum.y * FMult, Minimum.z * FMult),
                     new MCvScalar(Maximum.x * FMult, Maximum.y * FMult, Maximum.z * FMult), FBuffer.CvMat);
 
             if (PassOriginal)
@@ -60,5 +61,28 @@ namespace VVVV.CV.Nodes
                 FOutput.Send(FBuffer);
             }
         }
+
+        // maybe a simplifying method like this might help in those cases
+        //private Mat CheckRangeInvoked(Mat img, Hsv lower, Hsv upper)
+        //{
+        //    Mat result = new Mat();
+
+        //    using (Mat hsvImg = new Mat())
+        //    using (Mat mask1 = new Mat())
+        //    using (Mat mask2 = new Mat())
+        //    using (Mat minHsv = new Image<Hsv, byte>(1, 1, new Hsv(0, lower.Satuation, lower.Value)).Mat)
+        //    using (Mat lowerHsv = new Image<Hsv, byte>(1, 1, lower).Mat)
+        //    using (Mat upperHsv = new Image<Hsv, byte>(1, 1, upper).Mat)
+        //    using (Mat maxHsv = new Image<Hsv, byte>(1, 1, new Hsv(180, upper.Satuation, upper.Value)).Mat)
+        //    {
+        //        //CvInvoke.CvtColor(img, hsvImg,  ColorConversion.Bgr2Hsv);
+
+        //        CvInvoke.InRange(hsvImg, minHsv, upperHsv, mask1);
+        //        CvInvoke.InRange(hsvImg, lowerHsv, maxHsv, mask2);
+
+        //        CvInvoke.BitwiseOr(mask1, mask2, result);
+        //    }
+        //    return result;
+        //}
     }
 }

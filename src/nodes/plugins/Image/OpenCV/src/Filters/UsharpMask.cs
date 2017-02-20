@@ -35,10 +35,12 @@ namespace VVVV.CV.Nodes
 				return;
 			try
 			{
-				CvInvoke.cvSmooth(FInput.CvMat, FOutput.CvMat, SMOOTH_TYPE.CV_GAUSSIAN, Width * 2 + 1, 0, 0, 0);
-				CvInvoke.cvAddWeighted(FInput.CvMat, WeightOrig, FOutput.CvMat, -WeightMask, Gamma, FOutput.CvMat);
-			}
-			finally
+                //CvInvoke.cvSmooth(FInput.CvMat, FOutput.CvMat, SMOOTH_TYPE.CV_GAUSSIAN, Width * 2 + 1, 0, 0, 0);
+                //CvInvoke.cvAddWeighted(FInput.CvMat, WeightOrig, FOutput.CvMat, -WeightMask, Gamma, FOutput.CvMat);
+                CvInvoke.GaussianBlur(FInput.Image.GetImage(), FOutput.Image.GetImage(), new Size(Width * 2 + 1, Width * 2 + 1), 0, 0, BorderType.Replicate);
+                CvInvoke.AddWeighted(FInput.Image.GetImage(), WeightOrig, FOutput.Image.GetImage(), -WeightMask, Gamma, FOutput.Image.GetImage());
+            }
+            finally
 			{ 
 				FInput.ReleaseForReading();
 			}

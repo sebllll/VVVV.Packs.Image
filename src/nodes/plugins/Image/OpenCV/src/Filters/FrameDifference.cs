@@ -58,14 +58,17 @@ namespace VVVV.CV.Nodes
 				switch (DifferenceMode)
 				{
 					case TDifferenceMode.AbsoluteDifference:
-						CvInvoke.cvAbsDiff(FInput.CvMat, FLastFrame.CvMat, FOutput.CvMat);
-						break;
+                        //CvInvoke.cvAbsDiff(FInput.CvMat, FLastFrame.CvMat, FOutput.CvMat);
+                        CvInvoke.AbsDiff(FInput.Image.GetImage(), FLastFrame.GetImage(), FOutput.Image.GetImage());
+                        break;
 					case TDifferenceMode.Negative:
-						CvInvoke.cvSub(FInput.CvMat, FLastFrame.CvMat, FOutput.CvMat, new IntPtr());
-						break;
+                        //CvInvoke.cvSub(FInput.CvMat, FLastFrame.CvMat, FOutput.CvMat, new IntPtr());
+                        CvInvoke.Subtract(FInput.Image.GetImage(), FLastFrame.GetImage(), FOutput.Image.GetImage());
+                        break;
 					case TDifferenceMode.Positive:
-						CvInvoke.cvSub(FLastFrame.CvMat, FInput.CvMat, FOutput.CvMat, new IntPtr());
-						break;
+						//CvInvoke.cvSub(FLastFrame.CvMat, FInput.CvMat, FOutput.CvMat, new IntPtr());
+                        CvInvoke.Subtract(FLastFrame.GetImage(), FInput.Image.GetImage(), FOutput.Image.GetImage());
+                        break;
 				}
 			}
 			catch
@@ -81,10 +84,11 @@ namespace VVVV.CV.Nodes
 				if (FInput.ImageAttributes.ColorFormat != TColorFormat.L8)
 					Status = "Cannot perform threshold on image type " + FInput.ImageAttributes.ColorFormat.ToString() + ". Can only perform threshold on L8";
 				else
-					CvInvoke.cvThreshold(FOutput.CvMat, FOutput.CvMat, 255.0d * Threshold, 255, THRESH.CV_THRESH_BINARY);
-			}
+                    CvInvoke.Threshold(FOutput.Image.GetImage(), FOutput.Image.GetImage(), 255.0d * Threshold, 255, ThresholdType.Binary);
+                    //CvInvoke.cvThreshold(FOutput.CvMat, FOutput.CvMat, 255.0d * Threshold, 255, THRESH.CV_THRESH_BINARY);
+            }
 
-			FInput.GetImage(FLastFrame);
+            FInput.GetImage(FLastFrame);
 
 			FOutput.Send();
 		}

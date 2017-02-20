@@ -38,12 +38,18 @@ namespace VVVV.CV.Nodes
 		{
 			if (!FInput.LockForReading())
 				return;
-			CvInvoke.cvCmpS(FInput.CvMat, Minimum, FImageGT.CvMat, CMP_TYPE.CV_CMP_GE);
-			CvInvoke.cvCmpS(FInput.CvMat, Maximum, FImageLT.CvMat, CMP_TYPE.CV_CMP_LE);
-			FInput.ReleaseForReading();
+			//CvInvoke.cvCmpS(FInput.CvMat, Minimum, FImageGT.CvMat, CMP_TYPE.CV_CMP_GE);
+			//CvInvoke.cvCmpS(FInput.CvMat, Maximum, FImageLT.CvMat, CMP_TYPE.CV_CMP_LE);
 
-			CvInvoke.cvAnd(FImageGT.CvMat, FImageLT.CvMat, FOutput.CvMat, IntPtr.Zero);
-			FOutput.Send();
+            CvInvoke.Compare(FInput.Image.GetImage(), new ScalarArray(Minimum), FImageGT.GetImage(), CmpType.GreaterEqual);
+            CvInvoke.Compare(FInput.Image.GetImage(), new ScalarArray(Maximum), FImageLT.GetImage(), CmpType.LessEqual);
+
+            FInput.ReleaseForReading();
+
+            //CvInvoke.cvAnd(FImageGT.CvMat, FImageLT.CvMat, FOutput.CvMat, IntPtr.Zero);
+            CvInvoke.BitwiseAnd(FImageGT.GetImage(), FImageLT.GetImage(), FOutput.Image.GetImage());
+
+            FOutput.Send();
 		}
 	}
 }

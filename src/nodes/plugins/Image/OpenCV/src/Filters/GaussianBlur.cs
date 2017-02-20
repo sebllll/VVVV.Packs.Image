@@ -28,8 +28,9 @@ namespace VVVV.CV.Nodes
 			{
 				if (!FInput.LockForReading())
 					return;
-				CvInvoke.cvSmooth(FInput.CvMat, FOutput.CvMat, SMOOTH_TYPE.CV_GAUSSIAN, Width*2+1, 0, 0, 0);
-				FInput.ReleaseForReading();
+                //CvInvoke.cvSmooth(FInput.CvMat, FOutput.CvMat, SMOOTH_TYPE.CV_GAUSSIAN, Width * 2 + 1, 0, 0, 0);
+                CvInvoke.GaussianBlur(FInput.Image.GetImage(), FOutput.Image.GetImage(), new Size(Width * 2 + 1, Width * 2 + 1), 0, 0, BorderType.Replicate);
+                FInput.ReleaseForReading();
 			}
 			
 			FOutput.Send();

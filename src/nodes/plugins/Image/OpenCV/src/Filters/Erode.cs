@@ -44,8 +44,9 @@ namespace VVVV.CV.Nodes
 		{
 			if (!FInput.LockForReading())
 				return;
-			CvInvoke.cvErode(FInput.CvMat, FOutput.CvMat, IntPtr.Zero, FIterations);
-			FInput.ReleaseForReading();
+            Mat element = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new Size(4, 4), new Point(3, 3));
+            CvInvoke.Erode(FInput.Image.GetImage(), FOutput.Image.GetImage(), element, new Point(0,0), FIterations, BorderType.Default, new MCvScalar(0.0));
+            FInput.ReleaseForReading();
 
 			FOutput.Send();
 

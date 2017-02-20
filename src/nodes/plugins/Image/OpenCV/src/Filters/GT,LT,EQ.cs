@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
+using Emgu.Util;
 using Emgu.CV.Structure;
 
 using VVVV.PluginInterfaces.V2;
@@ -46,7 +47,7 @@ namespace VVVV.CV.Nodes
 					return;
 				try
 				{
-					Compare(FInput.CvMat);
+					Compare(FInput.Image.GetImage());
 				}
 				finally
 				{
@@ -56,22 +57,24 @@ namespace VVVV.CV.Nodes
 			else
 			{
 				FInput.GetImage(Buffer);
-				Compare(Buffer.CvMat);
+				Compare(Buffer.GetImage());
 			}
 
 			if (FPassOriginal)
 				FOutput.Image.SetImage(FInput.Image);
 			if (FPassOriginal)
 			{
-				CvInvoke.cvNot(Buffer.CvMat, Buffer.CvMat);
-				CvInvoke.cvSet(FOutput.Image.CvMat, new MCvScalar(0.0), Buffer.CvMat);
-				FOutput.Send();
+                //CvInvoke.cvNot(Buffer.CvMat, Buffer.CvMat);
+                //CvInvoke.cvSet(FOutput.Image.CvMat, new MCvScalar(0.0), Buffer.CvMat);
+                CvInvoke.BitwiseNot(Buffer.GetImage(), Buffer.GetImage());
+                CvInvoke.cvCopy(Buffer.CvMat, FOutput.CvMat, IntPtr.Zero);
+                FOutput.Send();
 			}
 			else
 				FOutput.Send(Buffer);
 		}
 
-		protected abstract void Compare(IntPtr CvMat);
+		protected abstract void Compare(IInputArray CvMat);
 	}
 	#endregion
 
@@ -79,27 +82,32 @@ namespace VVVV.CV.Nodes
 	[FilterInstance("GT", Help = "Greater than")]
 	public class GTInstance : CMPInstance
 	{
-		protected override void Compare(IntPtr CvMat)
+		protected override void Compare(IInputArray CvMat)
 		{
-			CvInvoke.cvCmpS(CvMat, Threshold, Buffer.CvMat, CMP_TYPE.CV_CMP_GT);
-		}
-	}
+            //CvInvoke.cvCmpS(CvMat, Threshold, Buffer.CvMat, CMP_TYPE.CV_CMP_GT);
+            ScalarArray th = new ScalarArray(Threshold);
+            CvInvoke.Compare(CvMat, th, Buffer.GetImage(), CmpType.GreaterThan);
+
+        }
+    }
 
 	[FilterInstance("LT", Help = "Less than")]
 	public class LTInstance : CMPInstance
 	{
-		protected override void Compare(IntPtr CvMat)
+		protected override void Compare(IInputArray CvMat)
 		{
-			CvInvoke.cvCmpS(CvMat, Threshold, Buffer.CvMat, CMP_TYPE.CV_CMP_LT);
+            ScalarArray th = new ScalarArray(Threshold);
+            CvInvoke.Compare(CvMat, th, Buffer.GetImage(), CmpType.LessThan);
 		}
 	}
 
 	[FilterInstance("EQ", Help = "Equal to")]
 	public class EQInstance : CMPInstance
 	{
-		protected override void Compare(IntPtr CvMat)
+		protected override void Compare(IInputArray CvMat)
 		{
-			CvInvoke.cvCmpS(CvMat, Threshold, Buffer.CvMat, CMP_TYPE.CV_CMP_EQ);
+            ScalarArray th = new ScalarArray(Threshold);
+            CvInvoke.Compare(CvMat, th, Buffer.GetImage(), CmpType.Equal);
 		}
 	}
 	#endregion

@@ -52,13 +52,15 @@ namespace VVVV.CV.Nodes
                     {
                         try
                         {
-                            CvInvoke.cvTranspose(FInput.CvMat, FOutput.CvMat);
+                            //CvInvoke.cvTranspose(FInput.CvMat, FOutput.CvMat);
+                            CvInvoke.Transpose(FInput.Image.GetImage(), FOutput.Image.GetImage());
                         }
                         finally
                         {
                             FInput.ReleaseForReading();
                         }
-                        CvInvoke.cvFlip(FOutput.CvMat, FOutput.CvMat, FLIP.VERTICAL);
+                        //CvInvoke.cvFlip(FOutput.CvMat, FOutput.CvMat, FLIP.VERTICAL);
+                        CvInvoke.Flip(FOutput.Image.GetImage(), FOutput.Image.GetImage(), FlipType.Vertical);
                     }
                     break;
 
@@ -67,13 +69,13 @@ namespace VVVV.CV.Nodes
                     {
                         try
                         {
-                            CvInvoke.cvFlip(FInput.CvMat, FOutput.CvMat, FLIP.HORIZONTAL);
+                            CvInvoke.Flip(FInput.Image.GetImage(), FOutput.Image.GetImage(), FlipType.Horizontal);
                         }
                         finally
                         {
                             FInput.ReleaseForReading();
                         }
-                        CvInvoke.cvFlip(FOutput.CvMat, FOutput.CvMat, FLIP.VERTICAL);
+                        CvInvoke.Flip(FOutput.Image.GetImage(), FOutput.Image.GetImage(), FlipType.Vertical);
                     }
                     break;
 
@@ -82,13 +84,13 @@ namespace VVVV.CV.Nodes
                     {
                         try
                         {
-                            CvInvoke.cvTranspose(FInput.CvMat, FOutput.CvMat);
+                            CvInvoke.Transpose(FInput.Image.GetImage(), FOutput.Image.GetImage());
                         }
                         finally
                         {
                             FInput.ReleaseForReading();
                         }
-                        CvInvoke.cvFlip(FOutput.CvMat, FOutput.CvMat, FLIP.HORIZONTAL);
+                        CvInvoke.Flip(FOutput.Image.GetImage(), FOutput.Image.GetImage(), FlipType.Horizontal);
                     }
                     break;
             }

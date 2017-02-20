@@ -47,16 +47,17 @@ namespace VVVV.CV.Nodes
 		{
 			if (!FInput.LockForReading())
 				return;
-			CvInvoke.cvAddWeighted(	FOutput.CvMat, (double) (FFrame + 1) / (double) FFrames,
-									FInput.CvMat, 1.0 / (double) FFrames, 0, FOutput.CvMat);
+			//CvInvoke.cvAddWeighted(	FOutput.CvMat, (double) (FFrame + 1) / (double) FFrames, FInput.CvMat, 1.0 / (double) FFrames, 0, FOutput.CvMat);
+            CvInvoke.AddWeighted(FOutput.Image.GetImage(), (double)(FFrame + 1) / (double)FFrames, FInput.Image.GetImage(), 1.0 / (double)FFrames, 0, FOutput.Image.GetImage());
 			FInput.ReleaseForReading();
 
 			FFrame++;
 			if (FFrame >= FFrames)
 			{
 				FOutput.Send();
-				CvInvoke.cvSet(FOutput.CvMat, new MCvScalar(0.0), IntPtr.Zero);
-				FFrame = 0;
+                //CvInvoke.cvSet(FOutput.CvMat, new MCvScalar(0.0), IntPtr.Zero);
+                CvInvoke.cvSet2D(FOutput.CvMat,0, 0, new MCvScalar(0.0));
+                FFrame = 0;
 			}
 		}
 	}

@@ -75,7 +75,8 @@ namespace VVVV.CV.Nodes
             {
                 try
                 {
-                    CvInvoke.cvWarpAffine(FInput.CvMat, FOutput.CvMat, matrix.Ptr, (int)Emgu.CV.CvEnum.WARP.CV_WARP_FILL_OUTLIERS, new MCvScalar(0, 0, 0));
+                    //CvInvoke.cvWarpAffine(FInput.CvMat, FOutput.CvMat, matrix.Ptr, (int)Emgu.CV.CvEnum.WARP.CV_WARP_FILL_OUTLIERS, new MCvScalar(0, 0, 0));
+                    CvInvoke.WarpAffine(FInput.Image.GetImage(), FOutput.Image.GetImage(), matrix, new Size(1,1), Inter.Linear,  Warp.FillOutliers, BorderType.Constant, new MCvScalar(0, 0, 0));
                 }
                 finally
                 {

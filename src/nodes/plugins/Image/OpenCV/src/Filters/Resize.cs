@@ -55,8 +55,9 @@ namespace VVVV.CV.Nodes
 		{
 			try
 			{
-				CvInvoke.cvResize(FInput.Image.CvMat, FOutput.Image.CvMat, INTER.CV_INTER_LINEAR);
-				FOutput.Send();
+                //CvInvoke.cvResize(FInput.Image.CvMat, FOutput.Image.CvMat, INTER.CV_INTER_LINEAR);
+                CvInvoke.Resize(FInput.Image.GetImage(), FOutput.Image.GetImage(), FSize, 0, 0, Inter.Linear);
+                FOutput.Send();
 			}
 			catch (Exception e)
 			{

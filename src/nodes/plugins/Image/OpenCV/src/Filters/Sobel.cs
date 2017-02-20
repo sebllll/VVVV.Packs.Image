@@ -18,7 +18,17 @@ namespace VVVV.CV.Nodes
 	[FilterInstance("Sobel", Help = "Find the 2D derivative of an image using the Sobel filter", Tags = "edge detection")]
 	public class SobelInstance : IFilterInstance
 	{
-		private int FAperture = 3;
+        private DepthType FDepthType;
+        [Input("Depth Type", DefaultEnumEntry = "DepthType.Default")]
+        public DepthType DepthType
+        {
+            set
+            {
+                FDepthType = value;
+            }
+        }
+
+        private int FAperture = 3;
 		[Input("Aperture size", MinValue = 3, MaxValue = 7, DefaultValue = 3)]
 		public int Aperture
 		{
@@ -74,9 +84,10 @@ namespace VVVV.CV.Nodes
 			FInput.LockForReading();
 			try
 			{
-				CvInvoke.cvSobel(FInput.CvMat, FOutput.CvMat, FXOrder, FYOrder, FAperture);
-			}
-			finally
+                //CvInvoke.cvSobel(FInput.CvMat, FOutput.CvMat, FXOrder, FYOrder, FAperture);
+                CvInvoke.Sobel(FInput.Image.GetImage(), FOutput.Image.GetImage(), FDepthType, FXOrder, FYOrder, FAperture);
+            }
+            finally
 			{
 				FInput.ReleaseForReading();
 			}

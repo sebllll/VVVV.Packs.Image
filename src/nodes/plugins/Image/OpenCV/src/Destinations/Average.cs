@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Emgu.CV;
-using Emgu.CV.CvEnum;
+using Emgu.CV.Cuda;
 using Emgu.CV.Structure;
 
 using VVVV.PluginInterfaces.V2;
@@ -24,13 +24,13 @@ namespace VVVV.CV.Nodes
 				Spread<double> value = new Spread<double>(FChannelCount);
 
 				if (FChannelCount > 0)
-					value[0] = FAverage.v0;
+					value[0] = FAverage.V0;
 				if (FChannelCount > 1)
-					value[1] = FAverage.v1;
+					value[1] = FAverage.V1;
 				if (FChannelCount > 2)
-					value[2] = FAverage.v2;
+					value[2] = FAverage.V2;
 				if (FChannelCount > 3)
-					value[3] = FAverage.v3;
+					value[3] = FAverage.V3;
 
 				return value;
 			}
@@ -43,13 +43,13 @@ namespace VVVV.CV.Nodes
 				Spread<double> value = new Spread<double>(FChannelCount);
 
 				if (FChannelCount > 0)
-					value[0] = FStandardDeviation.v0;
+					value[0] = FStandardDeviation.V0;
 				if (FChannelCount > 1)
-					value[1] = FStandardDeviation.v1;
+					value[1] = FStandardDeviation.V1;
 				if (FChannelCount > 2)
-					value[2] = FStandardDeviation.v2;
+					value[2] = FStandardDeviation.V2;
 				if (FChannelCount > 3)
-					value[3] = FStandardDeviation.v3;
+					value[3] = FStandardDeviation.V3;
 
 				return value;
 			}
@@ -70,8 +70,9 @@ namespace VVVV.CV.Nodes
 
 			if (!FInput.LockForReading())
 				return;
-			CvInvoke.cvAvgSdv(FInput.CvMat, ref FAverage, ref FStandardDeviation, IntPtr.Zero);
-			FInput.ReleaseForReading();
+            //CvInvoke.cvAvgSdv(FInput.CvMat, ref FAverage, ref FStandardDeviation, IntPtr.Zero);
+            CvInvoke.MeanStdDev(FInput.Image.GetImage(), ref FAverage, ref FStandardDeviation);
+            FInput.ReleaseForReading();
 		}
 
 	}

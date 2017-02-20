@@ -74,14 +74,12 @@ namespace VVVV.CV.Nodes
 				}
 
                 CvInvoke.Resize(FGrayscale.GetImage(), FLowResolution.GetImage(), SizeNow, 0, 0,  Inter.Linear);
-                
-                CvInvoke.FindChessboardCorners(FLowResolution.GetImage(), SizeNow, points, CalibCbType.AdaptiveThresh);
-                    
-                    
-                    
-                var lowResPoints = CameraCalibration.FindChessboardCorners(FLowResolution.GetImage() as Image<Gray, byte>, SizeNow, CALIB_CB_TYPE.ADAPTIVE_THRESH);
 
-				if (lowResPoints != null) {
+
+                //var lowResPoints = CameraCalibration.FindChessboardCorners(FLowResolution.GetImage() as Image<Gray, byte>, SizeNow, CALIB_CB_TYPE.ADAPTIVE_THRESH);
+                CvInvoke.FindChessboardCorners(FLowResolution.GetImage(), SizeNow, points, CalibCbType.AdaptiveThresh);
+
+                if (lowResPoints != null) {
 					int minX = FGrayscale.Width;
 					int minY = FGrayscale.Height;
 					int maxX = 0;

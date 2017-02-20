@@ -27,8 +27,9 @@ namespace VVVV.CV.Nodes
 		{
 			if (!FInput.LockForReading()) //this
 				return;
-			CvInvoke.cvNot(FInput.CvMat, FOutput.CvMat);
-			FInput.ReleaseForReading(); //and  this after you've finished with FImage
+            //CvInvoke.cvNot(FInput.CvMat, FOutput.CvMat);
+            CvInvoke.BitwiseNot(FInput.Image.GetImage(), FOutput.Image.GetImage());
+            FInput.ReleaseForReading(); //and  this after you've finished with FImage
 			FOutput.Send();
 		}
 	}

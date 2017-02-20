@@ -63,16 +63,18 @@ namespace VVVV.CV.Nodes
 			if (FNeedsConversion)
 			{
 				FInput.GetImage(FGrayscale);
-				CvInvoke.cvCanny(FGrayscale.CvMat, FOutput.CvMat, ThresholdMin, ThresholdMax, FWindowSize);
-			}
-			else
+                //CvInvoke.cvCanny(FGrayscale.CvMat, FOutput.CvMat, ThresholdMin, ThresholdMax, FWindowSize);
+                CvInvoke.Canny(FGrayscale.GetImage(), FOutput.Image.GetImage(), ThresholdMin, ThresholdMax, FWindowSize);
+            }
+            else
 			{
 				FInput.LockForReading();
 				try
 				{
-					CvInvoke.cvCanny(FInput.CvMat, FOutput.CvMat, ThresholdMin, ThresholdMax, FWindowSize);
-				}
-				finally
+                    //CvInvoke.cvCanny(FInput.CvMat, FOutput.CvMat, ThresholdMin, ThresholdMax, FWindowSize);
+                    CvInvoke.Canny(FInput.Image.GetImage(), FOutput.Image.GetImage(), ThresholdMin, ThresholdMax, FWindowSize);
+                }
+                finally
 				{
 					FInput.ReleaseForReading();
 				}
