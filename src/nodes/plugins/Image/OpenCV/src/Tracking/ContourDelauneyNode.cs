@@ -156,7 +156,7 @@ namespace VVVV.CV.Nodes
 
 				for (int i = 0; i < SliceCount; i++)
 				{
-					PlanarSubdivision subdivision = new PlanarSubdivision(points[i] as PointF[]);
+					Subdiv2D subdivision = new Subdiv2D(points[i] as PointF[]);
 					triangles[i] = subdivision.GetDelaunayTriangles(false);
 				}
 

@@ -20,13 +20,17 @@ namespace VVVV.CV.Nodes
 		{
 			get
 			{
-				Matrix<double> t = extrinsics.ExtrinsicMatrix;
+                //Matrix<double> t = extrinsics.ExtrinsicMatrix;
+                Mat em = extrinsics.ExtrinsicMatrix;
 
-				var translate = VVVV.Utils.VMath.VMath.Translate(t[0, 3], t[1, 3], t[2, 3]);
+                Matrix<double> t = new Matrix<double>(em.Rows, em.Cols, em.NumberOfChannels);
+                em.CopyTo(t);
 
-				Matrix4x4 rotate = VVVV.Utils.VMath.VMath.IdentityMatrix;
+                var translate = VVVV.Utils.VMath.VMath.Translate(t[0, 3], t[1, 3], t[2, 3]);
 
-				for (int x = 0; x < 3; x++)
+                Matrix4x4 rotate = VVVV.Utils.VMath.VMath.IdentityMatrix;
+
+                for (int x = 0; x < 3; x++)
 					for (int y = 0; y < 3; y++)
 						rotate[y, x] = t[x, y];
 

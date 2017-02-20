@@ -66,8 +66,9 @@ namespace VVVV.CV.Nodes
 			//you must lock it for reading using 
 			if (!FInput.LockForReading()) //this
 				return;
-			CvInvoke.cvPyrDown(FInput.CvMat, FOutput.CvMat, FILTER_TYPE.CV_GAUSSIAN_5x5);
-			FInput.ReleaseForReading(); //and  this after you've finished with FImage
+            //CvInvoke.cvPyrDown(FInput.CvMat, FOutput.CvMat, FILTER_TYPE.CV_GAUSSIAN_5x5);
+            CvInvoke.PyrDown(FInput.Image.GetImage(), FOutput.Image.GetImage());
+            FInput.ReleaseForReading(); //and  this after you've finished with FImage
 
 			if (FInput.ImageAttributes.ColorFormat==TColorFormat.RGB8)
 				PixelWiseAdd();

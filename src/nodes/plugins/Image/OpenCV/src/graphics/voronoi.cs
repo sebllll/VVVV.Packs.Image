@@ -39,7 +39,7 @@ namespace VVVV.Nodes
 
                 VoronoiFacet[] voronoiFacets;
 
-                using (PlanarSubdivision subdivision = new PlanarSubdivision(pts))
+                using (Subdiv2D subdivision = new Subdiv2D(pts))
                 {
                     voronoiFacets = subdivision.GetVoronoiFacets();
                 }

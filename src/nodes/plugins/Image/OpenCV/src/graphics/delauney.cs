@@ -8,6 +8,7 @@ using VVVV.Utils.VMath;
 
 using System.Drawing;
 using Emgu.CV;
+using Emgu.CV.Util;
 using Emgu.CV.Structure;
 
 #endregion usings
@@ -44,7 +45,7 @@ namespace VVVV.Nodes
                 //Triangle2DF[] delaunayTriangles;
                 Triangle2DF[] delaunayTriangles;
 
-                using (PlanarSubdivision subdivision = new PlanarSubdivision(pts))
+                using (Subdiv2D subdivision = new Subdiv2D(pts))
                 {
                     //Obtain the delaunay's triangulation from the set of points;
                     delaunayTriangles = subdivision.GetDelaunayTriangles();
