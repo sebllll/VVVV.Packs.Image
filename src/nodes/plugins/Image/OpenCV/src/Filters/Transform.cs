@@ -20,21 +20,36 @@ namespace VVVV.CV.Nodes
 	[FilterInstance("Transform", Help = "Apply an affine transformation to an image (e.g. translate, rotate, scale, skew).", Author = "elliotwoods")]
     public class TransformInstance : IFilterInstance
     {
-		[Input("Transform")]
-		Matrix4x4 FTrasform = new Matrix4x4();
-		Object FTransformLock = new Object();
-		public Matrix4x4 Transform
-		{
-			set
-			{
-				lock (FTransformLock)
-				{
-					FTrasform = value;
-				}
-			}
-		}
+        //[Input("Transform")]
+        //Matrix4x4 FTrasform = new Matrix4x4();
+        //Object FTransformLock = new Object();
+        //public Matrix4x4 Transform
+        //{
+        //    set
+        //    {
+        //        lock (FTransformLock)
+        //        {
+        //            FTrasform = value;
+        //        }
+        //    }
+        //}
 
-		[Input("Apply To Image Center")]
+        Matrix4x4 FTransform = new Matrix4x4();
+        Object FTransformLock = new Object();
+
+        [Input("Transform In")]     
+        public Matrix4x4 Transform
+        {
+            set
+            {
+                lock (FTransformLock)
+                {
+                    FTransform = value;
+                }
+            }
+        }
+
+        [Input("Apply To Image Center")]
 		public bool UseCenter = false;
 
         public override void Allocate()
@@ -52,7 +67,7 @@ namespace VVVV.CV.Nodes
 				//copy the transform out
 				for (int i = 0; i < 16; i++)
 				{
-					transform[i] = FTrasform[i];
+					transform[i] = FTransform[i];
 				}
 			}
 

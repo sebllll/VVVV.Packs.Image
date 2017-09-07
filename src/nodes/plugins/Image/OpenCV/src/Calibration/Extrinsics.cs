@@ -7,7 +7,8 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.CV.Nodes
 {
-	public class Extrinsics
+    [Serializable()]
+    public class Extrinsics
 	{
 		public ExtrinsicCameraParameters extrinsics;
 

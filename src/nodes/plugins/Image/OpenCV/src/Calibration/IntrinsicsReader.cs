@@ -36,8 +36,9 @@ namespace VVVV.CV.Nodes.Calibration
 		public void Evaluate(int SpreadMax)
 		{
 			FOutStatus.SliceCount = SpreadMax;
+            FOutIntrinsics.SliceCount = SpreadMax;
 
-			for (int i = 0; i < SpreadMax; i++)
+            for (int i = 0; i < SpreadMax; i++)
 			{
 				if (FInRead[i])
 				{
