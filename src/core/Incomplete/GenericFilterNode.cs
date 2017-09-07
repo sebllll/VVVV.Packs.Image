@@ -135,6 +135,20 @@ namespace VVVV.CV.Core
                     }
                 }
             }
+
+            for (int outputIndex = 0; outputIndex < FOutputMembers.Count; outputIndex++)
+            {
+                var output = FOutputs[outputIndex];
+                var outputMember = FOutputMembers[outputIndex];
+
+                for (int i = 0; i < InstanceCount; i++)
+                {
+                    var filterInstance = FProcessor[i];
+                    var mv = GetMemberValue(filterInstance, outputMember);
+
+                    output[0] = mv; // that won't work if mv is a Spread of values :(
+                }
+            }
         }
     }
 }
