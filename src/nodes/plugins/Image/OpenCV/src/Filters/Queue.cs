@@ -24,8 +24,7 @@ using VVVV.Nodes.Generic;
 namespace VVVV.CV.Nodes
 {
     #region PluginInfo
-    //[FilterInstance("Queue", Category = "CV.Image", Help = "", AutoEvaluate = true, Author = "sebl")]
-    [FilterInstance("Queue", Version = "", Tags = "", Help = "A Queue for CV Images", Author = "sebl")]
+    [FilterInstance("Queue", Version = "", Tags = "", Help = "A Queue for CV.Image", Author = "sebl")]
     #endregion PluginInfo
     public class QueueNode : IFilterInstance
     {
@@ -46,13 +45,6 @@ namespace VVVV.CV.Nodes
 
         [Output("Queue Count")]
         public int FOutCount;
-        //{
-        //    set
-        //    {
-        //        FOutCount = QueueCount;
-        //    }
-        //}
-
 
         int QueueCount = 0;
 
@@ -67,6 +59,12 @@ namespace VVVV.CV.Nodes
             FOutput.Image.Initialise(FInput.Image.ImageAttributes);
         }
 
+        public override bool IsFast()
+        {
+            return false;
+        }
+
+        this.FProcessor[i].FlagForProcess();
 
         public override void Process()
         {
@@ -90,14 +88,13 @@ namespace VVVV.CV.Nodes
                 CVImage copy = new CVImage();
                 copy.Initialise(FInput.ImageAttributes);
                 ImageUtils.CopyImage(FInput.Image, copy);
-                //FrameQueue.Add(copy);
                 FrameQueue.Insert(0,copy);
             }
 
             FInput.ReleaseForReading(); // not sure if needed
 
 
-            // trim queue if full
+            // trim queue
 
             if (FFrameCount >= 0 && FrameQueue.Count > FFrameCount)
             {
@@ -111,10 +108,10 @@ namespace VVVV.CV.Nodes
             
             QueueCount = FrameQueue.Count();
 
-            FOutCount = QueueCount; // outputs no workey ?
+            // set OutPuts
 
-            //FPr
-            
+            FOutCount = QueueCount;
+           
             FOutput.Send(FrameQueue[FInIndex % QueueCount]);
 
         }

@@ -147,7 +147,10 @@ namespace VVVV.CV.Core
                     var mv = GetMemberValue(filterInstance, outputMember);
 
                     output[0] = mv; // that won't work if mv is a Spread of values :(
+
+                    FProcessor[i].FlagForProcess();
                 }
+                
             }
         }
     }
