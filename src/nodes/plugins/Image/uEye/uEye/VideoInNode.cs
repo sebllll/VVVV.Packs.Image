@@ -379,6 +379,9 @@ namespace VVVV.Nodes.OpenCV.IDS
 
         public void SetAoi(int left, int top, int width, int height)
         {
+            // do it twice... so that QueryAOI does work and the second run can use the correct Values
+            camStatus = cam.Size.AOI.Set(0, 0, width, height);
+
             queryAOI();
             
             width = clampRange(width, AOIWidth);
@@ -758,6 +761,7 @@ namespace VVVV.Nodes.OpenCV.IDS
             {
                 if (FProcessor[i].checkParams && FProcessor[i].IsOpen)
                 {
+
                     queryFeatures(i);
 
                     setBinning(i);
@@ -772,9 +776,10 @@ namespace VVVV.Nodes.OpenCV.IDS
 
                     setWhitebalance(i);
 
+                    setPixelclock(i);
+                        queryTiming(i); // before fps-set?
                     setFramerate(i);
                     setColorMode(i);
-                    setPixelclock(i);
                     setExposure(i);
 
                     queryTiming(i);
@@ -803,6 +808,43 @@ namespace VVVV.Nodes.OpenCV.IDS
                 }
             }
 
+            //-------------------------------------------
+
+            // set camId
+            if (SpreadCountChanged || FInCamId.IsChanged)
+            {
+                for (int i = 0; i < InstanceCount; i++)
+                {
+                    FProcessor[i].CamId = FInCamId[i];
+
+                }
+            }
+
+            // set Colormode
+            if (SpreadCountChanged || FColorMode.IsChanged)
+            {
+                for (int i = 0; i < InstanceCount; i++)
+                {
+                    if (FProcessor[i].IsOpen)
+                    {
+                        FProcessor[i].setColorMode(FColorMode[i]);
+                    }
+                }
+            }
+
+            // set mirroring
+            if (FInMirrorX.IsChanged || FInMirrorY.IsChanged)
+            {
+                for (int i = 0; i < InstanceCount; i++)
+                    setMirrorX(i);
+            }
+
+            if (FInMirrorY.IsChanged)
+            {
+                for (int i = 0; i < InstanceCount; i++)
+                    setMirrorY(i);
+            }
+
             // set binning & subsampling
             if (FInSubsamplingX.IsChanged || FInSubsamplingY.IsChanged || FInBinningX.IsChanged || FInBinningY.IsChanged)
             {
@@ -827,10 +869,25 @@ namespace VVVV.Nodes.OpenCV.IDS
             {
                 for (int i = 0; i < InstanceCount; i++)
                 {
+                    FLogger.Log(LogType.Debug, "set AOI for  camera " + i);
                     setAOI(i);
                     queryAOIRange(i);
                     queryTiming(i);
 
+                }
+            }
+
+            // set PixelClock
+            if (SpreadCountChanged || FInPixelClock.IsChanged)
+            {
+                for (int i = 0; i < InstanceCount; i++)
+                {
+                    FLogger.Log(LogType.Debug, "set PixelClock for  camera " + i);
+                    if (FProcessor[i].IsOpen)
+                    {
+                        FProcessor[i].setPixelClock(FInPixelClock[i]);
+                        queryTiming(i);
+                    }
                 }
             }
 
@@ -839,45 +896,12 @@ namespace VVVV.Nodes.OpenCV.IDS
             {
                 for (int i = 0; i < InstanceCount; i++)
                 {
+                    FLogger.Log(LogType.Debug, "set FPS for  camera " + i);
+                    queryTiming(i);
                     setFramerate(i);
                     queryTiming(i);
                 }
             }
-
-            // set mirroring
-            if (FInMirrorX.IsChanged || FInMirrorY.IsChanged)
-            {
-                for (int i = 0; i < InstanceCount; i++)
-                    setMirrorX(i);
-            }
-
-            if (FInMirrorY.IsChanged)
-            {
-                for (int i = 0; i < InstanceCount; i++)
-                    setMirrorY(i);
-            }
-
-            // set camId
-            if (SpreadCountChanged || FInCamId.IsChanged)
-            {
-                for (int i = 0; i < InstanceCount; i++)
-                {
-                    FProcessor[i].CamId = FInCamId[i];
-
-                }
-            }
-          
-            // set Colormode
-			if (SpreadCountChanged || FColorMode.IsChanged)
-			{
-				for (int i = 0; i < InstanceCount; i++)
-                {
-                    if (FProcessor[i].IsOpen)
-                    {
-                        FProcessor[i].setColorMode(FColorMode[i]);
-                    }
-                }                    
-			}
 
             // set gain
             if (FInGainColor.IsChanged || FInAWB.IsChanged)
@@ -889,7 +913,7 @@ namespace VVVV.Nodes.OpenCV.IDS
                 }
             }
 
-
+            // set gainBoost
             if (FInGainBoost.IsChanged)
             {
                 for (int i = 0; i < InstanceCount; i++)
@@ -898,7 +922,7 @@ namespace VVVV.Nodes.OpenCV.IDS
                 }
             }
 
-
+            // set gainMaster
             if (FInGainMaster.IsChanged)
             {
                 for (int i = 0; i < InstanceCount; i++)
@@ -922,18 +946,7 @@ namespace VVVV.Nodes.OpenCV.IDS
                 }
             }
 
-            // set PixelClock
-            if (SpreadCountChanged || FInPixelClock.IsChanged)
-            {
-                for (int i = 0; i < InstanceCount; i++)
-                {
-                    if (FProcessor[i].IsOpen)
-                    {
-                        FProcessor[i].setPixelClock(FInPixelClock[i]);
-                        queryTiming(i);
-                    }
-                }
-            }
+            
 
             // query Timing
             if (FInBinningX.IsChanged || FInBinningY.IsChanged || FInSubsamplingX.IsChanged || FInSubsamplingY.IsChanged ||
