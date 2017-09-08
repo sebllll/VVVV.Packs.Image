@@ -71,15 +71,15 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="VVVV.Core, Version=35.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VVVV.Core.35.0.0\lib\net46\VVVV.Core.dll</HintPath>
+      <HintPath>..\packages\VVVV.Core.35.8.0\lib\net46\VVVV.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VVVV.Utils, Version=35.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VVVV.Utils.35.0.0\lib\net46\VVVV.Utils.dll</HintPath>
+      <HintPath>..\packages\VVVV.Utils.35.8.0\lib\net46\VVVV.Utils.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VVVV.UtilsIL, Version=35.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VVVV.UtilsIL.35.0.0\lib\net46\VVVV.UtilsIL.dll</HintPath>
+      <HintPath>..\packages\VVVV.UtilsIL.35.8.0\lib\net46\VVVV.UtilsIL.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -130,15 +130,15 @@
     <Error Condition="!Exists('..\packages\VVVV.EmguCV.2.4.2.1\build\net40\VVVV.EmguCV.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.EmguCV.2.4.2.1\build\net40\VVVV.EmguCV.targets'))" />
     <Error Condition="!Exists('..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.props'))" />
     <Error Condition="!Exists('..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets'))" />
-    <Error Condition="!Exists('..\packages\VVVV.PluginInterfaces.35.0.0\build\net46\VVVV.PluginInterfaces.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.PluginInterfaces.35.0.0\build\net46\VVVV.PluginInterfaces.targets'))" />
-    <Error Condition="!Exists('..\packages\VVVV.Utils3rdParty.35.0.0\build\net46\VVVV.Utils3rdParty.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.Utils3rdParty.35.0.0\build\net46\VVVV.Utils3rdParty.targets'))" />
-    <Error Condition="!Exists('..\packages\VVVV.Hosting.35.0.0\build\net46\VVVV.Hosting.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.Hosting.35.0.0\build\net46\VVVV.Hosting.targets'))" />
+    <Error Condition="!Exists('..\packages\VVVV.PluginInterfaces.35.8.0\build\net46\VVVV.PluginInterfaces.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.PluginInterfaces.35.8.0\build\net46\VVVV.PluginInterfaces.targets'))" />
+    <Error Condition="!Exists('..\packages\VVVV.Utils3rdParty.35.8.0\build\net46\VVVV.Utils3rdParty.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.Utils3rdParty.35.8.0\build\net46\VVVV.Utils3rdParty.targets'))" />
+    <Error Condition="!Exists('..\packages\VVVV.Hosting.35.8.0\build\net46\VVVV.Hosting.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.Hosting.35.8.0\build\net46\VVVV.Hosting.targets'))" />
   </Target>
   <Import Project="..\packages\VVVV.EmguCV.2.4.2.1\build\net40\VVVV.EmguCV.targets" Condition="Exists('..\packages\VVVV.EmguCV.2.4.2.1\build\net40\VVVV.EmguCV.targets')" />
   <Import Project="..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets" Condition="Exists('..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets')" />
-  <Import Project="..\packages\VVVV.PluginInterfaces.35.0.0\build\net46\VVVV.PluginInterfaces.targets" Condition="Exists('..\packages\VVVV.PluginInterfaces.35.0.0\build\net46\VVVV.PluginInterfaces.targets')" />
-  <Import Project="..\packages\VVVV.Utils3rdParty.35.0.0\build\net46\VVVV.Utils3rdParty.targets" Condition="Exists('..\packages\VVVV.Utils3rdParty.35.0.0\build\net46\VVVV.Utils3rdParty.targets')" />
-  <Import Project="..\packages\VVVV.Hosting.35.0.0\build\net46\VVVV.Hosting.targets" Condition="Exists('..\packages\VVVV.Hosting.35.0.0\build\net46\VVVV.Hosting.targets')" />
+  <Import Project="..\packages\VVVV.PluginInterfaces.35.8.0\build\net46\VVVV.PluginInterfaces.targets" Condition="Exists('..\packages\VVVV.PluginInterfaces.35.8.0\build\net46\VVVV.PluginInterfaces.targets')" />
+  <Import Project="..\packages\VVVV.Utils3rdParty.35.8.0\build\net46\VVVV.Utils3rdParty.targets" Condition="Exists('..\packages\VVVV.Utils3rdParty.35.8.0\build\net46\VVVV.Utils3rdParty.targets')" />
+  <Import Project="..\packages\VVVV.Hosting.35.8.0\build\net46\VVVV.Hosting.targets" Condition="Exists('..\packages\VVVV.Hosting.35.8.0\build\net46\VVVV.Hosting.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

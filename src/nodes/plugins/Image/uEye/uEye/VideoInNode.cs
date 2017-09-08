@@ -15,11 +15,18 @@ using System.ComponentModel.Composition;
 
 namespace VVVV.Nodes.OpenCV.IDS
 {
-	public class VideoInInstance : IGeneratorInstance
+    class DeviceLock
+    {
+        public static Object LockDevices = new Object();
+    }
+
+    public class VideoInInstance : IGeneratorInstance
 	{
         #region fields
 
         private Camera cam = null;
+
+        public bool camOpen = false;
 
         public Status camStatus { get; set; }
 
@@ -84,35 +91,86 @@ namespace VVVV.Nodes.OpenCV.IDS
 
         public override bool Open()
 		{
-            try
+            lock (DeviceLock.LockDevices)
             {
-                cam = new Camera();
+                try
+                {
+                    cam = new Camera();
 
-                cam.EventDeviceRemove += camDisconnect;
-                cam.EventDeviceUnPlugged += camDisconnect;
-                cam.EventDeviceReconnect += camReconnect;
-                cam.EventDevicePluggedIn += camReconnect;
+                    cam.EventDeviceRemove += camDisconnect;
+                    cam.EventDeviceUnPlugged += camDisconnect;
+                    cam.EventDeviceReconnect += camReconnect;
+                    cam.EventDevicePluggedIn += camReconnect;
 
-                camStatus = cam.Init(FCamId);
+                    int ch;
+                    cam.GetHandle(out ch);
 
-                configureOutput();
+                    camStatus = cam.Exit();
+                    
+                    //camStatus = cam.Init(FCamId);
+                    camStatus = cam.Init();
+                    camOpen = cam.IsOpened;
 
-                startCapture();
+                    if (camOpen)
+                    {
+                        configureOutput();
 
-                QueryCameraCapabilities();
+                        startCapture();
 
+                        QueryCameraCapabilities();
 
-                checkParams = true;
+                        checkParams = true;
+                    }
 
-                return true;
+                    return true;
+                }
+                catch (Exception e)
+                {
+
+                    Status = e.Message;
+                    return false;
+                }
+            }
         }
-            catch (Exception e)
-			{
 
-                Status = e.Message;
-				return false;
-			}
-}
+        //public void reOpen()
+        //{
+        //    Close();
+
+        //    Open();
+        //}
+
+        public override void Close()
+        {
+            lock (DeviceLock.LockDevices)
+            {
+                if (cam != null)
+                {
+                    try
+                    {
+                        stopCapture();
+
+                        cam.EventDeviceRemove -= camDisconnect;
+                        cam.EventDeviceUnPlugged -= camDisconnect;
+                        cam.EventDeviceReconnect -= camReconnect;
+                        cam.EventDevicePluggedIn -= camReconnect;
+
+                        //int[] MemIds;
+                        //camStatus = cam.Memory.GetList(out MemIds);
+                        //camStatus = cam.Memory.Free(MemIds);
+
+                        camStatus = cam.Exit();
+
+                        cam = null;
+
+                    }
+                    catch (Exception e)
+                    {
+                        Status = e.Message;
+                    }
+                }
+            }
+        }
 
         private void startCapture()
         {
@@ -148,33 +206,7 @@ namespace VVVV.Nodes.OpenCV.IDS
             FOutput.Image.Initialise(a.Width, a.Height, format);
         }
 
-        public override void Close()
-        {
-            if (cam != null)
-            {
-                try
-                {
-                    stopCapture();
-
-                    cam.EventDeviceRemove -= camDisconnect;
-                    cam.EventDeviceUnPlugged -= camDisconnect;
-                    cam.EventDeviceReconnect -= camReconnect;
-                    cam.EventDevicePluggedIn -= camReconnect;
-
-                    int[] MemIds;
-                    camStatus = cam.Memory.GetList(out MemIds);
-                    camStatus = cam.Memory.Free(MemIds);
-
-                    cam.Exit();
-
-                    cam = null;
-                }
-                catch (Exception e)
-                {
-                    Status = e.Message;
-                }
-            }
-        }
+        
 
         private void onFrameEvent(object sender, EventArgs e)
         {
@@ -237,13 +269,26 @@ namespace VVVV.Nodes.OpenCV.IDS
 
             gainBoostSupported = cam.Gain.Hardware.Boost.Supported;
 
-            gainAutoSupported = cam.AutoFeatures.Sensor.Gain.Supported;
+            //try
+            //{
+                gainAutoSupported = cam.AutoFeatures.Sensor.Gain.Supported;
+            //}
+            //catch (Exception e)
+            //{
+            //    gainAutoSupported = false;
+            //}
 
             //cam.Gain.Hardware.GetSupported(out isGainMasterSupported, out isGainRedSupported,
             //                               out isGainGreenSupported, out isGainBlueSupported);
 
-
-            whitebalanceSupported = cam.AutoFeatures.Sensor.Whitebalance.Supported;
+            //try
+            //{
+                whitebalanceSupported = cam.AutoFeatures.Sensor.Whitebalance.Supported;
+            //}
+            //catch (Exception e)
+            //{
+            //    whitebalanceSupported = false;
+            //}
 
             //cam.AutoFeatures.Sensor.Framerate.Supported;
 
@@ -473,7 +518,6 @@ namespace VVVV.Nodes.OpenCV.IDS
 
 
         #endregion setParameters
-
 
         #region queryParameterSets
 
@@ -759,6 +803,18 @@ namespace VVVV.Nodes.OpenCV.IDS
 
             for (int i = 0; i < InstanceCount; i++)
             {
+                if (FPinInEnabled[i] && !FProcessor[i].IsOpen && !firstframe)
+                {
+                    //FProcessor[i].Stop();
+                    //FProcessor[i].Start();
+                    //FProcessor[i].Restart();
+                    //firstframe = true;
+                }
+
+
+                // --------------------------------------------------
+
+
                 if (FProcessor[i].checkParams && FProcessor[i].IsOpen)
                 {
 
@@ -809,6 +865,8 @@ namespace VVVV.Nodes.OpenCV.IDS
             }
 
             //-------------------------------------------
+
+            #region set params
 
             // set camId
             if (SpreadCountChanged || FInCamId.IsChanged)
@@ -946,7 +1004,7 @@ namespace VVVV.Nodes.OpenCV.IDS
                 }
             }
 
-            
+            #endregion set params
 
             // query Timing
             if (FInBinningX.IsChanged || FInBinningY.IsChanged || FInSubsamplingX.IsChanged || FInSubsamplingY.IsChanged ||
@@ -980,13 +1038,10 @@ namespace VVVV.Nodes.OpenCV.IDS
                 }
             }
 
-
-
-
             if (firstframe) firstframe = false;
         }
 
-        
+        #region methods
 
         private void queryGain(int instanceId)
         {
@@ -1217,5 +1272,7 @@ namespace VVVV.Nodes.OpenCV.IDS
                 FProcessor[instanceId].setColorMode(FColorMode[instanceId]);
             }
         }
+
+        #endregion methods
     }
 }

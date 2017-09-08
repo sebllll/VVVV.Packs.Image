@@ -143,6 +143,16 @@ namespace VVVV.Nodes.OpenCV.CLEye
 
                         uEye.Defines.Status status;
 
+                        int apiVersion;
+                        uEye.Info.System.GetApiVersion(out apiVersion);
+
+                        Version netVersion;
+                        uEye.Info.System.GetNetVersion(out netVersion);
+                        FLogger.Log(LogType.Message, "");
+                        FLogger.Log(LogType.Message, "ApiVersion: " + apiVersion);
+                        FLogger.Log(LogType.Message, "NetVersion: " + netVersion);
+                        FLogger.Log(LogType.Message, "");
+
 
                         uEye.Types.CameraInfo camInfo;
                         status = camera.Information.GetCameraInfo(out camInfo);

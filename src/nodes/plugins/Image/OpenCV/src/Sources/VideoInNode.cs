@@ -24,8 +24,9 @@ namespace VVVV.CV.Nodes
 		private int FRequestedHeight = 0;
 
 		Capture FCapture;
+        Dictionary<CAP_PROP, float> FPropertySet;
 
-		private int FDeviceID = 0;
+        private int FDeviceID = 0;
 		public int DeviceID
 		{
 			get
@@ -132,7 +133,21 @@ namespace VVVV.CV.Nodes
 				FOutput.Send();
 			}
 		}
-}
+
+        public void SetProperties(Dictionary<CAP_PROP, float> PropertySet)
+        {
+            if (PropertySet == null)
+                return;
+
+            FPropertySet = PropertySet;
+
+            foreach (var property in PropertySet)
+            {
+                FCapture.SetCaptureProperty(property.Key, property.Value);
+            }
+        }
+
+    }
 
 	#region PluginInfo
 	[PluginInfo(Name = "VideoIn",
@@ -153,7 +168,10 @@ namespace VVVV.CV.Nodes
 		[Input("Height", MinValue = 32, MaxValue = 8192, DefaultValue = 480)]
 		IDiffSpread<int> FPinInHeight;
 
-		[Import]
+        [Input("Properties")]
+        IDiffSpread<Dictionary<CAP_PROP, float>> FPinInProperties;
+
+        [Import]
 		ILogger FLogger;
 
 		#endregion fields & pins
@@ -178,6 +196,57 @@ namespace VVVV.CV.Nodes
             if (FPinInHeight.IsChanged || SpreadChanged)
 				for (int i = 0; i < InstanceCount; i++)
 					FProcessor[i].Height = FPinInHeight[i];
-		}
+
+            if (FPinInProperties.IsChanged || SpreadChanged)
+            {
+                for (int i = 0; i < InstanceCount; i++)
+                    FProcessor[i].SetProperties(FPinInProperties[i]);
+            }
+        }
 	}
+
+    #region PluginInfo
+    [PluginInfo(Name = "CaptureProperty", Category = "CV.Image", Version = "VfW", Help = "Set properties for VfW video", Tags = "", Author = "elliotwoods", AutoEvaluate = true)]
+    #endregion PluginInfo
+    public class CapturePropertyNode : IPluginEvaluate
+    {
+        #region fields & pins
+        [Input("Property")]
+        IDiffSpread<CAP_PROP> FPinInProperty;
+
+        [Input("Value", MinValue = 0.0, MaxValue = 1.0)]
+        IDiffSpread<float> FPinInValue;
+
+        [Output("PropertyPair", IsSingle = true)]
+        ISpread<Dictionary<CAP_PROP, float>> FPinOutOutput;
+
+        [Import]
+        ILogger FLogger;
+
+        Dictionary<CAP_PROP, float> FOutput = new Dictionary<CAP_PROP, float>();
+
+        #endregion fields & pins
+
+        [ImportingConstructor]
+        public CapturePropertyNode(IPluginHost host)
+        {
+
+        }
+
+        bool FFirstRun = true;
+        //called when data for any output pin is requested
+        public void Evaluate(int SpreadMax)
+        {
+            if (FPinInProperty.IsChanged || FPinInValue.IsChanged)
+            {
+                FOutput.Clear();
+                for (int i = 0; i < SpreadMax; i++)
+                {
+                    if (!FOutput.ContainsKey(FPinInProperty[i]))
+                        FOutput.Add(FPinInProperty[i], FPinInValue[i]);
+                }
+                FPinOutOutput[0] = FOutput;
+            }
+        }
+    }
 }

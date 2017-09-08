@@ -200,10 +200,10 @@ namespace VVVV.CV.Nodes
             LastImage.Initialise(FInput.Image.ImageAttributes);
         }
 
-        public override bool IsFast()
-        {
-            return false;
-        }
+        //public override bool IsFast()
+        //{
+        //    return false;
+        //}
 
         void Flagger()
         {
@@ -249,7 +249,8 @@ namespace VVVV.CV.Nodes
             if (FFrameCount >= 0 && FrameQueue.Count > FFrameCount)
             {
                 var tooMuch = FrameQueue.Count - FFrameCount;
-                var toDispose = FrameQueue.GetRange(FFrameCount, tooMuch);
+                //var toDispose = FrameQueue.GetRange(FFrameCount, tooMuch);
+                var toDispose = FrameQueue.GetRange(0, tooMuch);
                 foreach (CVImage img in toDispose)
                     img.Dispose();
 

@@ -9,7 +9,7 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.CV.Nodes
 {
 	[PluginInfo(Name = "AsTexture", Category = "CV.Image", Version = "DX11.Texture2D", Help = "Converts CVImage to DX11 Texture", Tags = "")]
-	public class AsTextureDX11Node : IPluginEvaluate, IDX11ResourceProvider, IDisposable
+	public class AsTextureDX11Node : IPluginEvaluate, IDX11ResourceHost, IDisposable
 	{
 		[Input("Image")]
 		ISpread<CVImageLink> FPinInImage;
@@ -43,7 +43,7 @@ namespace VVVV.CV.Nodes
 			}
 		}
 
-		public void Update(IPluginIO pin, DX11RenderContext context)
+		public void Update(DX11RenderContext context)
 		{
 			foreach (var processor in FProcessor)
 			{
@@ -51,7 +51,7 @@ namespace VVVV.CV.Nodes
 			}
 		}
 
-		public void Destroy(IPluginIO pin, DX11RenderContext context, bool force)
+		public void Destroy(DX11RenderContext context, bool force)
 		{
 			foreach (var processor in FProcessor)
 			{
