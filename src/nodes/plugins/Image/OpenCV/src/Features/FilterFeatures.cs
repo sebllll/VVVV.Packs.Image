@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Nodes.OpenCV.Features.Criteria;
+using VVVV.CV.Nodes.Features.Criteria;
 
 namespace VVVV.CV.Nodes.Features
 {
