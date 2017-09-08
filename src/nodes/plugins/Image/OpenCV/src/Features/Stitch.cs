@@ -2,23 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.CV.Stitching;
+using VVVV.CV.Core;
 
 namespace VVVV.CV.Nodes.Features
 {
     #region PluginInfo
-    [PluginInfo(Name = "Stitch", Category = "CV.Features", Help = "Stitch together a spread of Images")]
+    [PluginInfo(Name = "Stitch", Category = "CV.Features", Help = "Stitch together a spread of Images", Tags = "match")]
     #endregion PluginInfo
     public class Stitch : IPluginEvaluate
     {
         [Input("Input")]
-        ISpread<ISpread<CVImageLink>> FInput;
+        ISpread<CVImageLink> FInput;
 
-        [Input("Do", IsBang=true)]
+        [Input("Do", IsBang=true, IsSingle = true)]
         ISpread<bool> FDo;
+
+        //[Output("Output")]
+        //ISpread<CVImageLink> FOutput;
 
         [Output("Output")]
         ISpread<CVImageLink> FOutput;
@@ -30,73 +37,77 @@ namespace VVVV.CV.Nodes.Features
 
         public void Evaluate(int SpreadMax)
         {
-            for (int i = SpreadMax; i < FOutput.SliceCount; i++)
-                FOutput[i].Dispose();
-            while (FOutput.SliceCount < SpreadMax)
-                FOutput.Add(new CVImageLink());
+            //for (int i = SpreadMax; i < FOutput.SliceCount; i++)
+            //    FOutput[i].Dispose();
+            //while (FOutput.SliceCount < SpreadMax)
+            //    FOutput.Add(new CVImageLink());
+            //while (FOutput.SliceCount < 1)
+            //        FOutput.Add(new CVImageLink());
 
-            FStatus.SliceCount = SpreadMax;
 
-            for (int i = 0; i < SpreadMax; i++)
+            FStatus.SliceCount = 1;
+
+            if (FDo[0])
             {
-                if (!FDo[i])
-                    continue;
+                // setup image array for stitcher
+                int size = FInput.SliceCount;
+                Image<Bgr, Byte>[] images = new Image<Bgr, byte>[size];
 
-                var inputSpread = FInput[i];
-                var output = FOutput[i];
+                // setup output
+                CVImage result = new CVImage();
 
-                foreach(var image in inputSpread)
+                foreach (var image in FInput)
                 {
                     image.LockForReading();
                 }
 
-                CVImage result = new CVImage();
+                for (int i = 0; i < SpreadMax; i++)
+                {
+
+                    var tempImage = FInput[i].FrontImage.GetImage() as Image<Rgb, byte>;
+
+                    images[i] = tempImage.Convert<Bgr, byte>();
+                }
+
+
+                
                 try
                 {
-                    int size = inputSpread.SliceCount;
-
-                    Image<Bgr, Byte>[] images = new Image<Bgr, byte>[size];
-                    List<CVImage> ToDispose = new List<CVImage>();
-
-                    for (int j = 0; j < size; j++)
-                    {
-                        if (inputSpread[j].FrontImage.ImageAttributes.ColourFormat == TColorFormat.RGB8)
-                        {
-                            images[j] = inputSpread[j].FrontImage.GetImage() as Image<Bgr, Byte>;
-                        }
-                        else
-                        {
-                            var image = new CVImage();
-                            ToDispose.Add(image);
-                            image.Initialise(inputSpread[j].FrontImage.Size, TColorFormat.RGB8);
-                            inputSpread[j].FrontImage.GetImage(image);
-                            images[j] = image.GetImage() as Image<Bgr, Byte>;
-                        }
-                    }
-
                     result.SetImage(FStitcher.Stitch(images));
+                    //FOutput[0].Send(FStitcher.Stitch(images));
 
-                    foreach (var image in ToDispose)
+                    foreach (var image in images)
                     {
                         image.Dispose();
                     }
 
-                    FStatus[i] = "OK";
+                    FStatus[0] = "OK";
                 }
                 catch (Exception e)
                 {
-                    FStatus[i] = e.Message;
+                    FStatus[0] = e.Message;
                 }
                 finally
                 {
-                    foreach(var image in inputSpread)
+                    foreach(var image in FInput)
                     {
                         image.ReleaseForReading();
                     }
                 }
 
-                output.Send(result);
+                //output.Send(result);
+
+                var outImg = new CVImage();
+                outImg.Initialise(result.ImageAttributes);
+                outImg.SetImage(result);
+
+                FOutput[0].Initialise(result.ImageAttributes);
+                FOutput[0].Send(outImg);
+
+                //vara = FOutput[0].Allocated;
+
             }
+
         }
     }
 }
