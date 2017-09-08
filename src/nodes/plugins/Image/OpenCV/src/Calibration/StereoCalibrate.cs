@@ -48,13 +48,30 @@ namespace VVVV.CV.Nodes
 		[Input("Do", IsBang=true, IsSingle=true)]
 		ISpread<bool> FPinInDo;
 
-		[Output("Extrinsics")]
+        [Input("Flags")]
+        ISpread<CALIB_TYPE> FPinFlags;
+
+        [Input("Max Iterations", DefaultValue =100)]
+        ISpread<int> FPinMaxIterations;
+
+        [Input("eps", DefaultValue = 0.001)]
+        ISpread<double> FPinEps;
+
+
+
+        [Output("Extrinsics")]
 		ISpread<Extrinsics> FPinOutExtrinsics;
 
 		[Output("World transform")]
 		ISpread<Matrix4x4> FPinOutTransform;
 
-		[Output("Success")]
+        [Output("Fundamental Matrix")]
+        ISpread<Matrix4x4> FPinOutFundamentalMatrix;
+
+        [Output("Essential Matrix")]
+        ISpread<Matrix4x4> FPinOutEssentialMatrix;
+
+        [Output("Success")]
 		ISpread<bool> FPinOutSuccess;
 
 		[Output("Status")]
@@ -89,9 +106,22 @@ namespace VVVV.CV.Nodes
 				}
 				int nImages = Math.Max(FPinInImage1.SliceCount, FPinInImage2.SliceCount) / nPointsPerImage;
 
-				CALIB_TYPE flags = CALIB_TYPE.DEFAULT;
-				MCvTermCriteria termCrit = new MCvTermCriteria(100, 0.001);
-				MCvPoint3D32f[][] objectPoints = new MCvPoint3D32f[nImages][];
+                //CALIB_TYPE flags = CALIB_TYPE.DEFAULT;
+
+                CALIB_TYPE allFlags = 0;
+                foreach (CALIB_TYPE c in FPinFlags)
+                {
+                    allFlags |= c;
+                }
+
+                CALIB_TYPE flags = allFlags;
+
+                //CALIB_TYPE flags = FPinFlags[0];
+
+                //MCvTermCriteria termCrit = new MCvTermCriteria(100, 0.001);
+                MCvTermCriteria termCrit = new MCvTermCriteria(FPinMaxIterations[0], FPinEps[0]);
+
+                MCvPoint3D32f[][] objectPoints = new MCvPoint3D32f[nImages][];
 				PointF[][] imagePoints1 = new PointF[nImages][];
 				PointF[][] imagePoints2 = new PointF[nImages][];
 				Size imageSize = new Size( (int) FPinInSensorSize[0].x, (int) FPinInSensorSize[0].y);
@@ -111,13 +141,18 @@ namespace VVVV.CV.Nodes
 
 				try
 				{
+                    
 					CameraCalibration.StereoCalibrate(objectPoints, imagePoints1, imagePoints2, intrinsics1, intrinsics2, imageSize, flags, termCrit, out interCameraExtrinsics, out foundamentalMatrix, out essentialMatrix);
 
 					Extrinsics extrinsics = new Extrinsics(interCameraExtrinsics);
 					FPinOutExtrinsics[0] = extrinsics;
 					FPinOutTransform[0] = extrinsics.Matrix;
 
-					FPinOutSuccess[0] = true;
+                    var s = essentialMatrix.Size;
+
+                    //FPinOutEssentialMatrix[0] = essentialMatrix.Convert<Matrix4x4>();
+
+                    FPinOutSuccess[0] = true;
 					FStatus[0] = "OK";
 				}
 				catch (Exception e)  {
