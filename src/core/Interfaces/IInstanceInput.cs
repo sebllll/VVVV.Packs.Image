@@ -9,4 +9,9 @@ namespace VVVV.CV.Core
 	{
 		void SetInput(CVImageInput input);
 	}
+
+    public interface IInstanceDualInput
+    {
+        void SetInput(CVImageInput input1, CVImageInput input2);
+    }
 }

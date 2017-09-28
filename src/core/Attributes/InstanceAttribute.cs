@@ -19,4 +19,19 @@ namespace VVVV.CV.Core
             Name = name;
         }
     }
+
+    public class MixerInstanceAttribute : Attribute
+    {
+        public string Name { get; set; }
+        public string Version { get; set; }
+        public string Help { get; set; }
+        public string Author { get; set; }
+        public string Credits { get; set; }
+        public string Tags { get; set; }
+
+        public MixerInstanceAttribute(string name)
+        {
+            Name = name;
+        }
+    }
 }

@@ -100,8 +100,9 @@
     <Compile Include="src\Calibration\ProjectPointsNode.cs" />
     <Compile Include="src\Filters\Queue.cs" />
     <Compile Include="src\Filters\Undistort.cs" />
-    <Compile Include="src\graphics\delauney.cs" />
-    <Compile Include="src\graphics\voronoi.cs" />
+    <Compile Include="src\Graphics\delauney.cs" />
+    <Compile Include="src\Graphics\voronoi.cs" />
+    <Compile Include="src\Mixers\Blend.cs" />
     <Compile Include="src\Tracking\DetectPedestrian.cs" />
     <None Include="packages.config" />
     <Compile Include="src\Features\Stitch.cs" />
@@ -187,6 +188,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

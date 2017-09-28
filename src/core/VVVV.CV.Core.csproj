@@ -84,7 +84,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\FilterInstanceAttribute.cs" />
+    <Compile Include="Attributes\InstanceAttribute.cs" />
     <Compile Include="Image\CVImage.cs" />
     <Compile Include="Image\CVImageAttributes.cs" />
     <Compile Include="Image\CVImageDoubleBuffer.cs" />
@@ -94,6 +94,7 @@
     <Compile Include="Image\CVImageOutput.cs" />
     <Compile Include="Image\CVImageOutputSpread.cs" />
     <Compile Include="Image\ImageBase.cs" />
+    <Compile Include="Incomplete\GenericMixerNode.cs" />
     <Compile Include="Incomplete\GenericFilterNode.cs" />
     <Compile Include="Interfaces\IInstance.cs" />
     <Compile Include="Interfaces\IInstanceInput.cs" />
@@ -102,6 +103,8 @@
     <Compile Include="Interfaces\User\IDestinationInstance.cs" />
     <Compile Include="Interfaces\User\IDestinationNode.cs" />
     <Compile Include="Interfaces\User\IDeviceGeneratorInstance.cs" />
+    <Compile Include="Interfaces\User\IMixerNode.cs" />
+    <Compile Include="Interfaces\User\IMixerInstance.cs" />
     <Compile Include="Interfaces\User\IFilterInstance.cs" />
     <Compile Include="Interfaces\User\IFilterNode.cs" />
     <Compile Include="Interfaces\User\IGeneratorInstance.cs" />
@@ -109,6 +112,7 @@
     <Compile Include="Interfaces\User\IStaticGeneratorInstance.cs" />
     <Compile Include="Process\IProcess.cs" />
     <Compile Include="Process\ProcessDestination.cs" />
+    <Compile Include="Process\ProcessMixer.cs" />
     <Compile Include="Process\ProcessFilter.cs" />
     <Compile Include="Process\ProcessGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
