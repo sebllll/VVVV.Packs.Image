@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta35.8.dtd" >
-   <PATCH nodename="C:\dev\dhmd_Vogel_x64\vvvv_50beta35.8_x64\packs\VVVV.Packs.Image\nodes\plugins\Blend (CV.Image) help.v4p" scrollx="0" scrolly="0">
+   <PATCH nodename="C:\dev\dhmd_Vogel_x64\vvvv_50beta35.8_x64\packs\VVVV.Packs.Image\nodes\plugins\Blend (CV.Image) help.v4p" scrollx="60" scrolly="15">
    <BOUNDS type="Window" left="19350" top="8205" width="8055" height="10890">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3">
@@ -132,14 +132,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="AsTexture (CV.Image DX11.Texture2D)" filename="%VVVV%\packs\VVVV.Packs.Image\nodes\plugins\VVVV.Nodes.CV.DX11.dll" nodename="AsTexture (CV.Image DX11.Texture2D)" componentmode="Hidden" id="38">
-   <BOUNDS type="Node" left="2775" top="8400" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2775" top="8400" width="3000" height="3000">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="38" srcpinname="Texture Out" dstnodeid="12" dstpinname="Texture In">
-   </LINK>
    <NODE systemname="Info (CV.Image)" filename="%VVVV%\packs\VVVV.Packs.Image\nodes\plugins\VVVV.CV.Nodes.dll" nodename="Info (CV.Image)" componentmode="Hidden" id="45">
    <BOUNDS type="Node" left="795" top="4065" width="100" height="100">
    </BOUNDS>
@@ -320,26 +312,6 @@
    </LINK>
    <LINK srcnodeid="47" srcpinname="Output Node" dstnodeid="52" dstpinname="Image">
    </LINK>
-   <NODE systemname="Blend (CV.Image)" filename="%VVVV%\packs\VVVV.Packs.Image\nodes\plugins\VVVV.CV.Nodes.dll" nodename="Blend (CV.Image)" componentmode="Hidden" id="55" debug="0">
-   <BOUNDS type="Node" left="2775" top="7755" width="3720" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2775" top="7755">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="55" dstpinname="Factor">
-   </LINK>
-   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="55" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="55" dstpinname="Gamma">
-   </LINK>
-   <LINK srcnodeid="55" srcpinname="Output" dstnodeid="38" dstpinname="Image">
-   </LINK>
-   <LINK srcnodeid="46" srcpinname="Output Node" dstnodeid="55" dstpinname="Input1">
-   </LINK>
-   <LINK srcnodeid="47" srcpinname="Output Node" dstnodeid="55" dstpinname="Input2">
-   </LINK>
    <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="56">
    <BOUNDS type="Node" left="5220" top="5835" width="100" height="100">
    </BOUNDS>
@@ -448,12 +420,6 @@
    </NODE>
    <LINK srcnodeid="68" srcpinname="Width" dstnodeid="64" dstpinname="Y Input Value">
    </LINK>
-   <LINK srcnodeid="55" srcpinname="Output" dstnodeid="68" dstpinname="Image" linkstyle="VHV">
-   <LINKPOINT x="2835" y="8168">
-   </LINKPOINT>
-   <LINKPOINT x="5130" y="8168">
-   </LINKPOINT>
-   </LINK>
    <NODE systemname="Switch (Node Input)" nodename="Switch (Node Input)" componentmode="Hidden" id="69">
    <BOUNDS type="Node" left="3990" top="2940" width="1560" height="270">
    </BOUNDS>
@@ -495,5 +461,49 @@
    <LINK srcnodeid="70" srcpinname="Y Output Value" dstnodeid="69" dstpinname="Switch">
    </LINK>
    <LINK srcnodeid="57" srcpinname="Output" dstnodeid="9" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Blend (CV.Image Mixer)" filename="%VVVV%\packs\VVVV.Packs.Image\nodes\plugins\VVVV.CV.Nodes.dll" nodename="Blend (CV.Image Mixer)" componentmode="Hidden" id="72" debug="0">
+   <BOUNDS type="Node" left="2775" top="7755" width="3720" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2775" top="7755">
+   </BOUNDS>
+   <PIN pinname="Input2" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="72" dstpinname="Factor">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="72" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="72" dstpinname="Gamma">
+   </LINK>
+   <LINK srcnodeid="46" srcpinname="Output Node" dstnodeid="72" dstpinname="Input1">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="Output" dstnodeid="68" dstpinname="Image" linkstyle="VHV">
+   <LINKPOINT x="2835" y="8168">
+   </LINKPOINT>
+   <LINKPOINT x="5130" y="8168">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="AsTexture (CV.Image DX11.Texture2D)" filename="%VVVV%\packs\VVVV.Packs.Image\nodes\plugins\VVVV.Nodes.CV.DX11.dll" nodename="AsTexture (CV.Image DX11.Texture2D)" componentmode="Hidden" id="73">
+   <BOUNDS type="Node" left="2775" top="8400" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2775" top="8400" width="3000" height="3000">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="73" srcpinname="Texture Out" dstnodeid="12" dstpinname="Texture In">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="Output" dstnodeid="73" dstpinname="Image">
+   </LINK>
+   <LINK srcnodeid="47" srcpinname="Output Node" dstnodeid="72" dstpinname="Input2">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="74">
+   <BOUNDS type="Box" left="1275" top="8010" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1275" top="8010" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="72" srcpinname="Output" dstnodeid="74" dstpinname="Input Node">
    </LINK>
    </PATCH>

@@ -34,7 +34,7 @@ namespace VVVV.CV.Core
 			else if (FInputPin[0] == null)
 				noInput = true;
 
-			if (noInput)
+            if (noInput)
 			{
 				if (FInput.SliceCount == 0)
 					return false;

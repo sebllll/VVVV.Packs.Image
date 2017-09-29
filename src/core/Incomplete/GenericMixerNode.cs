@@ -134,6 +134,12 @@ namespace VVVV.CV.Core
 						FProcessor[i].FlagForProcess();
                     }
                 }
+                //else if (input.IsChanged && !SpreadChanged)
+                //{
+                //    var i = !SpreadChanged;
+                //    var j = i;
+                //}
+
             }
 
             for (int outputIndex = 0; outputIndex < FOutputMembers.Count; outputIndex++)

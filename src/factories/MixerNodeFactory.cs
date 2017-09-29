@@ -131,7 +131,7 @@ namespace VVVV.CV.Factories
 
             var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
                 name,
-                "CV.Image",
+                "CV.Image Mixer",
                 version,
                 filename,
                 true);

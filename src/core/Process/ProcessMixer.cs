@@ -141,30 +141,62 @@ namespace VVVV.CV.Core
 		/// <returns>true if changes were made</returns>
 		public bool CheckInputSize(int SpreadMax)
 		{
-			if ((!FInput1.CheckInputSize() && !FInput2.CheckInputSize())  && FOutput.SliceCount == SpreadMax)
-				return false;
 
-			lock (FLockProcess)
+            var i1 = !FInput1.CheckInputSize();
+            var i2 = !FInput2.CheckInputSize();
+
+            var c1 = FInput1.Connected;
+            var c2 = FInput2.Connected;
+
+            if ((i1 && i2) && FOutput.SliceCount == SpreadMax && (c1 == true && c2 == true))
+                return false;
+
+            lock (FLockProcess)
 			{
-				if (FInput1.SliceCount == 0 || FInput2.SliceCount == 0)
-					SpreadMax = 0;
-				else if (FInput1[0] == null || FInput2[0] == null)
-					SpreadMax = 0;
-
-				for (int i = FProcess.SliceCount; i < SpreadMax; i++)
+                if (FInput1.SliceCount == 0 && FInput2.SliceCount == 0 )
                 {
-                    Add(FInput1[i], FInput2[i]);
+                    SpreadMax = 0;
+                    return false; // do nothing if one of the inputs is empty
+                }
+                else if (FInput1[0] == null && FInput2[0] == null)
+                {
+                    SpreadMax = 0;
+                    return false; // do nothing if one of the inputs is empty
+                }
+
+
+                // re-add inputs when only one input is connected
+                //if (!c1 || !c2 /*&& c1 != c2*/)
+                //{
+                //    for (int i = 0; i < FProcess.SliceCount; i++)
+                //        Dispose(i); //Dispose();
+
+                //    FProcess.SliceCount = 0;
+                //    FOutput.SliceCount = 0;
+                //}
+
+                if (FProcess.SliceCount > SpreadMax)
+                {
+                    for (int i = SpreadMax; i < FProcess.SliceCount; i++)
+                        Dispose(i);
+
+                    FProcess.SliceCount = SpreadMax;
+                    FOutput.SliceCount = SpreadMax;
+                }
+
+                for (int i = FProcess.SliceCount; i < SpreadMax; i++)
+                {
+                    // check if only 1 input is present
+                    if (FInput1.SliceCount == 0 || FInput1[0] == null)
+                        Add(FInput2[i], FInput2[i]);
+                    else if (FInput2.SliceCount == 0 || FInput2[0] == null)
+                        Add(FInput1[i], FInput1[i]);
+                    else
+                        Add(FInput1[i], FInput2[i]);
                 }
 					
 
-				if (FProcess.SliceCount > SpreadMax)
-				{
-					for (int i = SpreadMax; i < FProcess.SliceCount; i++)
-						Dispose(i);
-
-					FProcess.SliceCount = SpreadMax;
-					FOutput.SliceCount = SpreadMax;
-				}
+				
 
 				FOutput.AlignOutputPins();
 			}
@@ -223,8 +255,8 @@ namespace VVVV.CV.Core
 			{
 				disposableContainer.Dispose();
 			}
-			FInput1[i].Dispose();
-            FInput2[i].Dispose();
+            if (FInput2.Connected) FInput1[i].Dispose();
+            if (FInput2.Connected) FInput2[i].Dispose();
             FOutput[i].Dispose();
 		}
 	}

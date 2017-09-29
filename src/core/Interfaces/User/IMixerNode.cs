@@ -26,6 +26,8 @@ namespace VVVV.CV.Core
 
             bool changed = FProcessor.CheckInputSize(SpreadMax);
 			Update(FProcessor.SliceCount, changed);
+
+            //ByPass(0);
 		}
 
 		public void Dispose()
