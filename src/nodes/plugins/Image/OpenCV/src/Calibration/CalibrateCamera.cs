@@ -137,9 +137,11 @@ namespace VVVV.CV.Nodes.Calibration
 
 				try
 				{
-					FPinOutError[0] = CameraCalibration.CalibrateCamera(objectPoints, imagePoints, imageSize, intrinsicParam, flags, out extrinsicsPerView);
+                    MCvTermCriteria tc = new MCvTermCriteria(20, 0.3);
+                    //FPinOutError[0] = CameraCalibration.CalibrateCamera(objectPoints, imagePoints, imageSize, intrinsicParam, flags, out extrinsicsPerView);
+                    FPinOutError[0] = CameraCalibration.CalibrateCamera(objectPoints, imagePoints, imageSize, intrinsicParam, flags, tc, out extrinsicsPerView);
 
-					Intrinsics intrinsics = new Intrinsics(intrinsicParam, imageSize);
+                    Intrinsics intrinsics = new Intrinsics(intrinsicParam, imageSize);
 					FPinOutIntrinsics[0] = intrinsics;
 					if (useVVVVCoords)
 						FPinOutProjection[0] = intrinsics.Matrix;
