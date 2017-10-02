@@ -38,6 +38,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Emgu.CV, Version=2.4.2.1777, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
