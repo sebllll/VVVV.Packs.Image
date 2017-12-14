@@ -2,6 +2,7 @@
 using VVVV.CV.Core;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
+using VVVV.Utils.VColor;
 
 namespace VVVV.CV.Nodes
 {
@@ -66,7 +67,10 @@ namespace VVVV.CV.Nodes
 		[Output("Output")]
 		ISpread<ISpread<double>> FPinOutput;
 
-		protected override bool OneInstancePerImage()
+        [Output("Color")]
+        ISpread<RGBAColor> FColorOutput;
+
+        protected override bool OneInstancePerImage()
 		{
 			return true;
 		}
@@ -102,17 +106,24 @@ namespace VVVV.CV.Nodes
 			}
 
 			FPinOutput.SliceCount = count;
+            FColorOutput.SliceCount = count;
 
-			var offset = 0;
+            var offset = 0;
 
 			for (var i = 0; i < instanceCount; i++)
 			{
 				for (var j = 0; j < counts[i]; j++)
 				{
 					FPinOutput[offset + j].SliceCount = FProcessor[i].ChannelCount;
+
 					for (var c = 0; c < FProcessor[i].ChannelCount; c++)
-						FPinOutput[offset + j][c] = returned[i][j][c];
-				}
+                        FPinOutput[offset + j][c] = returned[i][j][c];
+
+                    // only works for 4-channel textures :(
+                    if (FProcessor[i].ChannelCount == 4)
+                        FColorOutput[offset + j] = new RGBAColor(returned[i][j][2] / 255, returned[i][j][1] / 255, returned[i][j][0] / 255, returned[i][j][3] / 255);  // swaps BGRA to RGBA
+
+                }
 				offset += counts[i];
 			}
 		}
