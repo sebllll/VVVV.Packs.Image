@@ -91,8 +91,8 @@ namespace VVVV.Nodes.OpenCV.IDS
 
         public override bool Open()
 		{
-            lock (DeviceLock.LockDevices)
-            {
+            //lock (DeviceLock.LockDevices)
+            //{
                 try
                 {
                     cam = new Camera();
@@ -130,7 +130,7 @@ namespace VVVV.Nodes.OpenCV.IDS
                     Status = e.Message;
                     return false;
                 }
-            }
+            //}
         }
 
         //public void reOpen()
@@ -142,8 +142,8 @@ namespace VVVV.Nodes.OpenCV.IDS
 
         public override void Close()
         {
-            lock (DeviceLock.LockDevices)
-            {
+            //lock (DeviceLock.LockDevices)
+            //{
                 if (cam != null)
                 {
                     try
@@ -169,7 +169,7 @@ namespace VVVV.Nodes.OpenCV.IDS
                         Status = e.Message;
                     }
                 }
-            }
+            //}
         }
 
         private void startCapture()
