@@ -93,6 +93,23 @@ namespace VVVV.CV.Nodes
         {
         }
 
+        private double FSDeekPos;
+        public double SeekPos
+        {
+            set
+            {
+                FSDeekPos = value;
+                seek(FSDeekPos);
+            }
+        }
+
+        private void seek(double ms)
+        {
+            //rewind
+            //FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_POS_FRAMES, 0.0);
+            FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_POS_MSEC, ms);
+        }
+
         protected override void Generate()
         {
             int FrameTargetIndex = (int) ((DateTime.Now - FStarted).TotalSeconds * this.FrameRate);
@@ -138,6 +155,12 @@ namespace VVVV.CV.Nodes
         [Input("Filename", StringType=StringType.Filename)]
         IDiffSpread<string> FFilename;
 
+        [Input("Seek Pos")]
+        IDiffSpread<double> FSeekPos;
+
+        [Input("Do Seek", IsBang = true)]
+        IDiffSpread<bool> FDoSeek;
+
         [Output("Framerate")]
         ISpread<double> FFramerate;
 
@@ -157,6 +180,14 @@ namespace VVVV.CV.Nodes
             if (FFilename.IsChanged || SpreadChanged)
                 for (int i = 0; i < InstanceCount; i++)
                     FProcessor[i].Filename = FFilename[i];
+
+            if (FDoSeek.IsChanged)
+                for (int i = 0; i < InstanceCount; i++)
+                {
+                    if (FDoSeek[i])
+                        FProcessor[i].SeekPos = FSeekPos[i];
+                }
+
 
             if (SpreadChanged)
             {
