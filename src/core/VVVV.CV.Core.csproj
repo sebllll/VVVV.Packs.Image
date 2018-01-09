@@ -149,7 +149,9 @@
     <Compile Include="Interfaces\IInstanceInput.cs" />
     <Compile Include="Interfaces\IInstanceOutput.cs" />
     <Compile Include="Interfaces\INode.cs" />
+    <Compile Include="Interfaces\User\IDestinationMaskInstance.cs" />
     <Compile Include="Interfaces\User\IDestinationInstance.cs" />
+    <Compile Include="Interfaces\User\IDestinationMaskNode.cs" />
     <Compile Include="Interfaces\User\IDestinationNode.cs" />
     <Compile Include="Interfaces\User\IDeviceGeneratorInstance.cs" />
     <Compile Include="Interfaces\User\IMixerNode.cs" />
@@ -160,6 +162,7 @@
     <Compile Include="Interfaces\User\IGeneratorNode.cs" />
     <Compile Include="Interfaces\User\IStaticGeneratorInstance.cs" />
     <Compile Include="Process\IProcess.cs" />
+    <Compile Include="Process\ProcessMaskDestination.cs" />
     <Compile Include="Process\ProcessDestination.cs" />
     <Compile Include="Process\ProcessMixer.cs" />
     <Compile Include="Process\ProcessFilter.cs" />

@@ -147,10 +147,15 @@
     <Compile Include="src\Calibration\IntrinsicsSplitNode.cs" />
     <Compile Include="src\Calibration\IntrinsicsJoinNode.cs" />
     <Compile Include="src\Calibration\ProjectPointsNode.cs" />
+    <Compile Include="src\Destinations\Split.cs" />
+    <Compile Include="src\Destinations\CountNonZeroRGB.cs" />
+    <Compile Include="src\Destinations\CountNonZero.cs" />
+    <Compile Include="src\Destinations\MinMaxLoc.cs" />
     <Compile Include="src\Filters\Queue.cs" />
     <Compile Include="src\Filters\Undistort.cs" />
     <Compile Include="src\Graphics\delauney.cs" />
     <Compile Include="src\Graphics\voronoi.cs" />
+    <Compile Include="src\Mixers\BitwiseAnd.cs" />
     <Compile Include="src\Mixers\Blend.cs" />
     <Compile Include="src\Tracking\DetectPedestrian.cs" />
     <None Include="packages.config" />
