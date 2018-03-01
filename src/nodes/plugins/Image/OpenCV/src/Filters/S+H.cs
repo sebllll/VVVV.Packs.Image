@@ -27,8 +27,17 @@ namespace VVVV.CV.Nodes
 				{
 					FFlagForSet = true;
 				}
+                else
+                {
+                    FFlagForSet = false;
+                }
 			}
 		}
+
+        public override bool IsFast()
+        {
+            return false;
+        }
 
 		public override void Allocate()
 		{
@@ -40,7 +49,7 @@ namespace VVVV.CV.Nodes
 			{
 				FOutput.Image = FInput.Image;
 				FOutput.Send();
-				FFlagForSet = false;
+				//FFlagForSet = false;
 			}
 		}
 

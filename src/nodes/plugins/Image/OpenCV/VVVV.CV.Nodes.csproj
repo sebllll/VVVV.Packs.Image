@@ -152,6 +152,7 @@
     <Compile Include="src\Destinations\CountNonZero.cs" />
     <Compile Include="src\Destinations\MinMaxLoc.cs" />
     <Compile Include="src\Filters\Queue.cs" />
+    <Compile Include="src\Filters\Limit.cs" />
     <Compile Include="src\Filters\Undistort.cs" />
     <Compile Include="src\Graphics\delauney.cs" />
     <Compile Include="src\Graphics\voronoi.cs" />
