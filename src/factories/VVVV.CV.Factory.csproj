@@ -14,7 +14,7 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <Prefer32Bit>false</Prefer32Bit>
@@ -63,17 +63,23 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VVVV.Core, Version=35.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VVVV.Core.35.8.0\lib\net46\VVVV.Core.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="VVVV.Core, Version=39.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VVVV.Core.39.0.0\lib\net46\VVVV.Core.dll</HintPath>
     </Reference>
-    <Reference Include="VVVV.Utils, Version=35.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VVVV.Utils.35.8.0\lib\net46\VVVV.Utils.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="VVVV.Hosting, Version=39.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VVVV.Hosting.39.0.0\lib\net46\VVVV.Hosting.dll</HintPath>
     </Reference>
-    <Reference Include="VVVV.UtilsIL, Version=35.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VVVV.UtilsIL.35.8.0\lib\net46\VVVV.UtilsIL.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="VVVV.PluginInterfaces, Version=39.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VVVV.PluginInterfaces.39.0.0\lib\net46\VVVV.PluginInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.Utils, Version=39.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VVVV.Utils.39.0.0\lib\net46\VVVV.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.Utils3rdParty, Version=39.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VVVV.Utils3rdParty.39.0.0\lib\net46\VVVV.Utils3rdParty.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.UtilsIL, Version=39.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VVVV.UtilsIL.39.0.0\lib\net46\VVVV.UtilsIL.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -99,14 +105,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.props'))" />
     <Error Condition="!Exists('..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets'))" />
-    <Error Condition="!Exists('..\packages\VVVV.PluginInterfaces.35.8.0\build\net46\VVVV.PluginInterfaces.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.PluginInterfaces.35.8.0\build\net46\VVVV.PluginInterfaces.targets'))" />
-    <Error Condition="!Exists('..\packages\VVVV.Utils3rdParty.35.8.0\build\net46\VVVV.Utils3rdParty.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.Utils3rdParty.35.8.0\build\net46\VVVV.Utils3rdParty.targets'))" />
-    <Error Condition="!Exists('..\packages\VVVV.Hosting.35.8.0\build\net46\VVVV.Hosting.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\VVVV.Hosting.35.8.0\build\net46\VVVV.Hosting.targets'))" />
   </Target>
   <Import Project="..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets" Condition="Exists('..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets')" />
-  <Import Project="..\packages\VVVV.PluginInterfaces.35.8.0\build\net46\VVVV.PluginInterfaces.targets" Condition="Exists('..\packages\VVVV.PluginInterfaces.35.8.0\build\net46\VVVV.PluginInterfaces.targets')" />
-  <Import Project="..\packages\VVVV.Utils3rdParty.35.8.0\build\net46\VVVV.Utils3rdParty.targets" Condition="Exists('..\packages\VVVV.Utils3rdParty.35.8.0\build\net46\VVVV.Utils3rdParty.targets')" />
-  <Import Project="..\packages\VVVV.Hosting.35.8.0\build\net46\VVVV.Hosting.targets" Condition="Exists('..\packages\VVVV.Hosting.35.8.0\build\net46\VVVV.Hosting.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

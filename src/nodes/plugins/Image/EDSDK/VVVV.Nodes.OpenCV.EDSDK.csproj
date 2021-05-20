@@ -11,7 +11,7 @@
     <RestorePackages>true</RestorePackages>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
@@ -105,13 +105,14 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VVVV.Core, Version=35.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\VVVV.Core.35.8.0\lib\net46\VVVV.Core.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="VVVV.Core, Version=39.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\VVVV.Core.39.0.0\lib\net46\VVVV.Core.dll</HintPath>
     </Reference>
-    <Reference Include="VVVV.Utils, Version=35.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\VVVV.Utils.35.8.0\lib\net46\VVVV.Utils.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="VVVV.PluginInterfaces, Version=39.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\VVVV.PluginInterfaces.39.0.0\lib\net46\VVVV.PluginInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.Utils, Version=39.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\VVVV.Utils.39.0.0\lib\net46\VVVV.Utils.dll</HintPath>
     </Reference>
     <Reference Include="ZedGraph, Version=5.1.5.28844, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -147,11 +148,9 @@
     <Error Condition="!Exists('..\..\..\..\packages\VVVV.EDSDK.2.14.0.1\build\net40\VVVV.EDSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.EDSDK.2.14.0.1\build\net40\VVVV.EDSDK.targets'))" />
     <Error Condition="!Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.props'))" />
     <Error Condition="!Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets'))" />
-    <Error Condition="!Exists('..\..\..\..\packages\VVVV.PluginInterfaces.35.8.0\build\net46\VVVV.PluginInterfaces.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.PluginInterfaces.35.8.0\build\net46\VVVV.PluginInterfaces.targets'))" />
   </Target>
   <Import Project="..\..\..\..\packages\VVVV.EDSDK.2.14.0.1\build\net40\VVVV.EDSDK.targets" Condition="Exists('..\..\..\..\packages\VVVV.EDSDK.2.14.0.1\build\net40\VVVV.EDSDK.targets')" />
   <Import Project="..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets" Condition="Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets')" />
-  <Import Project="..\..\..\..\packages\VVVV.PluginInterfaces.35.8.0\build\net46\VVVV.PluginInterfaces.targets" Condition="Exists('..\..\..\..\packages\VVVV.PluginInterfaces.35.8.0\build\net46\VVVV.PluginInterfaces.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
